@@ -9,16 +9,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "boardgame_copies", schema = "public", catalog = "postgres")
 public class BoardgameCopy {
-    private int copyId;
+    private int id;
 
     @Id
     @Column(name = "copy_id")
-    public int getCopyId() {
-        return copyId;
+    public int getId() {
+        return id;
     }
 
-    public void setCopyId(int copyId) {
-        this.copyId = copyId;
+    public void setId(int copyId) {
+        this.id = copyId;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class BoardgameCopy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BoardgameCopy that = (BoardgameCopy) o;
-        return copyId == that.copyId;
+        return id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId);
+        return Objects.hash(id);
     }
 }

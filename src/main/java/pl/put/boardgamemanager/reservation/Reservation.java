@@ -7,17 +7,17 @@ import java.util.Objects;
 @Entity
 @Table(name = "reservations", schema = "public", catalog = "postgres")
 public class Reservation {
-    private int tableTableId;
+    private int tableId;
     private String type;
 
     @Id
     @Column(name = "table_table_id")
-    public int getTableTableId() {
-        return tableTableId;
+    public int getTableId() {
+        return tableId;
     }
 
-    public void setTableTableId(int tableTableId) {
-        this.tableTableId = tableTableId;
+    public void setTableId(int tableTableId) {
+        this.tableId = tableTableId;
     }
 
     @Basic
@@ -35,12 +35,12 @@ public class Reservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return tableTableId == that.tableTableId &&
+        return tableId == that.tableId &&
                 Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableTableId, type);
+        return Objects.hash(tableId, type);
     }
 }

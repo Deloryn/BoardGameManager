@@ -8,29 +8,29 @@ import java.util.Objects;
 @Entity
 @Table(name = "tournaments", schema = "public", catalog = "postgres")
 public class Tournament {
-    private int tournamentId;
-    private Timestamp tournamentTime;
+    private int id;
+    private Timestamp time;
     private Timestamp duration;
     private short maxPlayers;
 
     @Id
     @Column(name = "tournament_id")
-    public int getTournamentId() {
-        return tournamentId;
+    public int getId() {
+        return id;
     }
 
-    public void setTournamentId(int tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setId(int tournamentId) {
+        this.id = tournamentId;
     }
 
     @Basic
     @Column(name = "tournament_time")
-    public Timestamp getTournamentTime() {
-        return tournamentTime;
+    public Timestamp getTime() {
+        return time;
     }
 
-    public void setTournamentTime(Timestamp tournamentTime) {
-        this.tournamentTime = tournamentTime;
+    public void setTime(Timestamp tournamentTime) {
+        this.time = tournamentTime;
     }
 
     @Basic
@@ -58,14 +58,14 @@ public class Tournament {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tournament that = (Tournament) o;
-        return tournamentId == that.tournamentId &&
+        return id == that.id &&
                 maxPlayers == that.maxPlayers &&
-                Objects.equals(tournamentTime, that.tournamentTime) &&
+                Objects.equals(time, that.time) &&
                 Objects.equals(duration, that.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tournamentId, tournamentTime, duration, maxPlayers);
+        return Objects.hash(id, time, duration, maxPlayers);
     }
 }

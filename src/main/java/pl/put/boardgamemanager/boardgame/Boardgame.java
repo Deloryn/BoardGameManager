@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "boardgames", schema = "public", catalog = "postgres")
 public class Boardgame {
-    private int gameId;
+    private int id;
     private String name;
     private String publisher;
     private short minPlayers;
@@ -18,12 +18,12 @@ public class Boardgame {
 
     @Id
     @Column(name = "game_id")
-    public int getGameId() {
-        return gameId;
+    public int getId() {
+        return id;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setId(int gameId) {
+        this.id = gameId;
     }
 
     @Basic
@@ -91,7 +91,7 @@ public class Boardgame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Boardgame boardgame = (Boardgame) o;
-        return gameId == boardgame.gameId &&
+        return id == boardgame.id &&
                 minPlayers == boardgame.minPlayers &&
                 maxPlayers == boardgame.maxPlayers &&
                 Objects.equals(name, boardgame.name) &&
@@ -102,6 +102,6 @@ public class Boardgame {
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameId, name, publisher, minPlayers, maxPlayers, avgTime, description);
+        return Objects.hash(id, name, publisher, minPlayers, maxPlayers, avgTime, description);
     }
 }

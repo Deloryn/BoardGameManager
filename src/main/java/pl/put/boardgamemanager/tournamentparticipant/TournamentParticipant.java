@@ -8,27 +8,27 @@ import java.util.Objects;
 @Table(name = "tournament_participants", schema = "public", catalog = "postgres")
 @IdClass(TournamentParticipantPK.class)
 public class TournamentParticipant {
-    private int tournamentTournamentId;
-    private int clientPersonId;
+    private int tournamentId;
+    private int clientId;
 
     @Id
     @Column(name = "tournament_tournament_id")
-    public int getTournamentTournamentId() {
-        return tournamentTournamentId;
+    public int getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournamentTournamentId(int tournamentTournamentId) {
-        this.tournamentTournamentId = tournamentTournamentId;
+    public void setTournamentId(int tournamentTournamentId) {
+        this.tournamentId = tournamentTournamentId;
     }
 
     @Id
     @Column(name = "client_person_id")
-    public int getClientPersonId() {
-        return clientPersonId;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setClientPersonId(int clientPersonId) {
-        this.clientPersonId = clientPersonId;
+    public void setClientId(int clientPersonId) {
+        this.clientId = clientPersonId;
     }
 
     @Override
@@ -36,12 +36,12 @@ public class TournamentParticipant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TournamentParticipant that = (TournamentParticipant) o;
-        return tournamentTournamentId == that.tournamentTournamentId &&
-                clientPersonId == that.clientPersonId;
+        return tournamentId == that.tournamentId &&
+                clientId == that.clientId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tournamentTournamentId, clientPersonId);
+        return Objects.hash(tournamentId, clientId);
     }
 }

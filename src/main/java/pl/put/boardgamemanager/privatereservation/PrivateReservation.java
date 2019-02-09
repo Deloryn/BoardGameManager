@@ -8,18 +8,18 @@ import java.util.Objects;
 @Entity
 @Table(name = "private_reservations", schema = "public", catalog = "postgres")
 public class PrivateReservation {
-    private int tableId1;
+    private int tableId;
     private Timestamp reservationTime;
     private Timestamp duration;
 
     @Id
     @Column(name = "table_id1")
-    public int getTableId1() {
-        return tableId1;
+    public int getTableId() {
+        return tableId;
     }
 
-    public void setTableId1(int tableId1) {
-        this.tableId1 = tableId1;
+    public void setTableId(int tableId1) {
+        this.tableId = tableId1;
     }
 
     @Basic
@@ -47,13 +47,13 @@ public class PrivateReservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrivateReservation that = (PrivateReservation) o;
-        return tableId1 == that.tableId1 &&
+        return tableId == that.tableId &&
                 Objects.equals(reservationTime, that.reservationTime) &&
                 Objects.equals(duration, that.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId1, reservationTime, duration);
+        return Objects.hash(tableId, reservationTime, duration);
     }
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "persons", schema = "public", catalog = "postgres")
 public class Person {
-    private int personId;
+    private int id;
     private String name;
     private String surname;
     private String email;
@@ -16,12 +16,12 @@ public class Person {
 
     @Id
     @Column(name = "person_id")
-    public int getPersonId() {
-        return personId;
+    public int getId() {
+        return id;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setId(int personId) {
+        this.id = personId;
     }
 
     @Basic
@@ -79,7 +79,7 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return personId == person.personId &&
+        return id == person.id &&
                 Objects.equals(name, person.name) &&
                 Objects.equals(surname, person.surname) &&
                 Objects.equals(email, person.email) &&
@@ -89,6 +89,6 @@ public class Person {
 
     @Override
     public int hashCode() {
-        return Objects.hash(personId, name, surname, email, phoneNumber, role);
+        return Objects.hash(id, name, surname, email, phoneNumber, role);
     }
 }

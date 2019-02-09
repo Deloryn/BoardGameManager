@@ -9,16 +9,16 @@ import java.util.Objects;
 @Entity
 @Table(name = "tournament_reservations", schema = "public", catalog = "postgres")
 public class TournamentReservation {
-    private int tableId1;
+    private int tableId;
 
     @Id
     @Column(name = "table_id1")
-    public int getTableId1() {
-        return tableId1;
+    public int getTableId() {
+        return tableId;
     }
 
-    public void setTableId1(int tableId1) {
-        this.tableId1 = tableId1;
+    public void setTableId(int tableId1) {
+        this.tableId = tableId1;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class TournamentReservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TournamentReservation that = (TournamentReservation) o;
-        return tableId1 == that.tableId1;
+        return tableId == that.tableId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId1);
+        return Objects.hash(tableId);
     }
 }

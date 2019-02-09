@@ -9,17 +9,17 @@ import java.util.Objects;
 @Entity
 @javax.persistence.Table(name = "tables", schema = "public", catalog = "postgres")
 public class Table {
-    private int tableId;
+    private int id;
     private short numberOfSits;
 
     @Id
     @Column(name = "table_id")
-    public int getTableId() {
-        return tableId;
+    public int getId() {
+        return id;
     }
 
-    public void setTableId(int tableId) {
-        this.tableId = tableId;
+    public void setId(int tableId) {
+        this.id = tableId;
     }
 
     @Basic
@@ -37,12 +37,12 @@ public class Table {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return tableId == table.tableId &&
+        return id == table.id &&
                 numberOfSits == table.numberOfSits;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, numberOfSits);
+        return Objects.hash(id, numberOfSits);
     }
 }

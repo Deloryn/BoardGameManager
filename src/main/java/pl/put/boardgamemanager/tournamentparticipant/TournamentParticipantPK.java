@@ -6,27 +6,27 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class TournamentParticipantPK implements Serializable {
-    private int tournamentTournamentId;
-    private int clientPersonId;
+    private int tournamentId;
+    private int clientId;
 
     @Column(name = "tournament_tournament_id")
     @Id
-    public int getTournamentTournamentId() {
-        return tournamentTournamentId;
+    public int getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournamentTournamentId(int tournamentTournamentId) {
-        this.tournamentTournamentId = tournamentTournamentId;
+    public void setTournamentId(int tournamentTournamentId) {
+        this.tournamentId = tournamentTournamentId;
     }
 
     @Column(name = "client_person_id")
     @Id
-    public int getClientPersonId() {
-        return clientPersonId;
+    public int getClientId() {
+        return clientId;
     }
 
-    public void setClientPersonId(int clientPersonId) {
-        this.clientPersonId = clientPersonId;
+    public void setClientId(int clientPersonId) {
+        this.clientId = clientPersonId;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class TournamentParticipantPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TournamentParticipantPK that = (TournamentParticipantPK) o;
-        return tournamentTournamentId == that.tournamentTournamentId &&
-                clientPersonId == that.clientPersonId;
+        return tournamentId == that.tournamentId &&
+                clientId == that.clientId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tournamentTournamentId, clientPersonId);
+        return Objects.hash(tournamentId, clientId);
     }
 }
