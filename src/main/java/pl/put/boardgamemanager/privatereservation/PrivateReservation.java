@@ -1,0 +1,59 @@
+package pl.put.boardgamemanager.privatereservation;
+
+import javax.persistence.*;
+import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.Objects;
+
+@Entity
+@Table(name = "private_reservations", schema = "public", catalog = "postgres")
+public class PrivateReservation {
+    private int tableId1;
+    private Timestamp reservationTime;
+    private Timestamp duration;
+
+    @Id
+    @Column(name = "table_id1")
+    public int getTableId1() {
+        return tableId1;
+    }
+
+    public void setTableId1(int tableId1) {
+        this.tableId1 = tableId1;
+    }
+
+    @Basic
+    @Column(name = "reservation_time")
+    public Timestamp getReservationTime() {
+        return reservationTime;
+    }
+
+    public void setReservationTime(Timestamp reservationTime) {
+        this.reservationTime = reservationTime;
+    }
+
+    @Basic
+    @Column(name = "duration")
+    public Timestamp getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Timestamp duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PrivateReservation that = (PrivateReservation) o;
+        return tableId1 == that.tableId1 &&
+                Objects.equals(reservationTime, that.reservationTime) &&
+                Objects.equals(duration, that.duration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tableId1, reservationTime, duration);
+    }
+}
