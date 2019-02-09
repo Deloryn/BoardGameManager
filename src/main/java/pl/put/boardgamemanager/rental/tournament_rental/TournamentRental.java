@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.tournamentrental;
+package pl.put.boardgamemanager.rental.tournament_rental;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

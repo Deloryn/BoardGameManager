@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.boardgamecopy;
+package pl.put.boardgamemanager.boardgame.boardgame_copy;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.tournamentreservation;
+package pl.put.boardgamemanager.reservation.tournament_reservation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.client;
+package pl.put.boardgamemanager.person.client;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

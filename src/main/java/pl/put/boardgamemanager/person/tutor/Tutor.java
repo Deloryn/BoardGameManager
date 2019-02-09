@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.tutor;
+package pl.put.boardgamemanager.person.tutor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

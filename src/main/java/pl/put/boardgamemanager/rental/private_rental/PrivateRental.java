@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.privaterental;
+package pl.put.boardgamemanager.rental.private_rental;
 
 import javax.persistence.*;
 import javax.persistence.Table;

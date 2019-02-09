@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.privatereservation;
+package pl.put.boardgamemanager.reservation.private_reservation;
 
 import javax.persistence.*;
 import javax.persistence.Table;

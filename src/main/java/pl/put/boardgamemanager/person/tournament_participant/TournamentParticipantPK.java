@@ -1,18 +1,16 @@
-package pl.put.boardgamemanager.tournamentparticipant;
+package pl.put.boardgamemanager.person.tournament_participant;
 
-import javax.persistence.*;
-import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
-@Table(name = "tournament_participants", schema = "public", catalog = "postgres")
-@IdClass(TournamentParticipantPK.class)
-public class TournamentParticipant {
+public class TournamentParticipantPK implements Serializable {
     private int tournamentId;
     private int clientId;
 
-    @Id
     @Column(name = "tournament_tournament_id")
+    @Id
     public int getTournamentId() {
         return tournamentId;
     }
@@ -21,8 +19,8 @@ public class TournamentParticipant {
         this.tournamentId = tournamentTournamentId;
     }
 
-    @Id
     @Column(name = "client_person_id")
+    @Id
     public int getClientId() {
         return clientId;
     }
@@ -35,7 +33,7 @@ public class TournamentParticipant {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TournamentParticipant that = (TournamentParticipant) o;
+        TournamentParticipantPK that = (TournamentParticipantPK) o;
         return tournamentId == that.tournamentId &&
                 clientId == that.clientId;
     }
