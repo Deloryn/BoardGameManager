@@ -12,9 +12,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "copyid")
 public abstract class Rental {
 
-    @SequenceGenerator(name = "rentals_seq", sequenceName = "rentals_seq")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentals_seq")
     @Column(name = "copyid", nullable = false)
     protected Integer copyId;
 

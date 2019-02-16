@@ -8,9 +8,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "tableid")
 public abstract class Reservation {
 
-    @SequenceGenerator(name = "reservations_seq", sequenceName = "reservations_seq")
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservations_seq")
     @Column(name = "tableid", nullable = false)
     protected Long tableId;
 
