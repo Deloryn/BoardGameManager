@@ -77,12 +77,13 @@ public class Tournament {
         return Objects.equals(id, that.id) &&
                 Objects.equals(time, that.time) &&
                 Objects.equals(duration, that.duration) &&
-                Objects.equals(maxPlayers, that.maxPlayers);
+                Objects.equals(maxPlayers, that.maxPlayers) &&
+                Objects.equals(game, that.game);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, duration, maxPlayers);
+        return Objects.hash(id, time, duration, maxPlayers, game);
     }
 
 }

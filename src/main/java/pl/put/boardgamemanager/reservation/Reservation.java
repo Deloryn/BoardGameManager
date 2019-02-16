@@ -65,7 +65,7 @@ public abstract class Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, type);
+        return Objects.hash(tableId, type, reservedTable, tutor);
     }
 
 }

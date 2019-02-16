@@ -43,14 +43,15 @@ public abstract class Rental {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Rental rental = (Rental) o;
-        return Objects.equals(copyId, rental.copyId) &&
-                Objects.equals(type, rental.type);
+        Rental that = (Rental) o;
+        return Objects.equals(copyId, that.copyId) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(gameCopy, that.gameCopy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type);
+        return Objects.hash(copyId, type, gameCopy);
     }
 
     public GameCopy getGameCopy() {

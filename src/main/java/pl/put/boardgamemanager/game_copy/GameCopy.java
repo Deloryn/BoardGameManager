@@ -32,12 +32,13 @@ public class GameCopy {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameCopy that = (GameCopy) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(game, that.game);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, game);
     }
 
     public Game getGame() {

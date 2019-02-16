@@ -59,13 +59,14 @@ public class PrivateRental extends Rental {
             PrivateRental that = (PrivateRental) o;
             return Objects.equals(rentalTime, that.rentalTime) &&
                     Objects.equals(duration, that.duration) &&
-                    Objects.equals(status, that.status);
+                    Objects.equals(status, that.status) &&
+                    Objects.equals(client, that.client);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type, rentalTime, duration, status);
+        return Objects.hash(copyId, type, rentalTime, duration, status, client);
     }
 
     public Client getClient() {
