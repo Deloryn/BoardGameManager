@@ -57,38 +57,15 @@ ALTER TABLE Tutors
   ADD CONSTRAINT PK_Tutors PRIMARY KEY (id);
 
 
-
-CREATE TABLE PrivateRentals
+CREATE TABLE TournamentParticipants
 (
-  copyId     INT          NOT NULL,
-  rentalTime TIMESTAMP(0) NOT NULL,
-  duration   TIMESTAMP(0) NOT NULL,
-  status     VARCHAR(30)  NOT NULL,
-  clientId   INT          NOT NULL
-);
+  tournamentId INT NOT NULL
+) INHERITS (Clients);
 
-ALTER TABLE PrivateRentals
-  ADD CONSTRAINT PK_PrivateRentals PRIMARY KEY (copyId);
+ALTER TABLE TournamentParticipants
+  ADD CONSTRAINT PK_TournamentParticipants PRIMARY KEY (tournamentId,
+                                                        clientId);
 
-ALTER TABLE PrivateRentals
-  ADD CONSTRAINT UQ_PrivateRentals UNIQUE (clientId,
-                                           rentalTime);
-
-
-CREATE TABLE PrivateReservations
-(
-  tableId         INT          NOT NULL,
-  reservationTime TIMESTAMP(0) NOT NULL,
-  duration        TIMESTAMP(0) NOT NULL,
-  clientId        INT          NOT NULL
-);
-
-ALTER TABLE PrivateReservations
-  ADD CONSTRAINT PK_PrivateReservations PRIMARY KEY (tableId);
-
-ALTER TABLE PrivateReservations
-  ADD CONSTRAINT UQ_PrivateReservations UNIQUE (clientId,
-                                                reservationTime);
 
 
 CREATE TABLE Rentals
@@ -99,6 +76,36 @@ CREATE TABLE Rentals
 
 ALTER TABLE Rentals
   ADD CONSTRAINT PK_Rentals PRIMARY KEY (copyId);
+
+
+
+CREATE TABLE PrivateRentals
+(
+  rentalTime TIMESTAMP(0) NOT NULL,
+  duration   TIMESTAMP(0) NOT NULL,
+  status     VARCHAR(30)  NOT NULL,
+  clientId   INT          NOT NULL
+) INHERITS (Rentals);
+
+ALTER TABLE PrivateRentals
+  ADD CONSTRAINT PK_PrivateRentals PRIMARY KEY (copyId);
+
+ALTER TABLE PrivateRentals
+  ADD CONSTRAINT UQ_PrivateRentals UNIQUE (clientId,
+                                           rentalTime);
+
+
+
+CREATE TABLE TournamentRentals
+(
+  tournamentId INT NOT NULL
+) INHERITS (Rentals);
+
+ALTER TABLE TournamentRentals
+  ADD CONSTRAINT PK_TournamentRentals PRIMARY KEY (copyId);
+
+ALTER TABLE TournamentRentals
+  ADD CONSTRAINT UQ_TournamentRentals UNIQUE (tournamentId);
 
 
 
@@ -113,6 +120,33 @@ ALTER TABLE Reservations
   ADD CONSTRAINT PK_Reservations PRIMARY KEY (tableId);
 
 
+CREATE TABLE PrivateReservations
+(
+  reservationTime TIMESTAMP(0) NOT NULL,
+  duration        TIMESTAMP(0) NOT NULL,
+  clientId        INT          NOT NULL
+) INHERITS (Reservations);
+
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT PK_PrivateReservations PRIMARY KEY (tableId);
+
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT UQ_PrivateReservations UNIQUE (clientId,
+                                                reservationTime);
+
+
+CREATE TABLE TournamentReservations
+(
+  tournamentId INT NOT NULL
+) INHERITS (Reservations);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT PK_TournamentReservations PRIMARY KEY (tableId);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT UQ_TournamentReservations UNIQUE (tournamentId);
+
+
 
 CREATE TABLE Tables
 (
@@ -122,45 +156,6 @@ CREATE TABLE Tables
 
 ALTER TABLE Tables
   ADD CONSTRAINT PK_Tables PRIMARY KEY (id);
-
-
-
-CREATE TABLE TournamentParticipants
-(
-  tournamentId INT NOT NULL,
-  clientId     INT NOT NULL
-);
-
-ALTER TABLE TournamentParticipants
-  ADD CONSTRAINT PK_TournamentParticipants PRIMARY KEY (tournamentId,
-                                                        clientId);
-
-
-CREATE TABLE TournamentRentals
-(
-  copyId       INT NOT NULL,
-  tournamentId INT NOT NULL
-);
-
-ALTER TABLE TournamentRentals
-  ADD CONSTRAINT PK_TournamentRentals PRIMARY KEY (copyId);
-
-ALTER TABLE TournamentRentals
-  ADD CONSTRAINT UQ_TournamentRentals UNIQUE (tournamentId);
-
-
-
-CREATE TABLE TournamentReservations
-(
-  tableId      INT NOT NULL,
-  tournamentId INT NOT NULL
-);
-
-ALTER TABLE TournamentReservations
-  ADD CONSTRAINT PK_TournamentReservations PRIMARY KEY (tableId);
-
-ALTER TABLE TournamentReservations
-  ADD CONSTRAINT UQ_TournamentReservations UNIQUE (tournamentId);
 
 
 
