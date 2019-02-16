@@ -1,10 +1,13 @@
 package pl.put.boardgamemanager.reservation;
 
+import pl.put.boardgamemanager.person.tutor.Tutor;
+import pl.put.boardgamemanager.table.Table;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "reservations", schema = "public", catalog = "postgres")
+@javax.persistence.Table(name = "reservations", schema = "public", catalog = "postgres")
 @DiscriminatorColumn(name = "tableid")
 public abstract class Reservation {
 
@@ -12,8 +15,13 @@ public abstract class Reservation {
     @Column(name = "tableid", nullable = false)
     protected Long tableId;
 
-    @Column(name = "tutorid")
-    protected Long tutorId;
+    @OneToOne
+    @JoinColumn(name = "tableid", referencedColumnName = "id", nullable = false)
+    protected Table reservedTable;
+
+    @ManyToOne
+    @JoinColumn(name = "tutorid", referencedColumnName = "id")
+    protected Tutor tutor;
 
     @Column(name = "type", length = 1)
     protected Character type;
@@ -22,17 +30,19 @@ public abstract class Reservation {
         return tableId;
     }
 
+    public Table getReservedTable() {
+        return reservedTable;
+    }
+
+    public void setReservedTable(Table table) { this.reservedTable = table; }
+
     public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 
-    public Long getTutorId() {
-        return tutorId;
-    }
+    public Tutor getTutor() { return tutor; }
 
-    public void setTutorId(Long tutorId) {
-        this.tutorId = tutorId;
-    }
+    public void setTutor(Tutor tutor) { this.tutor = tutor; }
 
     public Character getType() {
         return type;
