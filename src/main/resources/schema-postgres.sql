@@ -64,7 +64,7 @@ CREATE TABLE TournamentParticipants
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT PK_TournamentParticipants PRIMARY KEY (tournamentId,
-                                                        clientId);
+                                                        id);
 
 
 
@@ -198,7 +198,7 @@ ALTER TABLE PrivateReservations
     REFERENCES Reservations (tableId);
 
 ALTER TABLE TournamentParticipants
-  ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (clientId)
+  ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (id)
     REFERENCES Clients (id);
 
 ALTER TABLE TournamentParticipants
@@ -250,7 +250,7 @@ SELECT email
 FROM Persons
 WHERE (SELECT COUNT(*)
        FROM TournamentParticipants
-       WHERE TournamentParticipants.clientId = Persons.id) >= 2
+       WHERE TournamentParticipants.id = Persons.id) >= 2
 
 $$ LANGUAGE sql;
 
@@ -266,7 +266,7 @@ WHERE id = (SELECT gameId
                   (SELECT tournamentId
                    FROM TournamentParticipants
                    GROUP BY tournamentId
-                   ORDER BY AVG(clientId) DESC
+                   ORDER BY AVG(id) DESC
                    LIMIT 1))
 $$ LANGUAGE sql;
 
