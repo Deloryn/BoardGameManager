@@ -14,7 +14,7 @@ public abstract class Rental {
 
     @Id
     @Column(name = "copyid", nullable = false)
-    protected Integer copyId;
+    protected Long copyId;
 
     @Column(name = "type", length = 1)
     protected Character type;
@@ -23,11 +23,11 @@ public abstract class Rental {
     @JoinColumn(name = "copyid", referencedColumnName = "id", nullable = false)
     protected GameCopy gameCopy;
 
-    public Integer getCopyId() {
+    public Long getCopyId() {
         return copyId;
     }
 
-    public void setCopyId(Integer copyid) {
+    public void setCopyId(Long copyid) {
         this.copyId = copyid;
     }
 
