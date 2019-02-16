@@ -18,8 +18,8 @@ public class TournamentParticipant extends Person {
         return tournamentId;
     }
 
-    public void setTournamentId(Integer tournamentid) {
-        this.tournamentId = tournamentid;
+    public void setTournamentId(Integer tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     @Override

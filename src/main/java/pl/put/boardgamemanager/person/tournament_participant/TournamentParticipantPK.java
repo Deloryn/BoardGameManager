@@ -27,8 +27,8 @@ public class TournamentParticipantPK implements Serializable {
         return tournamentId;
     }
 
-    public void setTournamentId(Integer tournamentid) {
-        this.tournamentId = tournamentid;
+    public void setTournamentId(Integer tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     @Override
