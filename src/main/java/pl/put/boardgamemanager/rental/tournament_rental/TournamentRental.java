@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.rental.tournament_rental;
 
 import pl.put.boardgamemanager.rental.Rental;
+import pl.put.boardgamemanager.tournament.Tournament;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,15 +11,16 @@ import java.util.Objects;
 @DiscriminatorValue("TournamentRental")
 public class TournamentRental extends Rental {
 
-    @Column(name = "tournamentid", nullable = false, unique = true)
-    private Long tournamentId;
+    @OneToOne
+    @JoinColumn(name = "tournamentid", referencedColumnName = "id", nullable = false)
+    private Tournament tournament;
 
-    public Long getTournamentId() {
-        return tournamentId;
+    public Tournament getTournament() {
+        return tournament;
     }
 
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 
     @Override
@@ -27,13 +29,13 @@ public class TournamentRental extends Rental {
         else if(getClass() != o.getClass()) return false;
         else {
             TournamentRental that = (TournamentRental) o;
-            return Objects.equals(tournamentId, that.tournamentId);
+            return Objects.equals(tournament, that.tournament);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type, tournamentId);
+        return Objects.hash(copyId, type, tournament);
     }
 
 }
