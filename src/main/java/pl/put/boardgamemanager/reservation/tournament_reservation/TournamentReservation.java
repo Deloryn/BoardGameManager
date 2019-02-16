@@ -10,17 +10,6 @@ import java.util.Objects;
 @DiscriminatorValue("TournamentReservation")
 public class TournamentReservation extends Reservation {
 
-    @Column(name = "tutorid", nullable = true)
-    private Integer tutorId;
-
-    public Integer getTutorId() {
-        return tutorId;
-    }
-
-    public void setTutorId(Integer tutorId) {
-        this.tutorId = tutorId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if(!super.equals(o)) return false;

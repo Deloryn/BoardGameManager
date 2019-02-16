@@ -12,9 +12,6 @@ import java.util.Objects;
 @DiscriminatorValue("PrivateReservation")
 public class PrivateReservation extends Reservation {
 
-    @Column(name = "tutorid", nullable = true)
-    private Integer tutorId;
-
     @Column(name = "reservationtime", nullable = false)
     private Timestamp reservationTime;
 
@@ -24,14 +21,6 @@ public class PrivateReservation extends Reservation {
     @ManyToOne
     @JoinColumn(name = "clientid", referencedColumnName = "id", nullable = false)
     private Client client;
-
-    public Integer getTutorId() {
-        return tutorId;
-    }
-
-    public void setTutorId(Integer tutorId) {
-        this.tutorId = tutorId;
-    }
 
     public Timestamp getReservationTime() {
         return reservationTime;
@@ -63,8 +52,7 @@ public class PrivateReservation extends Reservation {
         else if(getClass() != o.getClass()) return false;
         else {
             PrivateReservation that = (PrivateReservation) o;
-            return Objects.equals(tutorId, that.tutorId) &&
-                    Objects.equals(reservationTime, that.reservationTime) &&
+            return Objects.equals(reservationTime, that.reservationTime) &&
                     Objects.equals(duration, that.duration);
         }
     }

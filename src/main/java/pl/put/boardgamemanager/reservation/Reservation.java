@@ -12,6 +12,9 @@ public abstract class Reservation {
     @Column(name = "tableid", nullable = false)
     protected Long tableId;
 
+    @Column(name = "tutorid")
+    protected Long tutorId;
+
     @Column(name = "type", length = 1)
     protected Character type;
 
@@ -21,6 +24,14 @@ public abstract class Reservation {
 
     public void setTableId(Long tableId) {
         this.tableId = tableId;
+    }
+
+    public Long getTutorId() {
+        return tutorId;
+    }
+
+    public void setTutorId(Long tutorId) {
+        this.tutorId = tutorId;
     }
 
     public Character getType() {
