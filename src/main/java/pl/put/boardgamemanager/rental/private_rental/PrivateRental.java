@@ -4,6 +4,7 @@ import pl.put.boardgamemanager.person.client.Client;
 import pl.put.boardgamemanager.rental.Rental;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ public class PrivateRental extends Rental {
     @Column(name = "duration", nullable = false)
     private Timestamp duration;
 
+    @NotBlank
     @Column(name = "status", nullable = false, length = 30)
     private String status;
 
