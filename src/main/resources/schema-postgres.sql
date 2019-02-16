@@ -1,3 +1,17 @@
+CREATE TABLE Games (
+                       id            INT NOT NULL,
+                       name          VARCHAR(100) NOT NULL,
+                       publisher     VARCHAR(100) NOT NULL,
+                       minPlayers    SMALLINT NOT NULL,
+                       maxPlayers    SMALLINT NOT NULL,
+                       avgTime       TIMESTAMP(0) NOT NULL,
+                       description   VARCHAR(300)
+);
+
+ALTER TABLE Games ADD CONSTRAINT PK_Games PRIMARY KEY ( id );
+
+
+
 CREATE TABLE GameCopies (
     id          INT NOT NULL,
     gameId      INT NOT NULL
@@ -5,23 +19,7 @@ CREATE TABLE GameCopies (
 
 ALTER TABLE GameCopies ADD CONSTRAINT PK_GameCopies PRIMARY KEY ( id );
 
-CREATE TABLE Games (
-    id            INT NOT NULL,
-    name          VARCHAR(100) NOT NULL,
-    publisher     VARCHAR(100) NOT NULL,
-    minPlayers    SMALLINT NOT NULL,
-    maxPlayers    SMALLINT NOT NULL,
-    avgTime       TIMESTAMP(0) NOT NULL,
-    description   VARCHAR(300)
-);
 
-ALTER TABLE Games ADD CONSTRAINT PK_Games PRIMARY KEY ( id );
-
-CREATE TABLE Clients (
-    id   INT NOT NULL
-);
-
-ALTER TABLE Clients ADD CONSTRAINT PK_Clients PRIMARY KEY ( id );
 
 CREATE TABLE Persons (
     id             INT NOT NULL,
@@ -33,6 +31,16 @@ CREATE TABLE Persons (
 );
 
 ALTER TABLE Persons ADD CONSTRAINT PK_Persons PRIMARY KEY ( id );
+
+
+
+CREATE TABLE Clients() INHERITS (Persons);
+
+
+
+CREATE TABLE Tutors() INHERITS (Persons);
+
+
 
 CREATE TABLE PrivateRentals (
     copyId          INT NOT NULL,
@@ -47,6 +55,7 @@ ALTER TABLE PrivateRentals ADD CONSTRAINT PK_PrivateRentals PRIMARY KEY ( copyId
 ALTER TABLE PrivateRentals ADD CONSTRAINT UQ_PrivateRentals UNIQUE ( clientId,
                                                                      rentalTime );
 
+
 CREATE TABLE PrivateReservations (
     tableId           INT NOT NULL,
     reservationTime   TIMESTAMP(0) NOT NULL,
@@ -59,12 +68,15 @@ ALTER TABLE PrivateReservations ADD CONSTRAINT PK_PrivateReservations PRIMARY KE
 ALTER TABLE PrivateReservations ADD CONSTRAINT UQ_PrivateReservations UNIQUE ( clientId,
                                                                                reservationTime );
 
+
 CREATE TABLE Rentals (
     copyId   INT NOT NULL,
     type     CHAR(1)
 );
 
 ALTER TABLE Rentals ADD CONSTRAINT PK_Rentals PRIMARY KEY ( copyId );
+
+
 
 CREATE TABLE Reservations (
     tableId    INT NOT NULL,
@@ -74,12 +86,17 @@ CREATE TABLE Reservations (
 
 ALTER TABLE Reservations ADD CONSTRAINT PK_Reservations PRIMARY KEY ( tableId );
 
+
+
 CREATE TABLE Tables (
     id             INT NOT NULL,
     numberOfSits   SMALLINT NOT NULL
 );
 
 ALTER TABLE Tables ADD CONSTRAINT PK_Tables PRIMARY KEY ( id );
+
+
+
 
 CREATE TABLE TournamentParticipants (
     tournamentId   INT NOT NULL,
@@ -88,6 +105,7 @@ CREATE TABLE TournamentParticipants (
 
 ALTER TABLE TournamentParticipants ADD CONSTRAINT PK_TournamentParticipants PRIMARY KEY ( tournamentId,
                                                                                           clientId );
+
 
 CREATE TABLE TournamentRentals (
     copyId         INT NOT NULL,
@@ -98,6 +116,9 @@ ALTER TABLE TournamentRentals ADD CONSTRAINT PK_TournamentRentals PRIMARY KEY ( 
 
 ALTER TABLE TournamentRentals ADD CONSTRAINT UQ_TournamentRentals UNIQUE ( tournamentId );
 
+
+
+
 CREATE TABLE TournamentReservations (
     tableId        INT NOT NULL,
     tournamentId   INT NOT NULL
@@ -106,6 +127,8 @@ CREATE TABLE TournamentReservations (
 ALTER TABLE TournamentReservations ADD CONSTRAINT PK_TournamentReservations PRIMARY KEY ( tableId );
 
 ALTER TABLE TournamentReservations ADD CONSTRAINT UQ_TournamentReservations UNIQUE ( tournamentId );
+
+
 
 CREATE TABLE Tournaments (
     id                 INT NOT NULL,
@@ -117,11 +140,8 @@ CREATE TABLE Tournaments (
 
 ALTER TABLE Tournaments ADD CONSTRAINT PK_Tournaments PRIMARY KEY ( id );
 
-CREATE TABLE Tutors (
-    id   INT NOT NULL
-);
 
-ALTER TABLE Tutors ADD CONSTRAINT PK_Tutors PRIMARY KEY ( id );
+
 
 ALTER TABLE GameCopies
     ADD CONSTRAINT FK_GameCopies_Games FOREIGN KEY ( gameId )
@@ -190,6 +210,7 @@ ALTER TABLE TournamentReservations
 ALTER TABLE Tutors
     ADD CONSTRAINT FK_Tutors_Persons FOREIGN KEY ( id )
         REFERENCES Persons ( id );
+
 
 
 CREATE OR REPLACE FUNCTION getRegularClientsEmails() RETURNS SETOF Persons.email%TYPE AS $$
