@@ -58,7 +58,9 @@ public abstract class Reservation {
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
         return Objects.equals(tableId, that.tableId) &&
-                Objects.equals(type, that.type);
+                Objects.equals(type, that.type) &&
+                Objects.equals(reservedTable, that.reservedTable) &&
+                Objects.equals(tutor, that.tutor);
     }
 
     @Override

@@ -33,9 +33,4 @@ public class TournamentReservation extends Reservation {
         }
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(tableId, type);
-    }
-
 }
