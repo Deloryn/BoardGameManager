@@ -53,12 +53,13 @@ public class PrivateReservation extends Reservation {
         else {
             PrivateReservation that = (PrivateReservation) o;
             return Objects.equals(reservationTime, that.reservationTime) &&
-                    Objects.equals(duration, that.duration);
+                    Objects.equals(duration, that.duration) &&
+                    Objects.equals(client, that.client);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, tutorId, type, reservationTime, duration);
+        return Objects.hash(tableId, type, reservationTime, duration);
     }
 }
