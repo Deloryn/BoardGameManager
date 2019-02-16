@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.person;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
@@ -15,15 +16,19 @@ public abstract class Person {
     @Column(name = "id", nullable = false)
     protected Long id;
 
+    @NotBlank
     @Column(name = "name", nullable = false, length = 100)
     protected String name;
 
+    @NotBlank
     @Column(name = "surname", nullable = false, length = 100)
     protected String surname;
 
+    @NotBlank
     @Column(name = "email", nullable = false, length = 100)
     protected String email;
 
+    @NotBlank
     @Column(name = "phonenumber", nullable = false, length = 20)
     protected String phoneNumber;
 
