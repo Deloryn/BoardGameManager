@@ -247,10 +247,10 @@ CREATE OR REPLACE FUNCTION getRegularClientsEmails() RETURNS SETOF Persons.email
 $$
 
 SELECT email
-FROM Persons
+FROM Clients
 WHERE (SELECT COUNT(*)
        FROM TournamentParticipants
-       WHERE TournamentParticipants.id = Persons.id) >= 2
+       WHERE TournamentParticipants.id = Clients.id) >= 2
 
 $$ LANGUAGE sql;
 
