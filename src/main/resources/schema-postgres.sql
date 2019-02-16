@@ -269,3 +269,18 @@ WHERE id = (SELECT gameId
                    ORDER BY AVG(clientId) DESC
                    LIMIT 1))
 $$ LANGUAGE sql;
+
+
+CREATE SEQUENCE Games_SEQ;
+
+CREATE SEQUENCE GameCopies_SEQ;
+
+CREATE SEQUENCE Persons_SEQ;
+
+CREATE SEQUENCE Rentals_SEQ;
+
+CREATE SEQUENCE Reservations_SEQ;
+
+CREATE SEQUENCE Tables_SEQ;
+
+CREATE SEQUENCE Tournaments_SEQ;
