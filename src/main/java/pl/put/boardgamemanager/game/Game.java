@@ -24,13 +24,13 @@ public class Game {
     private String publisher;
 
     @Column(name = "minplayers", nullable = false)
-    private Short minplayers;
+    private Short minPlayers;
 
     @Column(name = "maxplayers", nullable = false)
-    private Short maxplayers;
+    private Short maxPlayers;
 
     @Column(name = "avgtime", nullable = false)
-    private Timestamp avgtime;
+    private Timestamp avgTime;
 
     @Column(name = "description", length = 300)
     private String description;
@@ -60,28 +60,28 @@ public class Game {
         this.publisher = publisher;
     }
 
-    public Short getMinplayers() {
-        return minplayers;
+    public Short getMinPlayers() {
+        return minPlayers;
     }
 
-    public void setMinplayers(Short minplayers) {
-        this.minplayers = minplayers;
+    public void setMinPlayers(Short minPlayers) {
+        this.minPlayers = minPlayers;
     }
 
-    public Short getMaxplayers() {
-        return maxplayers;
+    public Short getMaxPlayers() {
+        return maxPlayers;
     }
 
-    public void setMaxplayers(Short maxplayers) {
-        this.maxplayers = maxplayers;
+    public void setMaxPlayers(Short maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 
-    public Timestamp getAvgtime() {
-        return avgtime;
+    public Timestamp getAvgTime() {
+        return avgTime;
     }
 
-    public void setAvgtime(Timestamp avgtime) {
-        this.avgtime = avgtime;
+    public void setAvgTime(Timestamp avgTime) {
+        this.avgTime = avgTime;
     }
 
     public String getDescription() {
@@ -100,14 +100,14 @@ public class Game {
         return Objects.equals(id, game.id) &&
                 Objects.equals(name, game.name) &&
                 Objects.equals(publisher, game.publisher) &&
-                Objects.equals(minplayers, game.minplayers) &&
-                Objects.equals(maxplayers, game.maxplayers) &&
-                Objects.equals(avgtime, game.avgtime) &&
+                Objects.equals(minPlayers, game.minPlayers) &&
+                Objects.equals(maxPlayers, game.maxPlayers) &&
+                Objects.equals(avgTime, game.avgTime) &&
                 Objects.equals(description, game.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, publisher, minplayers, maxplayers, avgtime, description);
+        return Objects.hash(id, name, publisher, minPlayers, maxPlayers, avgTime, description);
     }
 }
