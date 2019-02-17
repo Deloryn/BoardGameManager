@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "clients", schema = "public", catalog = "postgres")
-@DiscriminatorValue("Client")
+@DiscriminatorValue("c")
 public class Client extends Person {
 
 }

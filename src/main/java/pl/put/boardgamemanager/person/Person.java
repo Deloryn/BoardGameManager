@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "persons", schema = "public", catalog = "postgres")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "id")
+@DiscriminatorColumn(name = "role")
 public abstract class Person {
 
     @SequenceGenerator(name = "persons_seq", sequenceName = "persons_seq")
