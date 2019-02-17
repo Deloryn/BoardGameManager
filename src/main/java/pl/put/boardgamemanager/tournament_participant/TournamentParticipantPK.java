@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.person.tournament_participant;
+package pl.put.boardgamemanager.tournament_participant;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -8,26 +8,26 @@ import java.util.Objects;
 public class TournamentParticipantPK implements Serializable {
 
     @Id
-    @Column(name = "id", nullable = false)
-    private Integer id;
+    @Column(name = "clientId", nullable = false)
+    private Long clientId;
 
     @Id
     @Column(name = "tournamentid", nullable = false)
-    private Integer tournamentId;
+    private Long tournamentId;
 
-    public Integer getId() {
-        return id;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
-    public Integer getTournamentId() {
+    public Long getTournamentId() {
         return tournamentId;
     }
 
-    public void setTournamentId(Integer tournamentId) {
+    public void setTournamentId(Long tournamentId) {
         this.tournamentId = tournamentId;
     }
 
@@ -36,12 +36,12 @@ public class TournamentParticipantPK implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TournamentParticipantPK that = (TournamentParticipantPK) o;
-        return Objects.equals(id, that.id) &&
+        return Objects.equals(clientId, that.clientId) &&
                 Objects.equals(tournamentId, that.tournamentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tournamentId);
+        return Objects.hash(clientId, tournamentId);
     }
 }
