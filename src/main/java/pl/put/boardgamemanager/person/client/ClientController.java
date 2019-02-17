@@ -1,10 +1,11 @@
 package pl.put.boardgamemanager.person.client;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 public class ClientController {
@@ -15,12 +16,15 @@ public class ClientController {
     @GetMapping("/clients/{id}")
     public ClientDTO get(@PathVariable Long id) {
         Client client = repository.findById(id).orElse(null);
-        return mapClientToDTO(client);
+        return Client.toDTO(client);
     }
 
     @GetMapping("/clients")
-    public List<Client> all() {
-        return (List<Client>) repository.findAll();
+    public List<ClientDTO> all() {
+        return StreamSupport
+                .stream(repository.findAll().spliterator(), false)
+                .map(Client::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/clients")
@@ -32,28 +36,19 @@ public class ClientController {
     public ClientDTO update(@RequestBody Client newClient, @PathVariable Long id) {
         return repository.findById(id)
                 .map(client -> {
-                    client.setName(newClient.getName());
-                    client.setSurname(newClient.getSurname());
-                    client.setEmail(newClient.getEmail());
-                    client.setPhoneNumber(newClient.getPhoneNumber());
+                    client.updateParams(newClient);
                     repository.save(client);
-                    return mapClientToDTO(client);
+                    return Client.toDTO(client);
                 })
                 .orElseGet(() -> {
                     repository.save(newClient);
-                    return mapClientToDTO(newClient);
+                    return Client.toDTO(newClient);
                 });
     }
 
     @DeleteMapping("/clients/{id}")
     public void delete(@PathVariable Long id) {
         repository.deleteById(id);
-    }
-
-
-    private ClientDTO mapClientToDTO(Client client) {
-        ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(client, ClientDTO.class);
     }
 
 }
