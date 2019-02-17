@@ -9,7 +9,17 @@ import javax.persistence.*;
 @DiscriminatorValue("c")
 public class Client extends Person {
 
+    public void updateParams(Client newClient) {
+        this.setName(newClient.getName());
+        this.setSurname(newClient.getSurname());
+        this.setEmail(newClient.getEmail());
+        this.setPhoneNumber(newClient.getPhoneNumber());
+    }
+
     public static Client fromDTO(ClientDTO dto) {
+
+        if(dto == null) return null;
+
         Client client = new Client();
 
         client.setId(dto.getId());
@@ -22,6 +32,9 @@ public class Client extends Person {
     }
 
     public static ClientDTO toDTO(Client client) {
+
+        if(client == null) return null;
+
         ClientDTO dto = new ClientDTO();
 
         dto.setId(client.getId());
