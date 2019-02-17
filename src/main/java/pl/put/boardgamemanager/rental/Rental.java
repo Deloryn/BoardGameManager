@@ -9,7 +9,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "rentals", schema = "public", catalog = "postgres")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "copyid")
+@DiscriminatorColumn(name = "type")
 public abstract class Rental {
 
     @Id

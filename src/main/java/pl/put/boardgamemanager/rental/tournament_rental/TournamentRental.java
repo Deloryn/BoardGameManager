@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tournamentrentals", schema = "public", catalog = "postgres")
-@DiscriminatorValue("TournamentRental")
+@DiscriminatorValue("t")
 public class TournamentRental extends Rental {
 
     @OneToOne

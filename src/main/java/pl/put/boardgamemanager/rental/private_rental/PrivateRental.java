@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "privaterentals", schema = "public", catalog = "postgres")
-@DiscriminatorValue("PrivateRental")
+@DiscriminatorValue("p")
 public class PrivateRental extends Rental {
 
     @Column(name = "rentaltime", nullable = false)
