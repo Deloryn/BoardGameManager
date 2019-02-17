@@ -12,15 +12,22 @@ import java.util.Objects;
 @DiscriminatorValue("p")
 public class PrivateReservation extends Reservation {
 
+    @Column(name = "clientid", nullable = false)
+    private Long clientId;
+
     @Column(name = "reservationtime", nullable = false)
     private Timestamp reservationTime;
 
     @Column(name = "duration", nullable = false)
     private Timestamp duration;
 
-    @ManyToOne
-    @JoinColumn(name = "clientid", referencedColumnName = "id", nullable = false)
-    private Client client;
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
 
     public Timestamp getReservationTime() {
         return reservationTime;
@@ -38,14 +45,6 @@ public class PrivateReservation extends Reservation {
         this.duration = duration;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
     @Override
     public boolean equals(Object o) {
         if(!super.equals(o)) return false;
@@ -54,12 +53,49 @@ public class PrivateReservation extends Reservation {
             PrivateReservation that = (PrivateReservation) o;
             return Objects.equals(reservationTime, that.reservationTime) &&
                     Objects.equals(duration, that.duration) &&
-                    Objects.equals(client, that.client);
+                    Objects.equals(clientId, that.clientId);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, reservationTime, duration, client);
+        return Objects.hash(tableId, reservationTime, duration, clientId);
+    }
+
+    public void updateParams(PrivateReservation privateReservation) {
+        this.setTutorId(privateReservation.getTutorId());
+        this.setClientId(privateReservation.getClientId());
+        this.setReservationTime(privateReservation.getReservationTime());
+        this.setDuration(privateReservation.getDuration());
+    }
+
+    public static PrivateReservation fromDTO(PrivateReservationDTO dto) {
+
+        if(dto == null) return null;
+
+        PrivateReservation privateReservation = new PrivateReservation();
+
+        privateReservation.setTableId(dto.getTableId());
+        privateReservation.setTutorId(dto.getTutorId());
+        privateReservation.setClientId(dto.getClientId());
+        privateReservation.setReservationTime(dto.getReservationTime());
+        privateReservation.setDuration(dto.getDuration());
+
+        return privateReservation;
+    }
+
+    public static PrivateReservationDTO toDTO(PrivateReservation privateReservation) {
+
+        if(privateReservation == null) return null;
+
+        PrivateReservationDTO dto = new PrivateReservationDTO();
+
+        dto.setTableId(privateReservation.getTableId());
+        dto.setTutorId(privateReservation.getTutorId());
+        dto.setClientId(privateReservation.getClientId());
+        dto.setReservationTime(privateReservation.getReservationTime());
+        dto.setDuration(privateReservation.getDuration());
+
+        return dto;
     }
 }
