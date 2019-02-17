@@ -23,9 +23,6 @@ public abstract class Reservation {
     @JoinColumn(name = "tutorid", referencedColumnName = "id")
     protected Tutor tutor;
 
-    @Column(name = "type", length = 1)
-    protected Character type;
-
     public Long getTableId() {
         return tableId;
     }
@@ -44,28 +41,19 @@ public abstract class Reservation {
 
     public void setTutor(Tutor tutor) { this.tutor = tutor; }
 
-    public Character getType() {
-        return type;
-    }
-
-    public void setType(Character type) {
-        this.type = type;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
         return Objects.equals(tableId, that.tableId) &&
-                Objects.equals(type, that.type) &&
                 Objects.equals(reservedTable, that.reservedTable) &&
                 Objects.equals(tutor, that.tutor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, type, reservedTable, tutor);
+        return Objects.hash(tableId, reservedTable, tutor);
     }
 
 }

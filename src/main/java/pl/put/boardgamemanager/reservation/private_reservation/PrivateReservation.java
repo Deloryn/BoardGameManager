@@ -60,6 +60,6 @@ public class PrivateReservation extends Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, type, reservationTime, duration, client);
+        return Objects.hash(tableId, reservationTime, duration, client);
     }
 }
