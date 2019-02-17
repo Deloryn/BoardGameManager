@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @javax.persistence.Table(name = "reservations", schema = "public", catalog = "postgres")
-@DiscriminatorColumn(name = "tableid")
+@DiscriminatorColumn(name = "type")
 public abstract class Reservation {
 
     @Id

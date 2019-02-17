@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "privatereservations", schema = "public", catalog = "postgres")
-@DiscriminatorValue("PrivateReservation")
+@DiscriminatorValue("p")
 public class PrivateReservation extends Reservation {
 
     @Column(name = "reservationtime", nullable = false)
