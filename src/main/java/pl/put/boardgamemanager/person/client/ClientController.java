@@ -32,18 +32,18 @@ public class ClientController {
         repository.save(Client.fromDTO(clientDTO));
     }
 
-    @PutMapping("/clients/{id}")
-    public ClientDTO update(@RequestBody ClientDTO newClientDTO, @PathVariable Long id) {
-        Client newClient = Client.fromDTO(newClientDTO);
-        return repository.findById(id)
-                .map(client -> {
-                    client.updateParams(newClient);
-                    repository.save(client);
-                    return Client.toDTO(client);
+    @PutMapping("/clients")
+    public ClientDTO update(@RequestBody ClientDTO clientDTO) {
+        Client client = Client.fromDTO(clientDTO);
+        return repository.findById(client.getId())
+                .map(currentClient -> {
+                    currentClient.updateParams(client);
+                    repository.save(currentClient);
+                    return Client.toDTO(currentClient);
                 })
                 .orElseGet(() -> {
-                    repository.save(newClient);
-                    return Client.toDTO(newClient);
+                    repository.save(client);
+                    return Client.toDTO(client);
                 });
     }
 
