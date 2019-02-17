@@ -1,17 +1,17 @@
 package pl.put.boardgamemanager.tournament_participant;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Embeddable
 public class TournamentParticipantPK implements Serializable {
 
-    @Id
     @Column(name = "clientId", nullable = false)
     private Long clientId;
 
-    @Id
     @Column(name = "tournamentid", nullable = false)
     private Long tournamentId;
 
