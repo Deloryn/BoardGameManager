@@ -28,12 +28,13 @@ public class ClientController {
     }
 
     @PostMapping("/clients")
-    public void create(@RequestBody Client client) {
-        repository.save(client);
+    public void create(@RequestBody ClientDTO clientDTO) {
+        repository.save(Client.fromDTO(clientDTO));
     }
 
     @PutMapping("/clients/{id}")
-    public ClientDTO update(@RequestBody Client newClient, @PathVariable Long id) {
+    public ClientDTO update(@RequestBody ClientDTO newClientDTO, @PathVariable Long id) {
+        Client newClient = Client.fromDTO(newClientDTO);
         return repository.findById(id)
                 .map(client -> {
                     client.updateParams(newClient);
