@@ -16,9 +16,6 @@ public abstract class Rental {
     @Column(name = "copyid", nullable = false)
     protected Long copyId;
 
-    @Column(name = "type", length = 1)
-    protected Character type;
-
     @OneToOne
     @JoinColumn(name = "copyid", referencedColumnName = "id", nullable = false)
     protected GameCopy gameCopy;
@@ -31,27 +28,18 @@ public abstract class Rental {
         this.copyId = copyid;
     }
 
-    public Character getType() {
-        return type;
-    }
-
-    public void setType(Character type) {
-        this.type = type;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rental that = (Rental) o;
         return Objects.equals(copyId, that.copyId) &&
-                Objects.equals(type, that.type) &&
                 Objects.equals(gameCopy, that.gameCopy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type, gameCopy);
+        return Objects.hash(copyId, gameCopy);
     }
 
     public GameCopy getGameCopy() {

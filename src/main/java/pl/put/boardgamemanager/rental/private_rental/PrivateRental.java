@@ -66,7 +66,7 @@ public class PrivateRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type, rentalTime, duration, status, client);
+        return Objects.hash(copyId, rentalTime, duration, status, client);
     }
 
     public Client getClient() {

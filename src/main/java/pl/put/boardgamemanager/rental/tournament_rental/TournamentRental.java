@@ -35,7 +35,7 @@ public class TournamentRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, type, tournament);
+        return Objects.hash(copyId, tournament);
     }
 
 }
