@@ -16,8 +16,8 @@ ALTER TABLE Games
 
 CREATE TABLE GameCopies
 (
-  id     INT NOT NULL,
-  gameId INT NOT NULL
+  id           INT NOT NULL,
+  gameId       INT NOT NULL
 );
 
 ALTER TABLE GameCopies
@@ -41,7 +41,7 @@ ALTER TABLE Persons
 
 CREATE TABLE TournamentParticipants
 (
-  clientId    INT NOT NULL,
+  clientId     INT NOT NULL,
   tournamentId INT NOT NULL
 );
 
@@ -105,8 +105,8 @@ ALTER TABLE GameCopies
     REFERENCES Games (id);
 
 ALTER TABLE TournamentParticipants
-  ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (id)
-    REFERENCES Clients (id);
+  ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (clientId)
+    REFERENCES Persons (id);
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Tournaments FOREIGN KEY (tournamentId)
@@ -122,7 +122,7 @@ ALTER TABLE Reservations
 
 ALTER TABLE Reservations
   ADD CONSTRAINT FK_Reservations_Tutors FOREIGN KEY (tutorId)
-    REFERENCES Tutors (id);
+    REFERENCES Persons (id);
 
 ALTER TABLE Tournaments
   ADD CONSTRAINT FK_Tournaments_Games FOREIGN KEY (gameId)
@@ -137,7 +137,7 @@ SELECT email
 FROM Persons
 WHERE (SELECT COUNT(*)
        FROM TournamentParticipants
-       WHERE TournamentParticipants.id = Persons.id) >= 2
+       WHERE TournamentParticipants.clientId = Persons.id) >= 2
 
 $$ LANGUAGE sql;
 
