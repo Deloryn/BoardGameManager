@@ -130,33 +130,6 @@ ALTER TABLE Tournaments
 
 
 
-CREATE OR REPLACE FUNCTION getRegularClientsEmails() RETURNS SETOF Persons.email%TYPE AS
-$$
-
-SELECT email
-FROM Persons
-WHERE (SELECT COUNT(*)
-       FROM TournamentParticipants
-       WHERE TournamentParticipants.clientId = Persons.id) >= 2
-
-$$ LANGUAGE sql;
-
-
-CREATE OR REPLACE FUNCTION getMostPopularBoardGame() RETURNS Games.name%TYPE AS
-$$
-
-SELECT name
-FROM Games
-WHERE id = (SELECT gameId
-            FROM Tournaments
-            WHERE id =
-                  (SELECT tournamentId
-                   FROM TournamentParticipants
-                   GROUP BY tournamentId
-                   ORDER BY AVG(id) DESC
-                   LIMIT 1))
-$$ LANGUAGE sql;
-
 
 CREATE SEQUENCE Games_SEQ;
 
