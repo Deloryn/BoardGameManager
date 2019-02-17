@@ -32,9 +32,6 @@ public abstract class Person {
     @Column(name = "phonenumber", nullable = false, length = 20)
     protected String phoneNumber;
 
-    @Column(name = "role", length = 1)
-    protected Character role;
-
     public Long getId() {
         return id;
     }
@@ -48,7 +45,7 @@ public abstract class Person {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.naWme = name;
     }
 
     public String getSurname() {
@@ -75,14 +72,6 @@ public abstract class Person {
         this.phoneNumber = phoneNumber;
     }
 
-    public Character getRole() {
-        return role;
-    }
-
-    public void setRole(Character role) {
-        this.role = role;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -92,13 +81,12 @@ public abstract class Person {
                 Objects.equals(name, person.name) &&
                 Objects.equals(surname, person.surname) &&
                 Objects.equals(email, person.email) &&
-                Objects.equals(phoneNumber, person.phoneNumber) &&
-                Objects.equals(role, person.role);
+                Objects.equals(phoneNumber, person.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, email, phoneNumber, role);
+        return Objects.hash(id, name, surname, email, phoneNumber);
     }
 
 }
