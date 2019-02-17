@@ -1,40 +1,50 @@
 package pl.put.boardgamemanager.tournament;
 
+import pl.put.boardgamemanager.game.Game;
+
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tournaments", schema = "public", catalog = "postgres")
 public class Tournament {
-    private int id;
-    private Timestamp time;
-    private Timestamp duration;
-    private short maxPlayers;
 
+    @SequenceGenerator(name = "tournaments_seq", sequenceName = "tournaments_seq")
     @Id
-    @Column(name = "tournament_id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tournaments_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "time", nullable = false)
+    private Timestamp time;
+
+    @Column(name = "duration", nullable = false)
+    private Timestamp duration;
+
+    @Column(name = "maxplayers", nullable = false)
+    private Short maxPlayers;
+
+    @ManyToOne
+    @JoinColumn(name = "gameid", referencedColumnName = "id", nullable = false)
+    private Game game;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int tournamentId) {
-        this.id = tournamentId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @Basic
-    @Column(name = "tournament_time")
     public Timestamp getTime() {
         return time;
     }
 
-    public void setTime(Timestamp tournamentTime) {
-        this.time = tournamentTime;
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
-    @Basic
-    @Column(name = "duration")
     public Timestamp getDuration() {
         return duration;
     }
@@ -43,14 +53,20 @@ public class Tournament {
         this.duration = duration;
     }
 
-    @Basic
-    @Column(name = "max_players")
-    public short getMaxPlayers() {
+    public Short getMaxPlayers() {
         return maxPlayers;
     }
 
-    public void setMaxPlayers(short maxPlayers) {
+    public void setMaxPlayers(Short maxPlayers) {
         this.maxPlayers = maxPlayers;
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     @Override
@@ -58,14 +74,16 @@ public class Tournament {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tournament that = (Tournament) o;
-        return id == that.id &&
-                maxPlayers == that.maxPlayers &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(time, that.time) &&
-                Objects.equals(duration, that.duration);
+                Objects.equals(duration, that.duration) &&
+                Objects.equals(maxPlayers, that.maxPlayers) &&
+                Objects.equals(game, that.game);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, duration, maxPlayers);
+        return Objects.hash(id, time, duration, maxPlayers, game);
     }
+
 }

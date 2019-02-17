@@ -1,31 +1,45 @@
 package pl.put.boardgamemanager.person;
 
 import javax.persistence.*;
-import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Entity
 @Table(name = "persons", schema = "public", catalog = "postgres")
-public class Person {
-    private int id;
-    private String name;
-    private String surname;
-    private String email;
-    private String phoneNumber;
-    private String role;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "role")
+public abstract class Person {
 
+    @SequenceGenerator(name = "persons_seq", sequenceName = "persons_seq")
     @Id
-    @Column(name = "person_id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persons_seq")
+    @Column(name = "id", nullable = false)
+    protected Long id;
+
+    @NotBlank
+    @Column(name = "name", nullable = false, length = 100)
+    protected String name;
+
+    @NotBlank
+    @Column(name = "surname", nullable = false, length = 100)
+    protected String surname;
+
+    @NotBlank
+    @Column(name = "email", nullable = false, length = 100)
+    protected String email;
+
+    @NotBlank
+    @Column(name = "phonenumber", nullable = false, length = 20)
+    protected String phoneNumber;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int personId) {
-        this.id = personId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -34,8 +48,6 @@ public class Person {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "surname")
     public String getSurname() {
         return surname;
     }
@@ -44,8 +56,6 @@ public class Person {
         this.surname = surname;
     }
 
-    @Basic
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -54,8 +64,6 @@ public class Person {
         this.email = email;
     }
 
-    @Basic
-    @Column(name = "phone_number")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -64,31 +72,21 @@ public class Person {
         this.phoneNumber = phoneNumber;
     }
 
-    @Basic
-    @Column(name = "role")
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id &&
+        return Objects.equals(id, person.id) &&
                 Objects.equals(name, person.name) &&
                 Objects.equals(surname, person.surname) &&
                 Objects.equals(email, person.email) &&
-                Objects.equals(phoneNumber, person.phoneNumber) &&
-                Objects.equals(role, person.role);
+                Objects.equals(phoneNumber, person.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, surname, email, phoneNumber, role);
+        return Objects.hash(id, name, surname, email, phoneNumber);
     }
+
 }

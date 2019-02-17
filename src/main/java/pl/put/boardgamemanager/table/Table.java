@@ -1,34 +1,34 @@
 package pl.put.boardgamemanager.table;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @javax.persistence.Table(name = "tables", schema = "public", catalog = "postgres")
 public class Table {
-    private int id;
-    private short numberOfSits;
 
+    @SequenceGenerator(name = "tables_seq", sequenceName = "tables_seq")
     @Id
-    @Column(name = "table_id")
-    public int getId() {
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tables_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "numberofsits", nullable = false)
+    private Short numberOfSits;
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int tableId) {
-        this.id = tableId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    @Basic
-    @Column(name = "number_of_sits")
-    public short getNumberOfSits() {
+    public Short getNumberOfSits() {
         return numberOfSits;
     }
 
-    public void setNumberOfSits(short numberOfSits) {
+    public void setNumberOfSits(Short numberOfSits) {
         this.numberOfSits = numberOfSits;
     }
 
@@ -37,8 +37,8 @@ public class Table {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Table table = (Table) o;
-        return id == table.id &&
-                numberOfSits == table.numberOfSits;
+        return Objects.equals(id, table.id) &&
+                Objects.equals(numberOfSits, table.numberOfSits);
     }
 
     @Override

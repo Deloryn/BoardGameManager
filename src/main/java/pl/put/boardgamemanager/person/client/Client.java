@@ -1,36 +1,49 @@
 package pl.put.boardgamemanager.person.client;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.util.Objects;
+import pl.put.boardgamemanager.person.Person;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "clients", schema = "public", catalog = "postgres")
-public class Client {
-    private int personId;
+@DiscriminatorValue("c")
+public class Client extends Person {
 
-    @Id
-    @Column(name = "person_id")
-    public int getPersonId() {
-        return personId;
+    public void updateParams(Client newClient) {
+        this.setName(newClient.getName());
+        this.setSurname(newClient.getSurname());
+        this.setEmail(newClient.getEmail());
+        this.setPhoneNumber(newClient.getPhoneNumber());
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public static Client fromDTO(ClientDTO dto) {
+
+        if(dto == null) return null;
+
+        Client client = new Client();
+
+        client.setId(dto.getId());
+        client.setName(dto.getName());
+        client.setSurname(dto.getSurname());
+        client.setEmail(dto.getEmail());
+        client.setPhoneNumber(dto.getPhoneNumber());
+
+        return client;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return personId == client.personId;
+    public static ClientDTO toDTO(Client client) {
+
+        if(client == null) return null;
+
+        ClientDTO dto = new ClientDTO();
+
+        dto.setId(client.getId());
+        dto.setName(client.getName());
+        dto.setSurname(client.getSurname());
+        dto.setEmail(client.getEmail());
+        dto.setPhoneNumber(client.getPhoneNumber());
+
+        return dto;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(personId);
-    }
 }

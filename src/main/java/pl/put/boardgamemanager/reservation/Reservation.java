@@ -1,46 +1,59 @@
 package pl.put.boardgamemanager.reservation;
 
+import pl.put.boardgamemanager.person.tutor.Tutor;
+import pl.put.boardgamemanager.table.Table;
+
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "reservations", schema = "public", catalog = "postgres")
-public class Reservation {
-    private int tableId;
-    private String type;
+@javax.persistence.Table(name = "reservations", schema = "public", catalog = "postgres")
+@DiscriminatorColumn(name = "type")
+public abstract class Reservation {
 
     @Id
-    @Column(name = "table_table_id")
-    public int getTableId() {
+    @Column(name = "tableid", nullable = false)
+    protected Long tableId;
+
+    @OneToOne
+    @JoinColumn(name = "tableid", referencedColumnName = "id", nullable = false)
+    protected Table reservedTable;
+
+    @ManyToOne
+    @JoinColumn(name = "tutorid", referencedColumnName = "id")
+    protected Tutor tutor;
+
+    public Long getTableId() {
         return tableId;
     }
 
-    public void setTableId(int tableTableId) {
-        this.tableId = tableTableId;
+    public Table getReservedTable() {
+        return reservedTable;
     }
 
-    @Basic
-    @Column(name = "type")
-    public String getType() {
-        return type;
+    public void setReservedTable(Table table) { this.reservedTable = table; }
+
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public Tutor getTutor() { return tutor; }
+
+    public void setTutor(Tutor tutor) { this.tutor = tutor; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return tableId == that.tableId &&
-                Objects.equals(type, that.type);
+        return Objects.equals(tableId, that.tableId) &&
+                Objects.equals(reservedTable, that.reservedTable) &&
+                Objects.equals(tutor, that.tutor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, type);
+        return Objects.hash(tableId, reservedTable, tutor);
     }
+
 }
