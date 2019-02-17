@@ -45,7 +45,7 @@ public abstract class Person {
     }
 
     public void setName(String name) {
-        this.naWme = name;
+        this.name = name;
     }
 
     public String getSurname() {
