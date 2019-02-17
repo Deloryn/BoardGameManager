@@ -5,31 +5,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tournamentparticipants", schema = "public", catalog = "postgres")
-@IdClass(TournamentParticipantPK.class)
 public class TournamentParticipant {
 
-    @Id
-    @Column(name = "clientid", nullable = false)
-    private Long clientId;
+    @EmbeddedId
+    private TournamentParticipantPK primaryKey;
 
-    @Id
-    @Column(name = "tournamentid", nullable = false)
-    private Long tournamentId;
+    public TournamentParticipantPK getPrimaryKey() { return this.primaryKey; }
 
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public Long getTournamentId() {
-        return tournamentId;
-    }
-
-    public void setTournamentId(Long tournamentId) {
-        this.tournamentId = tournamentId;
+    public void setPrimaryKey(TournamentParticipantPK primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     @Override
@@ -38,14 +22,13 @@ public class TournamentParticipant {
         else if (getClass() != o.getClass()) return false;
         else {
             TournamentParticipant that = (TournamentParticipant) o;
-            return Objects.equals(clientId, that.clientId) &&
-                    Objects.equals(tournamentId, that.tournamentId);
+            return Objects.equals(primaryKey, that.primaryKey);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(clientId, tournamentId);
+        return Objects.hash(primaryKey);
     }
 
 }
