@@ -3,9 +3,8 @@ package pl.put.boardgamemanager.person.client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 public class ClientController {
@@ -21,10 +20,11 @@ public class ClientController {
 
     @GetMapping("/clients")
     public List<ClientDTO> all() {
-        return StreamSupport
-                .stream(repository.findAll().spliterator(), false)
-                .map(Client::toDTO)
-                .collect(Collectors.toList());
+        List<ClientDTO> dtos = new ArrayList<>();
+        repository.findAll().forEach(client -> {
+            dtos.add(Client.toDTO(client));
+        });
+        return dtos;
     }
 
     @PostMapping("/clients")
