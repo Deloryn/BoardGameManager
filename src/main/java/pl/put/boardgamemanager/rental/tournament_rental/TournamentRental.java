@@ -11,16 +11,15 @@ import java.util.Objects;
 @DiscriminatorValue("t")
 public class TournamentRental extends Rental {
 
-    @OneToOne
-    @JoinColumn(name = "tournamentid", referencedColumnName = "id", nullable = false)
-    private Tournament tournament;
+    @Column(name = "tournamentid", nullable = false, unique = true)
+    private Long tournamentId;
 
-    public Tournament getTournament() {
-        return tournament;
+    public Long getTournamentId() {
+        return tournamentId;
     }
 
-    public void setTournament(Tournament tournament) {
-        this.tournament = tournament;
+    public void setTournamentId(Long tournamentId) {
+        this.tournamentId = tournamentId;
     }
 
     @Override
@@ -29,13 +28,41 @@ public class TournamentRental extends Rental {
         else if(getClass() != o.getClass()) return false;
         else {
             TournamentRental that = (TournamentRental) o;
-            return Objects.equals(tournament, that.tournament);
+            return Objects.equals(tournamentId, that.tournamentId);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, tournament);
+        return Objects.hash(copyId, tournamentId);
+    }
+
+    public void updateParams(TournamentRental tournamentRental) {
+        this.setTournamentId(tournamentRental.getTournamentId());
+    }
+
+    public static TournamentRental fromDTO(TournamentRentalDTO dto) {
+
+        if(dto == null) return null;
+
+        TournamentRental tournamentRental = new TournamentRental();
+
+        tournamentRental.setCopyId(dto.getCopyId());
+        tournamentRental.setTournamentId(dto.getTournamentId());
+
+        return tournamentRental;
+    }
+
+    public static TournamentRentalDTO toDTO(TournamentRental tournamentRental) {
+
+        if(tournamentRental == null) return null;
+
+        TournamentRentalDTO dto = new TournamentRentalDTO();
+
+        dto.setCopyId(tournamentRental.getCopyId());
+        dto.setTournamentId(tournamentRental.getTournamentId());
+
+        return dto;
     }
 
 }
