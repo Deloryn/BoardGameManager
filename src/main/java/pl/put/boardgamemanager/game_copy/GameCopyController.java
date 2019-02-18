@@ -10,44 +10,31 @@ import java.util.stream.Collectors;
 public class GameCopyController {
 
     @Autowired
-    private GameCopyRepository repository;
+    private GameCopyService service;
 
     @GetMapping("/game_copies/{id}")
     public GameCopyDTO get(@PathVariable Long id) {
-        GameCopy gameCopy = repository.findById(id).orElse(null);
-        return GameCopy.toDTO(gameCopy);
+        return service.get(id);
     }
 
     @GetMapping("/game_copies")
     public List<GameCopyDTO> all() {
-        return repository.findAll().stream()
-                .map(GameCopy::toDTO)
-                .collect(Collectors.toList());
+        return service.all();
     }
 
     @PostMapping("/game_copies")
     public void create(@RequestBody GameCopyDTO gameCopyDTO) {
-        repository.save(GameCopy.fromDTO(gameCopyDTO));
+        service.create(gameCopyDTO);
     }
 
     @PutMapping("/game_copies")
     public GameCopyDTO update(@RequestBody GameCopyDTO gameCopyDTO) {
-        GameCopy gameCopy = GameCopy.fromDTO(gameCopyDTO);
-        return repository.findById(gameCopy.getId())
-                .map(currentGameCopy -> {
-                    currentGameCopy.updateParams(gameCopy);
-                    repository.save(currentGameCopy);
-                    return GameCopy.toDTO(currentGameCopy);
-                })
-                .orElseGet(() -> {
-                    repository.save(gameCopy);
-                    return GameCopy.toDTO(gameCopy);
-                });
+        return service.update(gameCopyDTO);
     }
 
     @DeleteMapping("/game_copies/{id}")
-    public void delete(@PathVariable Long id) {
-        repository.deleteById(id);
+    public void delete(@PathVariable Long id){
+        service.delete(id);
     }
 
 }
