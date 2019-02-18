@@ -31,7 +31,7 @@ public class TournamentParticipantService {
 
     public TournamentParticipantDTO update(TournamentParticipantDTO tournamentParticipantDTO) {
         TournamentParticipant tournamentParticipant = TournamentParticipant.fromDTO(tournamentParticipantDTO);
-        return new Optional<>(repository.findByPrimaryKey(tournamentParticipant.getPrimaryKey()))
+        return Optional.of(repository.findByPrimaryKey(tournamentParticipant.getPrimaryKey()))
                 .map(currentTournamentParticipant -> {
                     currentTournamentParticipant.updateParams(tournamentParticipant);
                     repository.save(currentTournamentParticipant);
