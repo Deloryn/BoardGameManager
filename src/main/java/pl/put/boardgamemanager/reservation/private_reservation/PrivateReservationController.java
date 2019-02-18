@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.reservation.private_reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PrivateReservationController {
@@ -20,11 +20,9 @@ public class PrivateReservationController {
 
     @GetMapping("/private_reservations")
     public List<PrivateReservationDTO> all() {
-        List<PrivateReservationDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(privateReservation -> {
-            dtos.add(PrivateReservation.toDTO(privateReservation));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(PrivateReservation::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/private_reservations")

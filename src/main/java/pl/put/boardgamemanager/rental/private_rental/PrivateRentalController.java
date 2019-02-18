@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.rental.private_rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class PrivateRentalController {
@@ -20,11 +20,9 @@ public class PrivateRentalController {
 
     @GetMapping("/private_rentals")
     public List<PrivateRentalDTO> all() {
-        List<PrivateRentalDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(privateRental -> {
-            dtos.add(PrivateRental.toDTO(privateRental));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(PrivateRental::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/private_rentals")

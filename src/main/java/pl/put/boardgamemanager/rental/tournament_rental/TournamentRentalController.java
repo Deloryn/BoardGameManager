@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.rental.tournament_rental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TournamentRentalController {
@@ -20,11 +20,9 @@ public class TournamentRentalController {
 
     @GetMapping("/tournament_rentals")
     public List<TournamentRentalDTO> all() {
-        List<TournamentRentalDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(tournamentRental -> {
-            dtos.add(TournamentRental.toDTO(tournamentRental));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(TournamentRental::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/tournament_rentals")

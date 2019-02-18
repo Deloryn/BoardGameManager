@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.reservation.tournament_reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TournamentReservationController {
@@ -20,11 +20,9 @@ public class TournamentReservationController {
 
     @GetMapping("/tournament_reservations")
     public List<TournamentReservationDTO> all() {
-        List<TournamentReservationDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(tournamentReservation -> {
-            dtos.add(TournamentReservation.toDTO(tournamentReservation));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(TournamentReservation::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/tournament_reservations")

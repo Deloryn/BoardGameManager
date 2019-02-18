@@ -3,9 +3,9 @@ package pl.put.boardgamemanager.tournament_participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class TournamentParticipantController {
@@ -22,11 +22,9 @@ public class TournamentParticipantController {
 
     @GetMapping("/tournament_participants")
     public List<TournamentParticipantDTO> all() {
-        List<TournamentParticipantDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(tournamentParticipant -> {
-            dtos.add(TournamentParticipant.toDTO(tournamentParticipant));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(TournamentParticipant::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/tournament_participants")

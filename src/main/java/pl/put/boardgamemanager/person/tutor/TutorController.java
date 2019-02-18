@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.person.tutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TutorController {
@@ -20,11 +20,9 @@ public class TutorController {
 
     @GetMapping("/tutors")
     public List<TutorDTO> all() {
-        List<TutorDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(tutor -> {
-            dtos.add(Tutor.toDTO(tutor));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(Tutor::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/tutors")

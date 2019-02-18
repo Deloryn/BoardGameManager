@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class TableController {
@@ -20,11 +20,9 @@ public class TableController {
 
     @GetMapping("/tables")
     public List<TableDTO> all() {
-        List<TableDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(table -> {
-            dtos.add(Table.toDTO(table));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(Table::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/tables")

@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.game_copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class GameCopyController {
@@ -20,11 +20,9 @@ public class GameCopyController {
 
     @GetMapping("/game_copies")
     public List<GameCopyDTO> all() {
-        List<GameCopyDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(gameCopy -> {
-            dtos.add(GameCopy.toDTO(gameCopy));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(GameCopy::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/game_copies")
