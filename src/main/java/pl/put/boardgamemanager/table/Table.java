@@ -45,4 +45,32 @@ public class Table {
     public int hashCode() {
         return Objects.hash(id, numberOfSits);
     }
+
+    public void updateParams(Table table) {
+        this.setNumberOfSits(table.getNumberOfSits());
+    }
+
+    public static Table fromDTO(TableDTO dto) {
+
+        if(dto == null) return null;
+
+        Table table = new Table();
+
+        table.setId(dto.getId());
+        table.setNumberOfSits(dto.getNumberOfSits());
+
+        return table;
+    }
+
+    public static TableDTO toDTO(Table table) {
+
+        if(table == null) return null;
+
+        TableDTO dto = new TableDTO();
+
+        dto.setId(table.getId());
+        dto.setNumberOfSits(table.getNumberOfSits());
+
+        return dto;
+    }
 }
