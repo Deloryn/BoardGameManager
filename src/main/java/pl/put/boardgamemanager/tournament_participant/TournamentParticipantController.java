@@ -39,7 +39,7 @@ public class TournamentParticipantController {
         TournamentParticipant tournamentParticipant = TournamentParticipant.fromDTO(tournamentParticipantDTO);
         return new Optional<>(repository.findByPrimaryKey(tournamentParticipant.getPrimaryKey()))
                 .map(currentTournamentParticipant -> {
-                    currentTournamentParticipant.updateParams(currentTournamentParticipant);
+                    currentTournamentParticipant.updateParams(tournamentParticipant);
                     repository.save(currentTournamentParticipant);
                     return TournamentParticipant.toDTO(currentTournamentParticipant);
                 })

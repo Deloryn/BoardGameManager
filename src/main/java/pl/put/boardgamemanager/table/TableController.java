@@ -37,7 +37,7 @@ public class TableController {
         Table table = Table.fromDTO(tableDTO);
         return repository.findById(table.getId())
                 .map(currentTable -> {
-                    currentTable.updateParams(currentTable);
+                    currentTable.updateParams(table);
                     repository.save(currentTable);
                     return Table.toDTO(currentTable);
                 })

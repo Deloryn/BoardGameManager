@@ -37,7 +37,7 @@ public class TutorController {
         Tutor tutor = Tutor.fromDTO(tutorDTO);
         return repository.findById(tutor.getId())
                 .map(currentTutor -> {
-                    currentTutor.updateParams(currentTutor);
+                    currentTutor.updateParams(tutor);
                     repository.save(currentTutor);
                     return Tutor.toDTO(currentTutor);
                 })

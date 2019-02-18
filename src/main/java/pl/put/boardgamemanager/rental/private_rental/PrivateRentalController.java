@@ -37,7 +37,7 @@ public class PrivateRentalController {
         PrivateRental privateRental = PrivateRental.fromDTO(privateRentalDTO);
         return repository.findById(privateRental.getCopyId())
                 .map(currentPrivateRental -> {
-                    currentPrivateRental.updateParams(currentPrivateRental);
+                    currentPrivateRental.updateParams(privateRental);
                     repository.save(currentPrivateRental);
                     return PrivateRental.toDTO(currentPrivateRental);
                 })

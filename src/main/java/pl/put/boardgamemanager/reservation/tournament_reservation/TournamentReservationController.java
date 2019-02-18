@@ -37,7 +37,7 @@ public class TournamentReservationController {
         TournamentReservation tournamentReservation = TournamentReservation.fromDTO(tournamentReservationDTO);
         return repository.findById(tournamentReservation.getTableId())
                 .map(currentTournamentReservation -> {
-                    currentTournamentReservation.updateParams(currentTournamentReservation);
+                    currentTournamentReservation.updateParams(tournamentReservation);
                     repository.save(currentTournamentReservation);
                     return TournamentReservation.toDTO(currentTournamentReservation);
                 })

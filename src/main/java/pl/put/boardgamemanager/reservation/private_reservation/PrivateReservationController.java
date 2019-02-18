@@ -37,7 +37,7 @@ public class PrivateReservationController {
         PrivateReservation privateReservation = PrivateReservation.fromDTO(privateReservationDTO);
         return repository.findById(privateReservation.getTableId())
                 .map(currentPrivateReservation -> {
-                    currentPrivateReservation.updateParams(currentPrivateReservation);
+                    currentPrivateReservation.updateParams(privateReservation);
                     repository.save(currentPrivateReservation);
                     return PrivateReservation.toDTO(currentPrivateReservation);
                 })

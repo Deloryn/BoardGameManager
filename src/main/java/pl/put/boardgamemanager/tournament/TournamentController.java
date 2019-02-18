@@ -37,7 +37,7 @@ public class TournamentController {
         Tournament tournament = Tournament.fromDTO(tournamentDTO);
         return repository.findById(tournament.getId())
                 .map(currentTournament -> {
-                    currentTournament.updateParams(currentTournament);
+                    currentTournament.updateParams(tournament);
                     repository.save(currentTournament);
                     return Tournament.toDTO(currentTournament);
                 })

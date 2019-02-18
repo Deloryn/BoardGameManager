@@ -37,7 +37,7 @@ public class TournamentRentalController {
         TournamentRental tournamentRental = TournamentRental.fromDTO(tournamentRentalDTO);
         return repository.findById(tournamentRental.getCopyId())
                 .map(currentTournamentRental -> {
-                    currentTournamentRental.updateParams(currentTournamentRental);
+                    currentTournamentRental.updateParams(tournamentRental);
                     repository.save(currentTournamentRental);
                     return TournamentRental.toDTO(currentTournamentRental);
                 })
