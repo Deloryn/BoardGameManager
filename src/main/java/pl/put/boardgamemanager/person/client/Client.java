@@ -37,7 +37,6 @@ public class Client extends Person {
 
         ClientDTO dto = new ClientDTO();
 
-        dto.setId(client.getId());
         dto.setName(client.getName());
         dto.setSurname(client.getSurname());
         dto.setEmail(client.getEmail());

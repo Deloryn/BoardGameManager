@@ -18,10 +18,6 @@ public class TournamentDTO {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getGameId() {
         return gameId;
     }

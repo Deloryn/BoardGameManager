@@ -90,7 +90,6 @@ public class PrivateReservation extends Reservation {
 
         PrivateReservationDTO dto = new PrivateReservationDTO();
 
-        dto.setTableId(privateReservation.getTableId());
         dto.setTutorId(privateReservation.getTutorId());
         dto.setClientId(privateReservation.getClientId());
         dto.setReservationTime(privateReservation.getReservationTime());

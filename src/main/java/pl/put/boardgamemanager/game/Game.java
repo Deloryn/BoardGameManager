@@ -143,7 +143,6 @@ public class Game {
 
         GameDTO dto = new GameDTO();
 
-        dto.setId(game.getId());
         dto.setName(game.getName());
         dto.setPublisher(game.getPublisher());
         dto.setMinPlayers(game.getMinPlayers());

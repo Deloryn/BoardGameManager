@@ -111,7 +111,6 @@ public class Tournament {
 
         TournamentDTO dto = new TournamentDTO();
 
-        dto.setId(tournament.getId());
         dto.setGameId(tournament.getGameId());
         dto.setDuration(tournament.getDuration());
         dto.setTime(tournament.getTime());

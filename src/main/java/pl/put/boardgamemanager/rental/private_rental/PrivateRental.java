@@ -89,7 +89,6 @@ public class PrivateRental extends Rental {
 
         PrivateRentalDTO dto = new PrivateRentalDTO();
 
-        dto.setCopyId(privateRental.getCopyId());
         dto.setDuration(privateRental.getDuration());
         dto.setRentalTime(privateRental.getRentalTime());
         dto.setStatus(privateRental.getStatus());

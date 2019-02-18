@@ -68,7 +68,6 @@ public class Table {
 
         TableDTO dto = new TableDTO();
 
-        dto.setId(table.getId());
         dto.setNumberOfSits(table.getNumberOfSits());
 
         return dto;
