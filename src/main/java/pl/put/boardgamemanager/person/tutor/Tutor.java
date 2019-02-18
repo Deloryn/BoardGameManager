@@ -7,39 +7,23 @@ import javax.persistence.*;
 @Entity
 @Table(name = "tutors", schema = "public", catalog = "postgres")
 @DiscriminatorValue("t")
-public class Tutor extends Person{
-    public void updateParams(Tutor newTutor) {
-        this.setName(newTutor.getName());
-        this.setSurname(newTutor.getSurname());
-        this.setEmail(newTutor.getEmail());
-        this.setPhoneNumber(newTutor.getPhoneNumber());
+public class Tutor extends Person {
+
+    public void updateParamsFrom(TutorDTO dto) {
+        this.setName(dto.getName());
+        this.setSurname(dto.getSurname());
+        this.setEmail(dto.getEmail());
+        this.setPhoneNumber(dto.getPhoneNumber());
     }
 
-    public static Tutor fromDTO(TutorDTO dto) {
-
-        if(dto == null) return null;
-
-        Tutor tutor = new Tutor();
-
-        tutor.setId(dto.getId());
-        tutor.setName(dto.getName());
-        tutor.setSurname(dto.getSurname());
-        tutor.setEmail(dto.getEmail());
-        tutor.setPhoneNumber(dto.getPhoneNumber());
-
-        return tutor;
-    }
-
-    public static TutorDTO toDTO(Tutor tutor) {
-
-        if(tutor == null) return null;
-
+    public TutorDTO toDTO() {
         TutorDTO dto = new TutorDTO();
 
-        dto.setName(tutor.getName());
-        dto.setSurname(tutor.getSurname());
-        dto.setEmail(tutor.getEmail());
-        dto.setPhoneNumber(tutor.getPhoneNumber());
+        dto.setId(id);
+        dto.setName(name);
+        dto.setSurname(surname);
+        dto.setEmail(email);
+        dto.setPhoneNumber(phoneNumber);
 
         return dto;
     }

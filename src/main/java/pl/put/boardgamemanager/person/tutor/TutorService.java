@@ -14,7 +14,8 @@ public class TutorService {
 
     public TutorDTO get(Long id) {
         Tutor tutor = repository.findById(id).orElse(null);
-        return Tutor.toDTO(tutor);
+        if(tutor == null) return null;
+        else return tutor.toDTO();
     }
 
     public List<TutorDTO> all() {
@@ -23,22 +24,21 @@ public class TutorService {
                 .collect(Collectors.toList());
     }
 
-    public void create(TutorDTO tutorDTO) {
-        repository.save(Tutor.fromDTO(tutorDTO));
+    public TutorDTO create(TutorDTO dto) {
+        Tutor tutor = new Tutor();
+        tutor.updateParamsFrom(dto);
+        repository.save(tutor);
+        return tutor.toDTO();
     }
 
-    public TutorDTO update(TutorDTO tutorDTO) {
-        Tutor tutor = Tutor.fromDTO(tutorDTO);
-        return repository.findById(tutor.getId())
-                .map(currentTutor -> {
-                    currentTutor.updateParams(tutor);
-                    repository.save(currentTutor);
-                    return Tutor.toDTO(currentTutor);
+    public TutorDTO update(TutorDTO dto) {
+        return repository.findById(dto.getId())
+                .map(existingTutor -> {
+                    existingTutor.updateParamsFrom(dto);
+                    repository.save(existingTutor);
+                    return existingTutor.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(tutorDTO);
-                    return tutorDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

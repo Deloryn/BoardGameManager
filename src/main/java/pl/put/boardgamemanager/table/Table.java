@@ -46,29 +46,15 @@ public class Table {
         return Objects.hash(id, numberOfSits);
     }
 
-    public void updateParams(Table table) {
-        this.setNumberOfSits(table.getNumberOfSits());
+    public void updateParamsFrom(TableDTO dto) {
+        this.setNumberOfSits(dto.getNumberOfSits());
     }
 
-    public static Table fromDTO(TableDTO dto) {
-
-        if(dto == null) return null;
-
-        Table table = new Table();
-
-        table.setId(dto.getId());
-        table.setNumberOfSits(dto.getNumberOfSits());
-
-        return table;
-    }
-
-    public static TableDTO toDTO(Table table) {
-
-        if(table == null) return null;
-
+    public TableDTO toDTO() {
         TableDTO dto = new TableDTO();
 
-        dto.setNumberOfSits(table.getNumberOfSits());
+        dto.setId(id);
+        dto.setNumberOfSits(numberOfSits);
 
         return dto;
     }

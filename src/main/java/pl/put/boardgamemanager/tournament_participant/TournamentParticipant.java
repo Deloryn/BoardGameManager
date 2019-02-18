@@ -31,30 +31,15 @@ public class TournamentParticipant {
         return Objects.hash(primaryKey);
     }
 
-    public void updateParams(TournamentParticipant tournamentParticipant) {
-        this.setPrimaryKey(tournamentParticipant.getPrimaryKey());
+    public void updateParamsFrom(TournamentParticipantDTO dto) {
+        this.setPrimaryKey(new TournamentParticipantPK(dto.getClientId(), dto.getTournamentId()));
     }
 
-    public static TournamentParticipant fromDTO(TournamentParticipantDTO dto) {
-
-        if(dto == null) return null;
-
-        TournamentParticipantPK primaryKey = new TournamentParticipantPK(dto.getClientId(), dto.getTournamentId());
-
-        TournamentParticipant tournamentParticipant = new TournamentParticipant();
-        tournamentParticipant.setPrimaryKey(primaryKey);
-
-        return tournamentParticipant;
-    }
-
-    public static TournamentParticipantDTO toDTO(TournamentParticipant tournamentParticipant) {
-
-        if(tournamentParticipant == null) return null;
-
+    public TournamentParticipantDTO toDTO() {
         TournamentParticipantDTO dto = new TournamentParticipantDTO();
 
-        dto.setClientId(tournamentParticipant.getPrimaryKey().getClientId());
-        dto.setTournamentId(tournamentParticipant.getPrimaryKey().getTournamentId());
+        dto.setClientId(primaryKey.getClientId());
+        dto.setTournamentId(primaryKey.getTournamentId());
 
         return dto;
     }

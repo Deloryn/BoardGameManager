@@ -14,6 +14,10 @@ public class TournamentDTO {
 
     private Short maxPlayers;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }

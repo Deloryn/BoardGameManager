@@ -4,6 +4,10 @@ public class GameCopyDTO {
 
     private Long id;
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private Long gameId;
 
     public Long getId() {

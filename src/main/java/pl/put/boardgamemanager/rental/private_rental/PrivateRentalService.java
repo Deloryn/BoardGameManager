@@ -13,8 +13,9 @@ public class PrivateRentalService {
     private PrivateRentalRepository repository;
 
     public PrivateRentalDTO get(Long id) {
-        PrivateRental privateRental = repository.findById(id).orElse(null);
-        return PrivateRental.toDTO(privateRental);
+        PrivateRental rental = repository.findById(id).orElse(null);
+        if(rental == null) return null;
+        else return rental.toDTO();
     }
 
     public List<PrivateRentalDTO> all() {
@@ -23,22 +24,21 @@ public class PrivateRentalService {
                 .collect(Collectors.toList());
     }
 
-    public void create(PrivateRentalDTO privateRentalDTO) {
-        repository.save(PrivateRental.fromDTO(privateRentalDTO));
+    public PrivateRentalDTO create(PrivateRentalDTO dto) {
+        PrivateRental rental = new PrivateRental();
+        rental.updateParamsFrom(dto);
+        repository.save(rental);
+        return rental.toDTO();
     }
 
-    public PrivateRentalDTO update(PrivateRentalDTO privateRentalDTO) {
-        PrivateRental privateRental = PrivateRental.fromDTO(privateRentalDTO);
-        return repository.findById(privateRental.getCopyId())
-                .map(currentPrivateRental -> {
-                    currentPrivateRental.updateParams(privateRental);
-                    repository.save(currentPrivateRental);
-                    return PrivateRental.toDTO(currentPrivateRental);
+    public PrivateRentalDTO update(PrivateRentalDTO dto) {
+        return repository.findById(dto.getCopyId())
+                .map(existingRental -> {
+                    existingRental.updateParamsFrom(dto);
+                    repository.save(existingRental);
+                    return existingRental.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(privateRentalDTO);
-                    return privateRentalDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

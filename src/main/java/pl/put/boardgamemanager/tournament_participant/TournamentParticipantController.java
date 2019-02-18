@@ -27,11 +27,6 @@ public class TournamentParticipantController {
         service.create(tournamentParticipantDTO);
     }
 
-    @PutMapping("/tournament_participants")
-    public TournamentParticipantDTO update(@RequestBody TournamentParticipantDTO tournamentParticipantDTO) {
-        return service.update(tournamentParticipantDTO);
-    }
-
     @DeleteMapping("/tournament_participants/{clientId}/{tournamentId}")
     public void delete(@PathVariable Long clientId, @PathVariable Long tournamentId) {
         service.delete(clientId, tournamentId);

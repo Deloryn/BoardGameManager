@@ -14,7 +14,8 @@ public class TableService {
 
     public TableDTO get(Long id) {
         Table table = repository.findById(id).orElse(null);
-        return Table.toDTO(table);
+        if(table == null) return null;
+        else return table.toDTO();
     }
 
     public List<TableDTO> all() {
@@ -23,22 +24,21 @@ public class TableService {
                 .collect(Collectors.toList());
     }
 
-    public void create(TableDTO tableDTO) {
-        repository.save(Table.fromDTO(tableDTO));
+    public TableDTO create(TableDTO dto) {
+        Table table = new Table();
+        table.updateParamsFrom(dto);
+        repository.save(table);
+        return table.toDTO();
     }
 
-    public TableDTO update(TableDTO tableDTO) {
-        Table table = Table.fromDTO(tableDTO);
-        return repository.findById(table.getId())
-                .map(currentTable -> {
-                    currentTable.updateParams(table);
-                    repository.save(currentTable);
-                    return Table.toDTO(currentTable);
+    public TableDTO update(TableDTO dto) {
+        return repository.findById(dto.getId())
+                .map(existingTable -> {
+                    existingTable.updateParamsFrom(dto);
+                    repository.save(existingTable);
+                    return existingTable.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(tableDTO);
-                    return tableDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

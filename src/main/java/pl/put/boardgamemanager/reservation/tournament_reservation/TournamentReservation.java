@@ -37,32 +37,17 @@ public class TournamentReservation extends Reservation {
         return Objects.hash(tableId, tutorId, tournamentId);
     }
 
-    public void updateParams(TournamentReservation tournamentReservation) {
-        this.setTutorId(tournamentReservation.getTutorId());
-        this.setTournamentId(tournamentReservation.getTournamentId());
+    public void updateParamsFrom(TournamentReservationDTO dto) {
+        this.setTutorId(dto.getTutorId());
+        this.setTournamentId(dto.getTournamentId());
     }
 
-    public static TournamentReservation fromDTO(TournamentReservationDTO dto) {
-
-        if(dto == null) return null;
-
-        TournamentReservation tournamentReservation = new TournamentReservation();
-
-        tournamentReservation.setTableId(dto.getTableId());
-        tournamentReservation.setTutorId(dto.getTutorId());
-        tournamentReservation.setTournamentId(dto.getTournamentId());
-
-        return tournamentReservation;
-    }
-
-    public static TournamentReservationDTO toDTO(TournamentReservation tournamentReservation) {
-
-        if(tournamentReservation == null) return null;
-
+    public TournamentReservationDTO toDTO() {
         TournamentReservationDTO dto = new TournamentReservationDTO();
 
-        dto.setTutorId(tournamentReservation.getTutorId());
-        dto.setTournamentId(tournamentReservation.getTournamentId());
+        dto.setTableId(tableId);
+        dto.setTutorId(tutorId);
+        dto.setTournamentId(tournamentId);
 
         return dto;
     }

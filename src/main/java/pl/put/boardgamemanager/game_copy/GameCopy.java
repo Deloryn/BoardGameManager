@@ -46,29 +46,15 @@ public class GameCopy {
         return Objects.hash(id, gameId);
     }
 
-    public void updateParams(GameCopy gameCopy) {
-        this.setGameId(gameCopy.getGameId());
+    public void updateParamsFrom(GameCopyDTO dto) {
+        this.setGameId(dto.getGameId());
     }
 
-    public static GameCopy fromDTO(GameCopyDTO dto) {
-
-        if(dto == null) return null;
-
-        GameCopy gameCopy = new GameCopy();
-
-        gameCopy.setId(dto.getId());
-        gameCopy.setGameId(dto.getGameId());
-
-        return gameCopy;
-    }
-
-    public static GameCopyDTO toDTO(GameCopy gameCopy) {
-
-        if(gameCopy == null) return null;
-
+    public GameCopyDTO toDTO() {
         GameCopyDTO dto = new GameCopyDTO();
 
-        dto.setGameId(gameCopy.getGameId());
+        dto.setId(id);
+        dto.setGameId(gameId);
 
         return dto;
     }

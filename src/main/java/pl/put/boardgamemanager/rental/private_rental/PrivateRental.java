@@ -63,35 +63,19 @@ public class PrivateRental extends Rental {
         return Objects.hash(copyId, rentalTime, duration, status);
     }
 
-    public void updateParams(PrivateRental privateRental) {
-        this.setDuration(privateRental.getDuration());
-        this.setRentalTime(privateRental.getRentalTime());
-        this.setStatus(privateRental.getStatus());
+    public void updateParamsFrom(PrivateRentalDTO dto) {
+        this.setDuration(dto.getDuration());
+        this.setRentalTime(dto.getRentalTime());
+        this.setStatus(dto.getStatus());
     }
 
-    public static PrivateRental fromDTO(PrivateRentalDTO dto) {
-
-        if(dto == null) return null;
-
-        PrivateRental privateRental = new PrivateRental();
-
-        privateRental.setCopyId(dto.getCopyId());
-        privateRental.setDuration(dto.getDuration());
-        privateRental.setRentalTime(dto.getRentalTime());
-        privateRental.setStatus(dto.getStatus());
-
-        return privateRental;
-    }
-
-    public static PrivateRentalDTO toDTO(PrivateRental privateRental) {
-
-        if(privateRental == null) return null;
-
+    public PrivateRentalDTO toDTO() {
         PrivateRentalDTO dto = new PrivateRentalDTO();
 
-        dto.setDuration(privateRental.getDuration());
-        dto.setRentalTime(privateRental.getRentalTime());
-        dto.setStatus(privateRental.getStatus());
+        dto.setCopyId(copyId);
+        dto.setDuration(duration);
+        dto.setRentalTime(rentalTime);
+        dto.setStatus(status);
 
         return dto;
     }

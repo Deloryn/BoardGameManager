@@ -83,38 +83,21 @@ public class Tournament {
         return Objects.hash(id, time, duration, maxPlayers, gameId);
     }
 
-    public void updateParams(Tournament tournament) {
-        this.setGameId(tournament.getGameId());
-        this.setDuration(tournament.getDuration());
-        this.setTime(tournament.getTime());
-        this.setMaxPlayers(tournament.getMaxPlayers());
+    public void updateParamsFrom(TournamentDTO dto) {
+        this.setGameId(dto.getGameId());
+        this.setDuration(dto.getDuration());
+        this.setTime(dto.getTime());
+        this.setMaxPlayers(dto.getMaxPlayers());
     }
 
-    public static Tournament fromDTO(TournamentDTO dto) {
-
-        if(dto == null) return null;
-
-        Tournament tournament = new Tournament();
-
-        tournament.setId(dto.getId());
-        tournament.setGameId(dto.getGameId());
-        tournament.setDuration(dto.getDuration());
-        tournament.setTime(dto.getTime());
-        tournament.setMaxPlayers(dto.getMaxPlayers());
-
-        return tournament;
-    }
-
-    public static TournamentDTO toDTO(Tournament tournament) {
-
-        if(tournament == null) return null;
-
+    public TournamentDTO toDTO() {
         TournamentDTO dto = new TournamentDTO();
 
-        dto.setGameId(tournament.getGameId());
-        dto.setDuration(tournament.getDuration());
-        dto.setTime(tournament.getTime());
-        dto.setMaxPlayers(tournament.getMaxPlayers());
+        dto.setId(id);
+        dto.setGameId(gameId);
+        dto.setDuration(duration);
+        dto.setTime(time);
+        dto.setMaxPlayers(maxPlayers);
 
         return dto;
     }

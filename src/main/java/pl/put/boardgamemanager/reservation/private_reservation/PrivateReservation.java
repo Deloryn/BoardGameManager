@@ -62,38 +62,21 @@ public class PrivateReservation extends Reservation {
         return Objects.hash(tableId, reservationTime, duration, clientId);
     }
 
-    public void updateParams(PrivateReservation privateReservation) {
-        this.setTutorId(privateReservation.getTutorId());
-        this.setClientId(privateReservation.getClientId());
-        this.setReservationTime(privateReservation.getReservationTime());
-        this.setDuration(privateReservation.getDuration());
+    public void updateParamsFrom(PrivateReservationDTO dto) {
+        this.setTutorId(dto.getTutorId());
+        this.setClientId(dto.getClientId());
+        this.setReservationTime(dto.getReservationTime());
+        this.setDuration(dto.getDuration());
     }
 
-    public static PrivateReservation fromDTO(PrivateReservationDTO dto) {
-
-        if(dto == null) return null;
-
-        PrivateReservation privateReservation = new PrivateReservation();
-
-        privateReservation.setTableId(dto.getTableId());
-        privateReservation.setTutorId(dto.getTutorId());
-        privateReservation.setClientId(dto.getClientId());
-        privateReservation.setReservationTime(dto.getReservationTime());
-        privateReservation.setDuration(dto.getDuration());
-
-        return privateReservation;
-    }
-
-    public static PrivateReservationDTO toDTO(PrivateReservation privateReservation) {
-
-        if(privateReservation == null) return null;
-
+    public PrivateReservationDTO toDTO() {
         PrivateReservationDTO dto = new PrivateReservationDTO();
 
-        dto.setTutorId(privateReservation.getTutorId());
-        dto.setClientId(privateReservation.getClientId());
-        dto.setReservationTime(privateReservation.getReservationTime());
-        dto.setDuration(privateReservation.getDuration());
+        dto.setTableId(tableId);
+        dto.setTutorId(tutorId);
+        dto.setClientId(clientId);
+        dto.setReservationTime(reservationTime);
+        dto.setDuration(duration);
 
         return dto;
     }

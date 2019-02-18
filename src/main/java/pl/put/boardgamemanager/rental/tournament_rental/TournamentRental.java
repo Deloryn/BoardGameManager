@@ -37,29 +37,15 @@ public class TournamentRental extends Rental {
         return Objects.hash(copyId, tournamentId);
     }
 
-    public void updateParams(TournamentRental tournamentRental) {
-        this.setTournamentId(tournamentRental.getTournamentId());
+    public void updateParamsFrom(TournamentRentalDTO dto) {
+        this.setTournamentId(dto.getTournamentId());
     }
 
-    public static TournamentRental fromDTO(TournamentRentalDTO dto) {
-
-        if(dto == null) return null;
-
-        TournamentRental tournamentRental = new TournamentRental();
-
-        tournamentRental.setCopyId(dto.getCopyId());
-        tournamentRental.setTournamentId(dto.getTournamentId());
-
-        return tournamentRental;
-    }
-
-    public static TournamentRentalDTO toDTO(TournamentRental tournamentRental) {
-
-        if(tournamentRental == null) return null;
-
+    public TournamentRentalDTO toDTO() {
         TournamentRentalDTO dto = new TournamentRentalDTO();
 
-        dto.setTournamentId(tournamentRental.getTournamentId());
+        dto.setCopyId(copyId);
+        dto.setTournamentId(tournamentId);
 
         return dto;
     }
