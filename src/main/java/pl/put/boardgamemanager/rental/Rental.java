@@ -1,8 +1,5 @@
 package pl.put.boardgamemanager.rental;
 
-import pl.put.boardgamemanager.game_copy.GameCopy;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,10 +12,6 @@ public abstract class Rental {
     @Id
     @Column(name = "copyid", nullable = false)
     protected Long copyId;
-
-    @OneToOne
-    @JoinColumn(name = "copyid", referencedColumnName = "id", nullable = false)
-    protected GameCopy gameCopy;
 
     public Long getCopyId() {
         return copyId;
@@ -33,20 +26,12 @@ public abstract class Rental {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Rental that = (Rental) o;
-        return Objects.equals(copyId, that.copyId) &&
-                Objects.equals(gameCopy, that.gameCopy);
+        return Objects.equals(copyId, that.copyId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, gameCopy);
+        return Objects.hash(copyId);
     }
 
-    public GameCopy getGameCopy() {
-        return gameCopy;
-    }
-
-    public void setGameCopy(GameCopy gameCopy) {
-        this.gameCopy = gameCopy;
-    }
 }

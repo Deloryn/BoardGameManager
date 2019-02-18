@@ -1,8 +1,5 @@
 package pl.put.boardgamemanager.reservation;
 
-import pl.put.boardgamemanager.person.tutor.Tutor;
-import pl.put.boardgamemanager.table.Table;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,31 +12,20 @@ public abstract class Reservation {
     @Column(name = "tableid", nullable = false)
     protected Long tableId;
 
-    @OneToOne
-    @JoinColumn(name = "tableid", referencedColumnName = "id", nullable = false)
-    protected Table reservedTable;
-
-    @ManyToOne
-    @JoinColumn(name = "tutorid", referencedColumnName = "id")
-    protected Tutor tutor;
+    @Column(name = "tutorid")
+    protected Long tutorId;
 
     public Long getTableId() {
         return tableId;
     }
 
-    public Table getReservedTable() {
-        return reservedTable;
-    }
-
-    public void setReservedTable(Table table) { this.reservedTable = table; }
-
     public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 
-    public Tutor getTutor() { return tutor; }
+    public Long getTutorId() { return tutorId; }
 
-    public void setTutor(Tutor tutor) { this.tutor = tutor; }
+    public void setTutorId(Long tutorId) { this.tutorId = tutorId; }
 
     @Override
     public boolean equals(Object o) {
@@ -47,13 +33,12 @@ public abstract class Reservation {
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
         return Objects.equals(tableId, that.tableId) &&
-                Objects.equals(reservedTable, that.reservedTable) &&
-                Objects.equals(tutor, that.tutor);
+                Objects.equals(tutorId, that.tutorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, reservedTable, tutor);
+        return Objects.hash(tableId, tutorId);
     }
 
 }

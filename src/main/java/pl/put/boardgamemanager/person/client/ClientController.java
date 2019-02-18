@@ -3,8 +3,8 @@ package pl.put.boardgamemanager.person.client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class ClientController {
@@ -20,11 +20,9 @@ public class ClientController {
 
     @GetMapping("/clients")
     public List<ClientDTO> all() {
-        List<ClientDTO> dtos = new ArrayList<>();
-        repository.findAll().forEach(client -> {
-            dtos.add(Client.toDTO(client));
-        });
-        return dtos;
+        return repository.findAll().stream()
+                .map(Client::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/clients")
@@ -32,18 +30,18 @@ public class ClientController {
         repository.save(Client.fromDTO(clientDTO));
     }
 
-    @PutMapping("/clients/{id}")
-    public ClientDTO update(@RequestBody ClientDTO newClientDTO, @PathVariable Long id) {
-        Client newClient = Client.fromDTO(newClientDTO);
-        return repository.findById(id)
-                .map(client -> {
-                    client.updateParams(newClient);
-                    repository.save(client);
-                    return Client.toDTO(client);
+    @PutMapping("/clients")
+    public ClientDTO update(@RequestBody ClientDTO clientDTO) {
+        Client client = Client.fromDTO(clientDTO);
+        return repository.findById(client.getId())
+                .map(currentClient -> {
+                    currentClient.updateParams(client);
+                    repository.save(currentClient);
+                    return Client.toDTO(currentClient);
                 })
                 .orElseGet(() -> {
-                    repository.save(newClient);
-                    return Client.toDTO(newClient);
+                    repository.save(client);
+                    return Client.toDTO(client);
                 });
     }
 

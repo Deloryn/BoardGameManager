@@ -1,7 +1,5 @@
 package pl.put.boardgamemanager.game_copy;
 
-import pl.put.boardgamemanager.game.Game;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -15,9 +13,8 @@ public class GameCopy {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "gameid", referencedColumnName = "id", nullable = false)
-    private Game game;
+    @Column(name = "gameid", nullable = false)
+    private Long gameId;
 
     public Long getId() {
         return id;
@@ -27,25 +24,54 @@ public class GameCopy {
         this.id = id;
     }
 
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameCopy that = (GameCopy) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(game, that.game);
+                Objects.equals(gameId, that.gameId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, game);
+        return Objects.hash(id, gameId);
     }
 
-    public Game getGame() {
-        return game;
+    public void updateParams(GameCopy gameCopy) {
+        this.setGameId(gameCopy.getGameId());
     }
 
-    public void setGame(Game game) {
-        this.game = game;
+    public static GameCopy fromDTO(GameCopyDTO dto) {
+
+        if(dto == null) return null;
+
+        GameCopy gameCopy = new GameCopy();
+
+        gameCopy.setId(dto.getId());
+        gameCopy.setGameId(dto.getGameId());
+
+        return gameCopy;
     }
+
+    public static GameCopyDTO toDTO(GameCopy gameCopy) {
+
+        if(gameCopy == null) return null;
+
+        GameCopyDTO dto = new GameCopyDTO();
+
+        dto.setId(gameCopy.getId());
+        dto.setGameId(gameCopy.getGameId());
+
+        return dto;
+    }
+
 }

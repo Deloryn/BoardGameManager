@@ -1,9 +1,7 @@
 package pl.put.boardgamemanager.game;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import org.springframework.data.repository.CrudRepository;
+public interface GameRepository extends JpaRepository<Game, Long> {
 
-public interface GameRepository extends CrudRepository<Game, Long> {
-    List<Game> findByName(String name);
 }

@@ -1,6 +1,5 @@
 package pl.put.boardgamemanager.rental.private_rental;
 
-import pl.put.boardgamemanager.person.client.Client;
 import pl.put.boardgamemanager.rental.Rental;
 
 import javax.persistence.*;
@@ -22,10 +21,6 @@ public class PrivateRental extends Rental {
     @NotBlank
     @Column(name = "status", nullable = false, length = 30)
     private String status;
-
-    @ManyToOne
-    @JoinColumn(name = "clientid", referencedColumnName = "id", nullable = false)
-    private Client client;
 
     public Timestamp getRentalTime() {
         return rentalTime;
@@ -59,21 +54,47 @@ public class PrivateRental extends Rental {
             PrivateRental that = (PrivateRental) o;
             return Objects.equals(rentalTime, that.rentalTime) &&
                     Objects.equals(duration, that.duration) &&
-                    Objects.equals(status, that.status) &&
-                    Objects.equals(client, that.client);
+                    Objects.equals(status, that.status);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, rentalTime, duration, status, client);
+        return Objects.hash(copyId, rentalTime, duration, status);
     }
 
-    public Client getClient() {
-        return client;
+    public void updateParams(PrivateRental privateRental) {
+        this.setDuration(privateRental.getDuration());
+        this.setRentalTime(privateRental.getRentalTime());
+        this.setStatus(privateRental.getStatus());
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public static PrivateRental fromDTO(PrivateRentalDTO dto) {
+
+        if(dto == null) return null;
+
+        PrivateRental privateRental = new PrivateRental();
+
+        privateRental.setCopyId(dto.getCopyId());
+        privateRental.setDuration(dto.getDuration());
+        privateRental.setRentalTime(dto.getRentalTime());
+        privateRental.setStatus(dto.getStatus());
+
+        return privateRental;
     }
+
+    public static PrivateRentalDTO toDTO(PrivateRental privateRental) {
+
+        if(privateRental == null) return null;
+
+        PrivateRentalDTO dto = new PrivateRentalDTO();
+
+        dto.setCopyId(privateRental.getCopyId());
+        dto.setDuration(privateRental.getDuration());
+        dto.setRentalTime(privateRental.getRentalTime());
+        dto.setStatus(privateRental.getStatus());
+
+        return dto;
+    }
+
 }
