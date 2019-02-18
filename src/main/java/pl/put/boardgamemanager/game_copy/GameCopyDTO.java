@@ -10,10 +10,6 @@ public class GameCopyDTO {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getGameId() {
         return gameId;
     }

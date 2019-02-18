@@ -59,7 +59,6 @@ public class TournamentRental extends Rental {
 
         TournamentRentalDTO dto = new TournamentRentalDTO();
 
-        dto.setCopyId(tournamentRental.getCopyId());
         dto.setTournamentId(tournamentRental.getTournamentId());
 
         return dto;

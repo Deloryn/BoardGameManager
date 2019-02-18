@@ -16,10 +16,6 @@ public class PrivateRentalDTO {
         return copyId;
     }
 
-    public void setCopyId(Long copyId) {
-        this.copyId = copyId;
-    }
-
     public Timestamp getRentalTime() {
         return rentalTime;
     }

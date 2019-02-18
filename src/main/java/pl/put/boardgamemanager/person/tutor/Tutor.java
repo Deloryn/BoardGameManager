@@ -36,7 +36,6 @@ public class Tutor extends Person{
 
         TutorDTO dto = new TutorDTO();
 
-        dto.setId(tutor.getId());
         dto.setName(tutor.getName());
         dto.setSurname(tutor.getSurname());
         dto.setEmail(tutor.getEmail());

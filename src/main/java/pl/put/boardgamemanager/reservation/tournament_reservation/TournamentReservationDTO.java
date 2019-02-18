@@ -12,10 +12,6 @@ public class TournamentReservationDTO {
         return tableId;
     }
 
-    public void setTableId(Long tableId) {
-        this.tableId = tableId;
-    }
-
     public Long getTutorId() { return tutorId; }
 
     public void setTutorId(Long tutorId) { this.tutorId = tutorId; }

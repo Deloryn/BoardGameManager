@@ -10,10 +10,6 @@ public class TableDTO {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Short getNumberOfSits() {
         return numberOfSits;
     }

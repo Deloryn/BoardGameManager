@@ -68,7 +68,6 @@ public class GameCopy {
 
         GameCopyDTO dto = new GameCopyDTO();
 
-        dto.setId(gameCopy.getId());
         dto.setGameId(gameCopy.getGameId());
 
         return dto;

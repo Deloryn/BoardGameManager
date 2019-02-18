@@ -61,7 +61,6 @@ public class TournamentReservation extends Reservation {
 
         TournamentReservationDTO dto = new TournamentReservationDTO();
 
-        dto.setTableId(tournamentReservation.getTableId());
         dto.setTutorId(tournamentReservation.getTutorId());
         dto.setTournamentId(tournamentReservation.getTournamentId());
 
