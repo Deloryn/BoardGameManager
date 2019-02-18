@@ -4,50 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class ClientController {
 
     @Autowired
-    private ClientRepository repository;
+    private ClientService service;
 
     @GetMapping("/clients/{id}")
     public ClientDTO get(@PathVariable Long id) {
-        Client client = repository.findById(id).orElse(null);
-        return Client.toDTO(client);
+        return service.get(id);
     }
 
     @GetMapping("/clients")
     public List<ClientDTO> all() {
-        return repository.findAll().stream()
-                .map(Client::toDTO)
-                .collect(Collectors.toList());
+        return service.all();
     }
 
     @PostMapping("/clients")
     public void create(@RequestBody ClientDTO clientDTO) {
-        repository.save(Client.fromDTO(clientDTO));
+        service.create(clientDTO);
     }
 
     @PutMapping("/clients")
     public ClientDTO update(@RequestBody ClientDTO clientDTO) {
-        Client client = Client.fromDTO(clientDTO);
-        return repository.findById(client.getId())
-                .map(currentClient -> {
-                    currentClient.updateParams(client);
-                    repository.save(currentClient);
-                    return Client.toDTO(currentClient);
-                })
-                .orElseGet(() -> {
-                    repository.save(client);
-                    return Client.toDTO(client);
-                });
+        return service.update(clientDTO);
     }
 
     @DeleteMapping("/clients/{id}")
     public void delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.delete(id);
     }
 
 }
