@@ -13,8 +13,9 @@ public class PrivateReservationService {
     private PrivateReservationRepository repository;
 
     public PrivateReservationDTO get(Long id) {
-        PrivateReservation privateReservation = repository.findById(id).orElse(null);
-        return PrivateReservation.toDTO(privateReservation);
+        PrivateReservation reservation = repository.findById(id).orElse(null);
+        if(reservation == null) return null;
+        else return reservation.toDTO();
     }
 
     public List<PrivateReservationDTO> all() {
@@ -23,22 +24,21 @@ public class PrivateReservationService {
                 .collect(Collectors.toList());
     }
 
-    public void create(PrivateReservationDTO privateReservationDTO) {
-        repository.save(PrivateReservation.fromDTO(privateReservationDTO));
+    public PrivateReservationDTO create(PrivateReservationDTO dto) {
+        PrivateReservation reservation = new PrivateReservation();
+        reservation.updateParamsFrom(dto);
+        repository.save(reservation);
+        return reservation.toDTO();
     }
 
-    public PrivateReservationDTO update(PrivateReservationDTO privateReservationDTO) {
-        PrivateReservation privateReservation = PrivateReservation.fromDTO(privateReservationDTO);
-        return repository.findById(privateReservation.getTableId())
-                .map(currentPrivateReservation -> {
-                    currentPrivateReservation.updateParams(privateReservation);
-                    repository.save(currentPrivateReservation);
-                    return PrivateReservation.toDTO(currentPrivateReservation);
+    public PrivateReservationDTO update(PrivateReservationDTO dto) {
+        return repository.findById(dto.getTableId())
+                .map(existingReservation -> {
+                    existingReservation.updateParamsFrom(dto);
+                    repository.save(existingReservation);
+                    return existingReservation.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(privateReservationDTO);
-                    return privateReservationDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

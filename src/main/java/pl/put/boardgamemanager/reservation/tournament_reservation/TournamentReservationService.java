@@ -13,8 +13,9 @@ public class TournamentReservationService {
     private TournamentReservationRepository repository;
 
     public TournamentReservationDTO get(Long id) {
-        TournamentReservation tournamentReservation = repository.findById(id).orElse(null);
-        return TournamentReservation.toDTO(tournamentReservation);
+        TournamentReservation reservation = repository.findById(id).orElse(null);
+        if(reservation == null) return null;
+        else return reservation.toDTO();
     }
 
     public List<TournamentReservationDTO> all() {
@@ -23,22 +24,21 @@ public class TournamentReservationService {
                 .collect(Collectors.toList());
     }
 
-    public void create(TournamentReservationDTO tournamentReservationDTO) {
-        repository.save(TournamentReservation.fromDTO(tournamentReservationDTO));
+    public TournamentReservationDTO create(TournamentReservationDTO dto) {
+        TournamentReservation reservation = new TournamentReservation();
+        reservation.updateParamsFrom(dto);
+        repository.save(reservation);
+        return reservation.toDTO();
     }
 
-    public TournamentReservationDTO update(TournamentReservationDTO tournamentReservationDTO) {
-        TournamentReservation tournamentReservation = TournamentReservation.fromDTO(tournamentReservationDTO);
-        return repository.findById(tournamentReservation.getTableId())
-                .map(currentTournamentReservation -> {
-                    currentTournamentReservation.updateParams(tournamentReservation);
-                    repository.save(currentTournamentReservation);
-                    return TournamentReservation.toDTO(currentTournamentReservation);
+    public TournamentReservationDTO update(TournamentReservationDTO dto) {
+        return repository.findById(dto.getTableId())
+                .map(existingReservation -> {
+                    existingReservation.updateParamsFrom(dto);
+                    repository.save(existingReservation);
+                    return existingReservation.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(tournamentReservationDTO);
-                    return tournamentReservationDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

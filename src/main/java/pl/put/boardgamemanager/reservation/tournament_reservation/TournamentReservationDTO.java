@@ -8,6 +8,10 @@ public class TournamentReservationDTO {
 
     private Long tournamentId;
 
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
+    }
+
     public Long getTableId() {
         return tableId;
     }

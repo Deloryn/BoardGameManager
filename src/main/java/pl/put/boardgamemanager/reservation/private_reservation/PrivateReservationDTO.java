@@ -14,6 +14,10 @@ public class PrivateReservationDTO {
 
     private Timestamp duration;
 
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
+    }
+
     public Long getTableId() {
         return tableId;
     }

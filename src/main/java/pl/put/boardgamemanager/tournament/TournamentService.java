@@ -14,7 +14,8 @@ public class TournamentService {
 
     public TournamentDTO get(Long id) {
         Tournament tournament = repository.findById(id).orElse(null);
-        return Tournament.toDTO(tournament);
+        if(tournament == null) return null;
+        else return tournament.toDTO();
     }
 
     public List<TournamentDTO> all() {
@@ -23,22 +24,21 @@ public class TournamentService {
                 .collect(Collectors.toList());
     }
 
-    public void create(TournamentDTO tournamentDTO) {
-        repository.save(Tournament.fromDTO(tournamentDTO));
+    public TournamentDTO create(TournamentDTO dto) {
+        Tournament tournament = new Tournament();
+        tournament.updateParamsFrom(dto);
+        repository.save(tournament);
+        return tournament.toDTO();
     }
 
-    public TournamentDTO update(TournamentDTO tournamentDTO) {
-        Tournament tournament = Tournament.fromDTO(tournamentDTO);
-        return repository.findById(tournament.getId())
-                .map(currentTournament -> {
-                    currentTournament.updateParams(tournament);
-                    repository.save(currentTournament);
-                    return Tournament.toDTO(currentTournament);
+    public TournamentDTO update(TournamentDTO dto) {
+        return repository.findById(dto.getId())
+                .map(existingTournament -> {
+                    existingTournament.updateParamsFrom(dto);
+                    repository.save(existingTournament);
+                    return existingTournament.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(tournamentDTO);
-                    return tournamentDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

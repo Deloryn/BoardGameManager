@@ -14,7 +14,8 @@ public class ClientService {
 
     public ClientDTO get(Long id) {
         Client client = repository.findById(id).orElse(null);
-        return Client.toDTO(client);
+        if(client == null) return null;
+        else return client.toDTO();
     }
 
     public List<ClientDTO> all() {
@@ -23,22 +24,21 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-    public void create(ClientDTO clientDTO) {
-        repository.save(Client.fromDTO(clientDTO));
+    public ClientDTO create(ClientDTO dto) {
+        Client client = new Client();
+        client.updateParamsFrom(dto);
+        repository.save(client);
+        return client.toDTO();
     }
 
-    public ClientDTO update(ClientDTO clientDTO) {
-        Client client = Client.fromDTO(clientDTO);
-        return repository.findById(client.getId())
-                .map(currentClient -> {
-                    currentClient.updateParams(client);
-                    repository.save(currentClient);
-                    return Client.toDTO(currentClient);
+    public ClientDTO update(ClientDTO dto) {
+        return repository.findById(dto.getId())
+                .map(existingClient -> {
+                    existingClient.updateParamsFrom(dto);
+                    repository.save(existingClient);
+                    return existingClient.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(clientDTO);
-                    return clientDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

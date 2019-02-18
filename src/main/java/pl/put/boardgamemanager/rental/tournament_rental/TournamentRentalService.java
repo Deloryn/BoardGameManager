@@ -13,8 +13,9 @@ public class TournamentRentalService {
     private TournamentRentalRepository repository;
 
     public TournamentRentalDTO get(Long id) {
-        TournamentRental tournamentRental = repository.findById(id).orElse(null);
-        return TournamentRental.toDTO(tournamentRental);
+        TournamentRental rental = repository.findById(id).orElse(null);
+        if(rental == null) return null;
+        else return rental.toDTO();
     }
 
     public List<TournamentRentalDTO> all() {
@@ -23,22 +24,21 @@ public class TournamentRentalService {
                 .collect(Collectors.toList());
     }
 
-    public void create(TournamentRentalDTO tournamentRentalDTO) {
-        repository.save(TournamentRental.fromDTO(tournamentRentalDTO));
+    public TournamentRentalDTO create(TournamentRentalDTO dto) {
+        TournamentRental rental = new TournamentRental();
+        rental.updateParamsFrom(dto);
+        repository.save(rental);
+        return rental.toDTO();
     }
 
-    public TournamentRentalDTO update(TournamentRentalDTO tournamentRentalDTO) {
-        TournamentRental tournamentRental = TournamentRental.fromDTO(tournamentRentalDTO);
-        return repository.findById(tournamentRental.getCopyId())
-                .map(currentTournamentRental -> {
-                    currentTournamentRental.updateParams(tournamentRental);
-                    repository.save(currentTournamentRental);
-                    return TournamentRental.toDTO(currentTournamentRental);
+    public TournamentRentalDTO update(TournamentRentalDTO dto) {
+        return repository.findById(dto.getCopyId())
+                .map(existingRental -> {
+                    existingRental.updateParamsFrom(dto);
+                    repository.save(existingRental);
+                    return existingRental.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(tournamentRentalDTO);
-                    return tournamentRentalDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

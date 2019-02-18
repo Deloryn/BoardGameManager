@@ -6,6 +6,10 @@ public class TournamentRentalDTO {
 
     private Long tournamentId;
 
+    public void setCopyId(Long copyId) {
+        this.copyId = copyId;
+    }
+
     public Long getCopyId() {
         return copyId;
     }

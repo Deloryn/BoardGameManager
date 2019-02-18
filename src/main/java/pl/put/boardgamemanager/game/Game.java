@@ -111,44 +111,25 @@ public class Game {
         return Objects.hash(id, name, publisher, minPlayers, maxPlayers, avgTime, description);
     }
 
-    public void updateParams(Game game) {
-        this.setName(game.getName());
-        this.setPublisher(game.getPublisher());
-        this.setMinPlayers(game.getMinPlayers());
-        this.setMaxPlayers(game.getMaxPlayers());
-        this.setAvgTime(game.getAvgTime());
-        this.setDescription(game.getDescription());
+    public void updateParamsFrom(GameDTO dto) {
+        this.setName(dto.getName());
+        this.setPublisher(dto.getPublisher());
+        this.setMinPlayers(dto.getMinPlayers());
+        this.setMaxPlayers(dto.getMaxPlayers());
+        this.setAvgTime(dto.getAvgTime());
+        this.setDescription(dto.getDescription());
     }
 
-    public static Game fromDTO(GameDTO dto) {
-
-        if(dto == null) return null;
-
-        Game game = new Game();
-
-        game.setId(dto.getId());
-        game.setName(dto.getName());
-        game.setPublisher(dto.getPublisher());
-        game.setMinPlayers(dto.getMinPlayers());
-        game.setMaxPlayers(dto.getMaxPlayers());
-        game.setAvgTime(dto.getAvgTime());
-        game.setDescription(dto.getDescription());
-
-        return game;
-    }
-
-    public static GameDTO toDTO(Game game) {
-
-        if(game == null) return null;
-
+    public GameDTO toDTO() {
         GameDTO dto = new GameDTO();
 
-        dto.setName(game.getName());
-        dto.setPublisher(game.getPublisher());
-        dto.setMinPlayers(game.getMinPlayers());
-        dto.setMaxPlayers(game.getMaxPlayers());
-        dto.setAvgTime(game.getAvgTime());
-        dto.setDescription(game.getDescription());
+        dto.setId(id);
+        dto.setName(name);
+        dto.setPublisher(publisher);
+        dto.setMinPlayers(minPlayers);
+        dto.setMaxPlayers(maxPlayers);
+        dto.setAvgTime(avgTime);
+        dto.setDescription(description);
 
         return dto;
     }

@@ -14,7 +14,8 @@ public class GameCopyService {
 
     public GameCopyDTO get(Long id) {
         GameCopy gameCopy = repository.findById(id).orElse(null);
-        return GameCopy.toDTO(gameCopy);
+        if(gameCopy == null) return null;
+        else return gameCopy.toDTO();
     }
 
     public List<GameCopyDTO> all() {
@@ -23,22 +24,21 @@ public class GameCopyService {
                 .collect(Collectors.toList());
     }
 
-    public void create(GameCopyDTO gameCopyDTO) {
-        repository.save(GameCopy.fromDTO(gameCopyDTO));
+    public GameCopyDTO create(GameCopyDTO dto) {
+        GameCopy gameCopy = new GameCopy();
+        gameCopy.updateParamsFrom(dto);
+        repository.save(gameCopy);
+        return gameCopy.toDTO();
     }
 
-    public GameCopyDTO update(GameCopyDTO gameCopyDTO) {
-        GameCopy gameCopy = GameCopy.fromDTO(gameCopyDTO);
-        return repository.findById(gameCopy.getId())
-                .map(currentGameCopy -> {
-                    currentGameCopy.updateParams(gameCopy);
-                    repository.save(currentGameCopy);
-                    return GameCopy.toDTO(currentGameCopy);
+    public GameCopyDTO update(GameCopyDTO dto) {
+        return repository.findById(dto.getId())
+                .map(existingCopy -> {
+                    existingCopy.updateParamsFrom(dto);
+                    repository.save(existingCopy);
+                    return existingCopy.toDTO();
                 })
-                .orElseGet(() -> {
-                    create(gameCopyDTO);
-                    return gameCopyDTO;
-                });
+                .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {

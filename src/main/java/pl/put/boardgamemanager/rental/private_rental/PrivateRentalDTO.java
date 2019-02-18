@@ -12,6 +12,10 @@ public class PrivateRentalDTO {
 
     private String status;
 
+    public void setCopyId(Long copyId) {
+        this.copyId = copyId;
+    }
+
     public Long getCopyId() {
         return copyId;
     }
@@ -39,4 +43,5 @@ public class PrivateRentalDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }
