@@ -4,50 +4,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class TournamentReservationController {
 
     @Autowired
-    private TournamentReservationRepository repository;
+    private TournamentReservationService service;
 
     @GetMapping("/tournament_reservations/{id}")
     public TournamentReservationDTO get(@PathVariable Long id) {
-        TournamentReservation tournamentReservation = repository.findById(id).orElse(null);
-        return TournamentReservation.toDTO(tournamentReservation);
+        return service.get(id);
     }
 
     @GetMapping("/tournament_reservations")
     public List<TournamentReservationDTO> all() {
-        return repository.findAll().stream()
-                .map(TournamentReservation::toDTO)
-                .collect(Collectors.toList());
+        return service.all();
     }
 
     @PostMapping("/tournament_reservations")
     public void create(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
-        repository.save(TournamentReservation.fromDTO(tournamentReservationDTO));
+        service.create(tournamentReservationDTO);
     }
 
     @PutMapping("/tournament_reservations")
     public TournamentReservationDTO update(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
-        TournamentReservation tournamentReservation = TournamentReservation.fromDTO(tournamentReservationDTO);
-        return repository.findById(tournamentReservation.getTableId())
-                .map(currentTournamentReservation -> {
-                    currentTournamentReservation.updateParams(tournamentReservation);
-                    repository.save(currentTournamentReservation);
-                    return TournamentReservation.toDTO(currentTournamentReservation);
-                })
-                .orElseGet(() -> {
-                    repository.save(tournamentReservation);
-                    return TournamentReservation.toDTO(tournamentReservation);
-                });
+        return service.update(tournamentReservationDTO);
     }
 
     @DeleteMapping("/tournament_reservations/{id}")
     public void delete(@PathVariable Long id) {
-        repository.deleteById(id);
+        service.delete(id);
     }
 
 }
