@@ -1,7 +1,5 @@
 package pl.put.boardgamemanager.tournament;
 
-import pl.put.boardgamemanager.game.Game;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -16,6 +14,9 @@ public class Tournament {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "gameid", nullable = false)
+    private Long gameId;
+
     @Column(name = "time", nullable = false)
     private Timestamp time;
 
@@ -25,16 +26,20 @@ public class Tournament {
     @Column(name = "maxplayers", nullable = false)
     private Short maxPlayers;
 
-    @ManyToOne
-    @JoinColumn(name = "gameid", referencedColumnName = "id", nullable = false)
-    private Game game;
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 
     public Timestamp getTime() {
@@ -61,14 +66,6 @@ public class Tournament {
         this.maxPlayers = maxPlayers;
     }
 
-    public Game getGame() {
-        return game;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -78,12 +75,49 @@ public class Tournament {
                 Objects.equals(time, that.time) &&
                 Objects.equals(duration, that.duration) &&
                 Objects.equals(maxPlayers, that.maxPlayers) &&
-                Objects.equals(game, that.game);
+                Objects.equals(gameId, that.gameId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, duration, maxPlayers, game);
+        return Objects.hash(id, time, duration, maxPlayers, gameId);
+    }
+
+    public void updateParams(Tournament tournament) {
+        this.setGameId(tournament.getGameId());
+        this.setDuration(tournament.getDuration());
+        this.setTime(tournament.getTime());
+        this.setMaxPlayers(tournament.getMaxPlayers());
+    }
+
+    public static Tournament fromDTO(TournamentDTO dto) {
+
+        if(dto == null) return null;
+
+        Tournament tournament = new Tournament();
+
+        tournament.setId(dto.getId());
+        tournament.setGameId(dto.getGameId());
+        tournament.setDuration(dto.getDuration());
+        tournament.setTime(dto.getTime());
+        tournament.setMaxPlayers(dto.getMaxPlayers());
+
+        return tournament;
+    }
+
+    public static TournamentDTO toDTO(Tournament tournament) {
+
+        if(tournament == null) return null;
+
+        TournamentDTO dto = new TournamentDTO();
+
+        dto.setId(tournament.getId());
+        dto.setGameId(tournament.getGameId());
+        dto.setDuration(tournament.getDuration());
+        dto.setTime(tournament.getTime());
+        dto.setMaxPlayers(tournament.getMaxPlayers());
+
+        return dto;
     }
 
 }
