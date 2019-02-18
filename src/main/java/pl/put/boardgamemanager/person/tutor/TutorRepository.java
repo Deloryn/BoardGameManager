@@ -1,7 +1,7 @@
 package pl.put.boardgamemanager.person.tutor;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TutorRepository extends CrudRepository<Tutor, Long> {
+public interface TutorRepository extends JpaRepository<Tutor, Long> {
 
 }

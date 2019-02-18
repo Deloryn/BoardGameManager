@@ -1,8 +1,8 @@
 package pl.put.boardgamemanager.tournament_participant;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TournamentParticipantRepository extends CrudRepository<TournamentParticipant, TournamentParticipantPK> {
+public interface TournamentParticipantRepository extends JpaRepository<TournamentParticipant, TournamentParticipantPK> {
     TournamentParticipant findByPrimaryKey(TournamentParticipantPK primaryKey);
     void deleteByPrimaryKey(TournamentParticipantPK primaryKey);
 }

@@ -1,7 +1,7 @@
 package pl.put.boardgamemanager.reservation.tournament_reservation;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TournamentReservationRepository extends CrudRepository<TournamentReservation, Long> {
+public interface TournamentReservationRepository extends JpaRepository<TournamentReservation, Long> {
 
 }

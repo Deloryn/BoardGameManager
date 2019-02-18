@@ -1,7 +1,7 @@
 package pl.put.boardgamemanager.rental.private_rental;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PrivateRentalRepository extends CrudRepository<PrivateRental, Long> {
+public interface PrivateRentalRepository extends JpaRepository<PrivateRental, Long> {
 
 }

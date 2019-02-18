@@ -1,7 +1,7 @@
 package pl.put.boardgamemanager.tournament;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TournamentRepository extends CrudRepository<Tournament, Long> {
+public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
 }
