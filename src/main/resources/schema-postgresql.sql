@@ -89,8 +89,8 @@ ALTER TABLE Tables
 CREATE TABLE Tournaments
 (
   id         INT          NOT NULL,
-  time       TIMESTAMP(0) NOT NULL,
-  duration   TIMESTAMP(0) NOT NULL,
+  startTime  TIMESTAMP(0) NOT NULL,
+  finishTime TIMESTAMP(0) NOT NULL,
   maxPlayers SMALLINT     NOT NULL,
   gameId     INT          NOT NULL
 );
