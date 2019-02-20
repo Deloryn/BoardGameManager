@@ -23,8 +23,8 @@ public class PrivateRentalController {
     }
 
     @PostMapping("/private_rentals")
-    public void create(@RequestBody PrivateRentalDTO privateRentalDTO) {
-        service.create(privateRentalDTO);
+    public PrivateRentalDTO create(@RequestBody PrivateRentalDTO privateRentalDTO) {
+        return service.create(privateRentalDTO);
     }
 
     @PutMapping("/private_rentals")

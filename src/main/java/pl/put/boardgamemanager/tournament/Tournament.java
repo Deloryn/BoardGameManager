@@ -1,6 +1,5 @@
 package pl.put.boardgamemanager.tournament;
 
-import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.person.client.Client;
 
 import javax.persistence.*;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @Table(name = "tournaments", schema = "public", catalog = "postgres")
 public class Tournament {
 
-    @SequenceGenerator(name = "tournaments_seq", sequenceName = "tournaments_seq")
+    @SequenceGenerator(name = "tournaments_seq", sequenceName = "tournaments_seq", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tournaments_seq")
     @Column(name = "id", nullable = false)
@@ -21,11 +20,11 @@ public class Tournament {
     @Column(name = "gameid", nullable = false)
     private Long gameId;
 
-    @Column(name = "time", nullable = false)
-    private Timestamp time;
+    @Column(name = "starttime", nullable = false)
+    private Timestamp startTime;
 
     @Column(name = "duration", nullable = false)
-    private Timestamp duration;
+    private Integer duration;
 
     @Column(name = "maxplayers", nullable = false)
     private Short maxPlayers;
@@ -52,19 +51,19 @@ public class Tournament {
         this.gameId = gameId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
@@ -90,7 +89,7 @@ public class Tournament {
         if (o == null || getClass() != o.getClass()) return false;
         Tournament that = (Tournament) o;
         return Objects.equals(id, that.id) &&
-                Objects.equals(time, that.time) &&
+                Objects.equals(startTime, that.startTime) &&
                 Objects.equals(duration, that.duration) &&
                 Objects.equals(maxPlayers, that.maxPlayers) &&
                 Objects.equals(gameId, that.gameId);
@@ -98,13 +97,13 @@ public class Tournament {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, duration, maxPlayers, gameId);
+        return Objects.hash(id, startTime, duration, maxPlayers, gameId);
     }
 
     public void updateParamsFrom(TournamentDTO dto) {
         this.setGameId(dto.getGameId());
         this.setDuration(dto.getDuration());
-        this.setTime(dto.getTime());
+        this.setStartTime(dto.getStartTime());
         this.setMaxPlayers(dto.getMaxPlayers());
     }
 
@@ -114,7 +113,7 @@ public class Tournament {
         dto.setId(id);
         dto.setGameId(gameId);
         dto.setDuration(duration);
-        dto.setTime(time);
+        dto.setStartTime(startTime);
         dto.setMaxPlayers(maxPlayers);
 
         return dto;

@@ -23,8 +23,8 @@ public class TournamentReservationController {
     }
 
     @PostMapping("/tournament_reservations")
-    public void create(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
-        service.create(tournamentReservationDTO);
+    public TournamentReservationDTO create(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
+        return service.create(tournamentReservationDTO);
     }
 
     @PutMapping("/tournament_reservations")

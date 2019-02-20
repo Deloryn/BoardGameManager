@@ -19,7 +19,7 @@ public class TableService {
     @Autowired
     private PrivateReservationRepository privateReservationRepository;
 
-    private List<Table> getReservedTablesAt(Timestamp reservationTime, Timestamp duration) {
+    private List<Table> getReservedTablesAt(Timestamp reservationTime, Integer duration) {
         return privateReservationRepository
                 .findAllByReservationTimeAndDuration(reservationTime, duration)
                 .stream()
@@ -35,7 +35,7 @@ public class TableService {
         else return table.toDTO();
     }
 
-    public List<TableDTO> getAvailableTableDTOsAt(Timestamp reservationTime, Timestamp duration) {
+    public List<TableDTO> getAvailableTableDTOsAt(Timestamp reservationTime, Integer duration) {
         List<Table> allTables = tableRepository.findAll();
         allTables.removeAll(getReservedTablesAt(reservationTime, duration));
         return allTables.stream()

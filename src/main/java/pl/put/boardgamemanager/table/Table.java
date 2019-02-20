@@ -7,7 +7,7 @@ import java.util.Objects;
 @javax.persistence.Table(name = "tables", schema = "public", catalog = "postgres")
 public class Table {
 
-    @SequenceGenerator(name = "tables_seq", sequenceName = "tables_seq")
+    @SequenceGenerator(name = "tables_seq", sequenceName = "tables_seq", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tables_seq")
     @Column(name = "id", nullable = false)

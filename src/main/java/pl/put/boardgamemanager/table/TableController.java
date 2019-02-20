@@ -29,8 +29,8 @@ public class TableController {
     }
 
     @PostMapping("/tables")
-    public void create(@RequestBody TableDTO tableDTO) {
-        service.create(tableDTO);
+    public TableDTO create(@RequestBody TableDTO tableDTO) {
+        return service.create(tableDTO);
     }
 
     @PutMapping("/tables")

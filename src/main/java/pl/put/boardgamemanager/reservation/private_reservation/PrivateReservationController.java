@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.reservation.private_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.person.tutor.TutorDTO;
 
 import java.util.List;
 
@@ -23,8 +24,23 @@ public class PrivateReservationController {
     }
 
     @PostMapping("/private_reservations")
-    public void create(@RequestBody PrivateReservationDTO privateReservationDTO) {
-        service.create(privateReservationDTO);
+    public PrivateReservationDTO create(@RequestBody PrivateReservationDTO privateReservationDTO) {
+        return service.create(privateReservationDTO);
+    }
+
+    @PostMapping("/private_reservations/get-tutor")
+    public List<TutorDTO> getTutorFor(@RequestBody PrivateReservationDTO dto) {
+        return service.getTutorDTOsFor(dto.getClientId(), dto.getReservationTime(), dto.getDuration());
+    }
+
+    @PostMapping("/private_reservations/assign-tutor")
+    public List<PrivateReservationDTO> assignTutorFor(@RequestBody PrivateReservationDTO dto) {
+        return service.assignTutorFor(dto.getClientId(), dto.getReservationTime(), dto.getDuration(), dto.getTutorId());
+    }
+
+    @PostMapping("/private_reservations/delete-tutor")
+    public List<PrivateReservationDTO> deleteTutorFrom(@RequestBody PrivateReservationDTO dto) {
+        return service.deleteTutorFrom(dto.getClientId(), dto.getReservationTime(), dto.getDuration());
     }
 
     @PutMapping("/private_reservations")

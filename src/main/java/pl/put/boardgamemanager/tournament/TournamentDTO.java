@@ -8,9 +8,9 @@ public class TournamentDTO {
 
     private Long gameId;
 
-    private Timestamp time;
+    private Timestamp startTime;
 
-    private Timestamp duration;
+    private Integer duration;
 
     private Short maxPlayers;
 
@@ -30,19 +30,19 @@ public class TournamentDTO {
         this.gameId = gameId;
     }
 
-    public Timestamp getTime() {
-        return time;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setTime(Timestamp time) {
-        this.time = time;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

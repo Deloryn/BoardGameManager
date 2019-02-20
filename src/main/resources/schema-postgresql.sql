@@ -5,7 +5,7 @@ CREATE TABLE Games
   publisher   VARCHAR(100) NOT NULL,
   minPlayers  SMALLINT     NOT NULL,
   maxPlayers  SMALLINT     NOT NULL,
-  avgTime     TIMESTAMP(0) NOT NULL,
+  avgTime     INTEGER      NOT NULL,
   description VARCHAR(300)
 );
 
@@ -89,8 +89,8 @@ ALTER TABLE Tables
 CREATE TABLE Tournaments
 (
   id         INT          NOT NULL,
-  time       TIMESTAMP(0) NOT NULL,
-  duration   TIMESTAMP(0) NOT NULL,
+  startTime  TIMESTAMP(0) NOT NULL,
+  duration   INTEGER      NOT NULL,
   maxPlayers SMALLINT     NOT NULL,
   gameId     INT          NOT NULL
 );

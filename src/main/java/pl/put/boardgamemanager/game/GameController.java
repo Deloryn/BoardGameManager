@@ -23,8 +23,8 @@ public class GameController {
     }
 
     @PostMapping("/games")
-    public void create(@RequestBody GameDTO gameDTO) {
-        service.create(gameDTO);
+    public GameDTO create(@RequestBody GameDTO gameDTO) {
+        return service.create(gameDTO);
     }
 
     @PutMapping("/games")
