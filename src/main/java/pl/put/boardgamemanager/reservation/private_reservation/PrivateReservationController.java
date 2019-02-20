@@ -18,7 +18,7 @@ public class PrivateReservationController {
         return service.get(id);
     }
 
-    @GetMapping("/private_reservations/{id}")
+    @GetMapping("/private_reservations/{id}/available-tutors")
     public List<TutorDTO> getAvailableTutorsFor(@PathVariable Long id) {
         return service.getAvailableTutorsFor(id);
     }
