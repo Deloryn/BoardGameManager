@@ -29,11 +29,6 @@ public class TutorController {
         return service.create(tutorDTO);
     }
 
-    @PostMapping("/tutors/available")
-    public List<TutorDTO> getAvailableTutors(@RequestBody PrivateReservationDTO dto) {
-        return service.getAvailableTutorsAt(Timestamp.valueOf(dto.getReservationTime()), dto.getDuration());
-    }
-
     @PutMapping("/tutors")
     public TutorDTO update(@RequestBody TutorDTO tutorDTO) {
         return service.update(tutorDTO);

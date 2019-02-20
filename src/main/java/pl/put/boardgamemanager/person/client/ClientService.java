@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
+import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
+import pl.put.boardgamemanager.rental.private_rental.PrivateRentalDTO;
+import pl.put.boardgamemanager.rental.private_rental.PrivateRentalRepository;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationRepository;
 import pl.put.boardgamemanager.table.Table;
@@ -27,7 +30,10 @@ public class ClientService {
     private GameRepository gameRepository;
 
     @Autowired
-    private PrivateReservationRepository reservationRepository;
+    private PrivateReservationRepository privateReservationRepository;
+
+    @Autowired
+    private PrivateRentalRepository privateRentalRepository;
 
     @Autowired
     private TableRepository tableRepository;
@@ -102,8 +108,21 @@ public class ClientService {
         Client client = clientRepository.findById(id).orElse(null);
         if (client == null) return null;
         else {
-            return reservationRepository.findAllByClientId(id).stream()
+            return privateReservationRepository.findAllByClientId(id).stream()
                     .map(this::reservationToClientReservationDTO)
+                    .collect(Collectors.toList());
+        }
+    }
+
+    public List<PrivateRentalDTO> getRentalDTOs(Long id) {
+        Client client = clientRepository.findById(id).orElse(null);
+        if(client == null) return null;
+        else {
+            return privateRentalRepository
+                    .findAll()
+                    .stream()
+                    .filter(rental -> rental.getClientId().equals(client.getId()))
+                    .map(PrivateRental::toDTO)
                     .collect(Collectors.toList());
         }
     }

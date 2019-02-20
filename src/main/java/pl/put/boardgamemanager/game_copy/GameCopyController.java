@@ -2,7 +2,9 @@ package pl.put.boardgamemanager.game_copy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.rental.private_rental.PrivateRentalDTO;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -30,6 +32,11 @@ public class GameCopyController {
     @PostMapping("/game_copies")
     public GameCopyDTO create(@RequestBody GameCopyDTO gameCopyDTO) {
         return service.create(gameCopyDTO);
+    }
+
+    @PostMapping("/game_copies/available")
+    public List<GameCopyNameDTO> getAvailableGameCopies(@RequestBody PrivateRentalDTO dto) {
+        return service.getAvailableGameCopiesFor(Timestamp.valueOf(dto.getRentalTime()), dto.getDuration());
     }
 
     @PutMapping("/game_copies")
