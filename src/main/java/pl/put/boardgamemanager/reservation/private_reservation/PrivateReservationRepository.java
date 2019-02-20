@@ -15,4 +15,7 @@ public interface PrivateReservationRepository extends JpaRepository<PrivateReser
 
     List<PrivateReservation> findAllByReservationTimeBetween(Timestamp startTime, Timestamp finishTime);
 
+    List<PrivateReservation> findAllByReservationTimeBefore(Timestamp before);
+
+
 }

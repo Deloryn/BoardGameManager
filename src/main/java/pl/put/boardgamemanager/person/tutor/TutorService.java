@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TutorService {
@@ -33,11 +34,28 @@ public class TutorService {
     }
 
     private List<Tutor> getBusyTutorsAroundTime(Timestamp startTime, Integer duration) {
-        return privateReservationRepository
-                .findAllByReservationTimeBetween(addToTimestamp(startTime, -60 * duration + 1), addToTimestamp(startTime, 60 * duration - 1))
+
+        List<Tutor> beforeStartTime = privateReservationRepository
+                .findAllByReservationTimeBefore(startTime)
+                .stream()
+                .filter(privateReservation -> {
+                    return addToTimestamp(
+                            privateReservation.getReservationTime(),
+                            privateReservation.getDuration() * 60)
+                            .before(startTime);
+                }).map(PrivateReservation::getTutorId)
+                .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
+                .collect(Collectors.toList());
+
+        List<Tutor> afterStartTime = privateReservationRepository
+                .findAllByReservationTimeBetween(startTime, addToTimestamp(startTime, 60 * duration - 1))
                 .stream()
                 .map(PrivateReservation::getTutorId)
                 .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
+                .collect(Collectors.toList());
+
+        return Stream
+                .concat(beforeStartTime.stream(), afterStartTime.stream())
                 .collect(Collectors.toList());
     }
 
