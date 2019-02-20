@@ -103,7 +103,7 @@ public class Tournament {
     public void updateParamsFrom(TournamentDTO dto) {
         this.setGameId(dto.getGameId());
         this.setDuration(dto.getDuration());
-        this.setStartTime(dto.getStartTime());
+        this.setStartTime(Timestamp.valueOf(dto.getStartTime()));
         this.setMaxPlayers(dto.getMaxPlayers());
     }
 
@@ -113,7 +113,7 @@ public class Tournament {
         dto.setId(id);
         dto.setGameId(gameId);
         dto.setDuration(duration);
-        dto.setStartTime(startTime);
+        dto.setStartTime(startTime.toLocalDateTime());
         dto.setMaxPlayers(maxPlayers);
 
         return dto;

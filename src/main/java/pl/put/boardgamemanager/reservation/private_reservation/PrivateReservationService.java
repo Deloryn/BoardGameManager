@@ -20,43 +20,24 @@ public class PrivateReservationService {
     @Autowired
     private TutorRepository tutorRepository;
 
-    private List<Tutor> getTutorsFor(Long clientId, Timestamp reservationTime, Integer duration) {
-        return privateReservationRepository
-                .findAllByClientIdAndReservationTimeAndDuration(clientId, reservationTime, duration)
-                .stream()
-                .map(PrivateReservation::getTutorId)
-                .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
-                .collect(Collectors.toList());
-    }
-
-    public List<PrivateReservationDTO> assignTutorFor(Long clientId, Timestamp reservationTime, Integer duration, Long tutorId) {
-        List<PrivateReservation> chosenReservations = privateReservationRepository
-                .findAllByClientIdAndReservationTimeAndDuration(clientId, reservationTime, duration);
-
-        chosenReservations.forEach(reservation -> {
+    public PrivateReservationDTO assignTutorFor(Long id, Long tutorId) {
+        PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
+        if(reservation == null) return null;
+        else {
             reservation.setTutorId(tutorId);
             privateReservationRepository.save(reservation);
-        });
-
-        return chosenReservations
-                .stream()
-                .map(PrivateReservation::toDTO)
-                .collect(Collectors.toList());
+            return reservation.toDTO();
+        }
     }
 
-    public List<PrivateReservationDTO> deleteTutorFrom(Long clientId, Timestamp reservationTime, Integer duration) {
-        List<PrivateReservation> chosenReservations = privateReservationRepository
-                .findAllByClientIdAndReservationTimeAndDuration(clientId, reservationTime, duration);
-
-        chosenReservations.forEach(reservation -> {
+    public PrivateReservationDTO deleteTutorFrom(Long id) {
+        PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
+        if(reservation == null) return null;
+        else {
             reservation.setTutorId(null);
             privateReservationRepository.save(reservation);
-        });
-
-        return chosenReservations
-                .stream()
-                .map(PrivateReservation::toDTO)
-                .collect(Collectors.toList());
+            return reservation.toDTO();
+        }
     }
 
     public PrivateReservationDTO get(Long id) {
@@ -65,11 +46,14 @@ public class PrivateReservationService {
         else return reservation.toDTO();
     }
 
-    public List<TutorDTO> getTutorDTOsFor(Long clientId, Timestamp reservationTime, Integer duration) {
-        return getTutorsFor(clientId, reservationTime, duration)
-                .stream()
-                .map(Tutor::toDTO)
-                .collect(Collectors.toList());
+    public TutorDTO getTutorDTOFor(Long id) {
+        PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
+        if(reservation == null) return null;
+        else {
+            Tutor tutor = tutorRepository.findById(reservation.getTutorId()).orElse(null);
+            if(tutor == null) return null;
+            else return tutor.toDTO();
+        }
     }
 
     public List<PrivateReservationDTO> all() {

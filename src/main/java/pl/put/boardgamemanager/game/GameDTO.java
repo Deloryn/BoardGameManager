@@ -14,7 +14,7 @@ public class GameDTO {
 
     private Short maxPlayers;
 
-    private Timestamp avgTime;
+    private Integer avgTime;
 
     private String description;
 
@@ -58,11 +58,11 @@ public class GameDTO {
         this.maxPlayers = maxPlayers;
     }
 
-    public Timestamp getAvgTime() {
+    public Integer getAvgTime() {
         return avgTime;
     }
 
-    public void setAvgTime(Timestamp avgTime) {
+    public void setAvgTime(Integer avgTime) {
         this.avgTime = avgTime;
     }
 

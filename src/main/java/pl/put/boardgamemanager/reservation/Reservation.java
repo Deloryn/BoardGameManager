@@ -8,12 +8,21 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "type")
 public abstract class Reservation {
 
+    @SequenceGenerator(name = "reservations_seq", sequenceName = "reservations_seq", allocationSize = 1)
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservations_seq")
+    @Column(name = "id", nullable = false)
+    protected Long id;
+
     @Column(name = "tableid", nullable = false)
     protected Long tableId;
 
     @Column(name = "tutorid")
     protected Long tutorId;
+
+    public void setId(Long id) { this.id = id; }
+
+    public Long getId() { return id; }
 
     public Long getTableId() {
         return tableId;
@@ -32,13 +41,14 @@ public abstract class Reservation {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Reservation that = (Reservation) o;
-        return Objects.equals(tableId, that.tableId) &&
+        return Objects.equals(id, that.id) &&
+                Objects.equals(tableId, that.tableId) &&
                 Objects.equals(tutorId, that.tutorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, tutorId);
+        return Objects.hash(id, tableId, tutorId);
     }
 
 }

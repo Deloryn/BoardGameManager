@@ -60,21 +60,23 @@ public class PrivateRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, rentalTime, duration, status);
+        return Objects.hash(id, copyId, rentalTime, duration, status);
     }
 
     public void updateParamsFrom(PrivateRentalDTO dto) {
+        this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
-        this.setRentalTime(dto.getRentalTime());
+        this.setRentalTime(Timestamp.valueOf(dto.getRentalTime()));
         this.setStatus(dto.getStatus());
     }
 
     public PrivateRentalDTO toDTO() {
         PrivateRentalDTO dto = new PrivateRentalDTO();
 
+        dto.setId(id);
         dto.setCopyId(copyId);
         dto.setDuration(duration);
-        dto.setRentalTime(rentalTime);
+        dto.setRentalTime(rentalTime.toLocalDateTime());
         dto.setStatus(status);
 
         return dto;

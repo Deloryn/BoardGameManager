@@ -1,8 +1,10 @@
 package pl.put.boardgamemanager.reservation.private_reservation;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class PrivateReservationDTO {
+
+    private Long id;
 
     private Long tableId;
 
@@ -10,9 +12,17 @@ public class PrivateReservationDTO {
 
     private Long clientId;
 
-    private Timestamp reservationTime;
+    private LocalDateTime reservationTime;
 
     private Integer duration;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setTableId(Long tableId) {
         this.tableId = tableId;
@@ -34,11 +44,11 @@ public class PrivateReservationDTO {
         this.clientId = clientId;
     }
 
-    public Timestamp getReservationTime() {
+    public LocalDateTime getReservationTime() {
         return reservationTime;
     }
 
-    public void setReservationTime(Timestamp reservationTime) {
+    public void setReservationTime(LocalDateTime reservationTime) {
         this.reservationTime = reservationTime;
     }
 
