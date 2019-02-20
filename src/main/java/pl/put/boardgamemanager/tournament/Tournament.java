@@ -1,7 +1,11 @@
 package pl.put.boardgamemanager.tournament;
 
+import pl.put.boardgamemanager.game.Game;
+import pl.put.boardgamemanager.person.client.Client;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +29,12 @@ public class Tournament {
 
     @Column(name = "maxplayers", nullable = false)
     private Short maxPlayers;
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "tournamentparticipants",
+            joinColumns = @JoinColumn(name = "tournamentid", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "clientid", referencedColumnName = "id"))
+    private List<Client> participants;
 
     public Long getId() {
         return id;
@@ -66,6 +76,14 @@ public class Tournament {
         this.maxPlayers = maxPlayers;
     }
 
+    public List<Client> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(List<Client> participants) {
+        this.participants = participants;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,5 +119,4 @@ public class Tournament {
 
         return dto;
     }
-
 }

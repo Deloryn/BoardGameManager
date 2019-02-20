@@ -1,13 +1,31 @@
 package pl.put.boardgamemanager.person.client;
 
 import pl.put.boardgamemanager.person.Person;
+import pl.put.boardgamemanager.tournament.Tournament;
+import pl.put.boardgamemanager.tournament_participant.TournamentParticipant;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "clients", schema = "public", catalog = "postgres")
 @DiscriminatorValue("c")
 public class Client extends Person {
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "tournamentparticipants",
+            joinColumns = @JoinColumn(name = "clientid", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tournamentid", referencedColumnName = "id"))
+    private List<Tournament> tournaments;
+
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
+    }
+
 
     public void updateParamsFrom(ClientDTO dto) {
         this.setName(dto.getName());

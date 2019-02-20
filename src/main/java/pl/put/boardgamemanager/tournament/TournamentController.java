@@ -19,7 +19,7 @@ public class TournamentController {
 
     @GetMapping("/tournaments")
     public List<TournamentDTO> all() {
-        return service.all();
+        return service.getAllDTOs();
     }
 
     @PostMapping("/tournaments")

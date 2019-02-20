@@ -1,6 +1,5 @@
 package pl.put.boardgamemanager.reservation.private_reservation;
 
-import pl.put.boardgamemanager.person.client.Client;
 import pl.put.boardgamemanager.reservation.Reservation;
 
 import javax.persistence.*;
