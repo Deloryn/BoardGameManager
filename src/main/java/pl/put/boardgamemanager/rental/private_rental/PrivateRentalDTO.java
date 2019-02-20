@@ -1,16 +1,26 @@
 package pl.put.boardgamemanager.rental.private_rental;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class PrivateRentalDTO {
 
+    private Long id;
+
     private Long copyId;
 
-    private Timestamp rentalTime;
+    private LocalDateTime rentalTime;
 
     private Integer duration;
 
     private String status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public void setCopyId(Long copyId) {
         this.copyId = copyId;
@@ -20,11 +30,11 @@ public class PrivateRentalDTO {
         return copyId;
     }
 
-    public Timestamp getRentalTime() {
+    public LocalDateTime getRentalTime() {
         return rentalTime;
     }
 
-    public void setRentalTime(Timestamp rentalTime) {
+    public void setRentalTime(LocalDateTime rentalTime) {
         this.rentalTime = rentalTime;
     }
 
@@ -43,5 +53,4 @@ public class PrivateRentalDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }

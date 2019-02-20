@@ -2,7 +2,6 @@ package pl.put.boardgamemanager.game;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -30,7 +29,7 @@ public class Game {
     private Short maxPlayers;
 
     @Column(name = "avgtime", nullable = false)
-    private Timestamp avgTime;
+    private Integer avgTime;
 
     @Column(name = "description", length = 300)
     private String description;
@@ -76,11 +75,11 @@ public class Game {
         this.maxPlayers = maxPlayers;
     }
 
-    public Timestamp getAvgTime() {
+    public Integer getAvgTime() {
         return avgTime;
     }
 
-    public void setAvgTime(Timestamp avgTime) {
+    public void setAvgTime(Integer avgTime) {
         this.avgTime = avgTime;
     }
 

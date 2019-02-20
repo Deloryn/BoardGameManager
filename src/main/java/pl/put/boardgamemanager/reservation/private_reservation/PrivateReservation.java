@@ -58,23 +58,25 @@ public class PrivateReservation extends Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, reservationTime, duration, clientId);
+        return Objects.hash(id, tableId, reservationTime, duration, clientId);
     }
 
     public void updateParamsFrom(PrivateReservationDTO dto) {
+        this.setTableId(dto.getTableId());
         this.setTutorId(dto.getTutorId());
         this.setClientId(dto.getClientId());
-        this.setReservationTime(dto.getReservationTime());
+        this.setReservationTime(Timestamp.valueOf(dto.getReservationTime()));
         this.setDuration(dto.getDuration());
     }
 
     public PrivateReservationDTO toDTO() {
         PrivateReservationDTO dto = new PrivateReservationDTO();
 
+        dto.setId(id);
         dto.setTableId(tableId);
         dto.setTutorId(tutorId);
         dto.setClientId(clientId);
-        dto.setReservationTime(reservationTime);
+        dto.setReservationTime(reservationTime.toLocalDateTime());
         dto.setDuration(duration);
 
         return dto;

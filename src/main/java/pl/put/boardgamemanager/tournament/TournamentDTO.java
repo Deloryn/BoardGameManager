@@ -1,6 +1,6 @@
 package pl.put.boardgamemanager.tournament;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public class TournamentDTO {
 
@@ -8,7 +8,7 @@ public class TournamentDTO {
 
     private Long gameId;
 
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     private Integer duration;
 
@@ -30,11 +30,11 @@ public class TournamentDTO {
         this.gameId = gameId;
     }
 
-    public Timestamp getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 

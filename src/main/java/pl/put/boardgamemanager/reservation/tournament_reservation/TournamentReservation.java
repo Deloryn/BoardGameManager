@@ -34,10 +34,11 @@ public class TournamentReservation extends Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tableId, tutorId, tournamentId);
+        return Objects.hash(id, tableId, tutorId, tournamentId);
     }
 
     public void updateParamsFrom(TournamentReservationDTO dto) {
+        this.setTableId(dto.getTableId());
         this.setTutorId(dto.getTutorId());
         this.setTournamentId(dto.getTournamentId());
     }
@@ -45,6 +46,7 @@ public class TournamentReservation extends Reservation {
     public TournamentReservationDTO toDTO() {
         TournamentReservationDTO dto = new TournamentReservationDTO();
 
+        dto.setId(id);
         dto.setTableId(tableId);
         dto.setTutorId(tutorId);
         dto.setTournamentId(tournamentId);

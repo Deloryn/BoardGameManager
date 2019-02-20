@@ -34,16 +34,18 @@ public class TournamentRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(copyId, tournamentId);
+        return Objects.hash(id, copyId, tournamentId);
     }
 
     public void updateParamsFrom(TournamentRentalDTO dto) {
+        this.setCopyId(dto.getCopyId());
         this.setTournamentId(dto.getTournamentId());
     }
 
     public TournamentRentalDTO toDTO() {
         TournamentRentalDTO dto = new TournamentRentalDTO();
 
+        dto.setId(id);
         dto.setCopyId(copyId);
         dto.setTournamentId(tournamentId);
 

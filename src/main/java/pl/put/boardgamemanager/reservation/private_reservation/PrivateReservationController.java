@@ -29,18 +29,18 @@ public class PrivateReservationController {
     }
 
     @PostMapping("/private_reservations/get-tutor")
-    public List<TutorDTO> getTutorFor(@RequestBody PrivateReservationDTO dto) {
-        return service.getTutorDTOsFor(dto.getClientId(), dto.getReservationTime(), dto.getDuration());
+    public TutorDTO getTutorFor(@RequestBody PrivateReservationDTO dto) {
+        return service.getTutorDTOFor(dto.getId());
     }
 
     @PostMapping("/private_reservations/assign-tutor")
-    public List<PrivateReservationDTO> assignTutorFor(@RequestBody PrivateReservationDTO dto) {
-        return service.assignTutorFor(dto.getClientId(), dto.getReservationTime(), dto.getDuration(), dto.getTutorId());
+    public PrivateReservationDTO assignTutorFor(@RequestBody PrivateReservationDTO dto) {
+        return service.assignTutorFor(dto.getId(), dto.getTutorId());
     }
 
     @PostMapping("/private_reservations/delete-tutor")
-    public List<PrivateReservationDTO> deleteTutorFrom(@RequestBody PrivateReservationDTO dto) {
-        return service.deleteTutorFrom(dto.getClientId(), dto.getReservationTime(), dto.getDuration());
+    public PrivateReservationDTO deleteTutorFrom(@RequestBody PrivateReservationDTO dto) {
+        return service.deleteTutorFrom(dto.getId());
     }
 
     @PutMapping("/private_reservations")
