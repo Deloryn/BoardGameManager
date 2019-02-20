@@ -2,7 +2,7 @@ package pl.put.boardgamemanager.person.client;
 
 import pl.put.boardgamemanager.tournament.TournamentDTO;
 
-public class ClientTournamentsDTO {
+public class ClientTournamentDTO {
 
     private TournamentDTO tournamentDTO;
 

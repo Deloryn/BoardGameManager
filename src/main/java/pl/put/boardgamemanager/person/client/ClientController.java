@@ -14,7 +14,7 @@ public class ClientController {
 
     @GetMapping("/clients/{id}")
     public ClientDTO get(@PathVariable Long id) {
-        return service.getById(id);
+        return service.getClientDTOById(id);
     }
 
     @GetMapping("/clients/{id}/exists")
@@ -23,23 +23,28 @@ public class ClientController {
     }
 
     @GetMapping("/clients/{id}/participated-tournaments")
-    public List<ClientTournamentsDTO> getParticipatedTournamentDTOs(@PathVariable Long id) {
+    public List<ClientTournamentDTO> getParticipatedTournamentDTOs(@PathVariable Long id) {
         return service.getParticipatedTournamentDTOs(id);
     }
 
     @GetMapping("/clients/{id}/available-tournaments")
-    public List<ClientTournamentsDTO> getAvailableTournamentDTOs(@PathVariable Long id) {
+    public List<ClientTournamentDTO> getAvailableTournamentDTOs(@PathVariable Long id) {
         return service.getAvailableTournamentDTOs(id);
     }
 
-    @GetMapping("/clients/get-by-email")
-    public ClientDTO getByEmail(@RequestBody ClientDTO clientDTO) {
-        return service.getByEmail(clientDTO.getEmail());
+    @GetMapping("/clients/{id}/reservations")
+    public List<ClientReservationDTO> getReservations(@PathVariable Long id) {
+        return service.getClientReservationDTOs(id);
     }
 
     @GetMapping("/clients")
     public List<ClientDTO> all() {
         return service.all();
+    }
+
+    @PostMapping("/clients/get-by-email")
+    public ClientDTO getByEmail(@RequestBody ClientDTO clientDTO) {
+        return service.getClientDTOByEmail(clientDTO.getEmail());
     }
 
     @PostMapping("/clients")
