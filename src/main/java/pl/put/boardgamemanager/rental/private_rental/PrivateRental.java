@@ -12,6 +12,9 @@ import java.util.Objects;
 @DiscriminatorValue("p")
 public class PrivateRental extends Rental {
 
+    @Column(name = "clientid", nullable = false)
+    private Long clientId;
+
     @Column(name = "rentaltime", nullable = false)
     private Timestamp rentalTime;
 
@@ -21,6 +24,14 @@ public class PrivateRental extends Rental {
     @NotBlank
     @Column(name = "status", nullable = false, length = 30)
     private String status;
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
 
     public Timestamp getRentalTime() {
         return rentalTime;
@@ -52,7 +63,8 @@ public class PrivateRental extends Rental {
         else if (getClass() != o.getClass()) return false;
         else {
             PrivateRental that = (PrivateRental) o;
-            return Objects.equals(rentalTime, that.rentalTime) &&
+            return Objects.equals(clientId, that.clientId) &&
+                    Objects.equals(rentalTime, that.rentalTime) &&
                     Objects.equals(duration, that.duration) &&
                     Objects.equals(status, that.status);
         }
@@ -60,10 +72,11 @@ public class PrivateRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, copyId, rentalTime, duration, status);
+        return Objects.hash(id, copyId, clientId, rentalTime, duration, status);
     }
 
     public void updateParamsFrom(PrivateRentalDTO dto) {
+        this.setClientId(dto.getClientId());
         this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
         this.setRentalTime(Timestamp.valueOf(dto.getRentalTime()));
@@ -74,6 +87,7 @@ public class PrivateRental extends Rental {
         PrivateRentalDTO dto = new PrivateRentalDTO();
 
         dto.setId(id);
+        dto.setClientId(clientId);
         dto.setCopyId(copyId);
         dto.setDuration(duration);
         dto.setRentalTime(rentalTime.toLocalDateTime());
@@ -81,5 +95,4 @@ public class PrivateRental extends Rental {
 
         return dto;
     }
-
 }

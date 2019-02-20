@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.person.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.rental.private_rental.PrivateRentalDTO;
 
 import java.util.List;
 
@@ -33,8 +34,13 @@ public class ClientController {
     }
 
     @GetMapping("/clients/{id}/reservations")
-    public List<ClientReservationDTO> getReservations(@PathVariable Long id) {
+    public List<ClientReservationDTO> getClientReservationDTOs(@PathVariable Long id) {
         return service.getClientReservationDTOs(id);
+    }
+
+    @GetMapping("/clients/{id}/rentals")
+    public List<PrivateRentalDTO> getRentalDTOs(@PathVariable Long id) {
+        return service.getRentalDTOs(id);
     }
 
     @GetMapping("/clients")

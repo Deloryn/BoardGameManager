@@ -26,7 +26,6 @@ public class TableService {
                 .map(Reservation::getTableId)
                 .map(tableId -> tableRepository.findById(tableId).orElse(null))
                 .collect(Collectors.toList());
-
     }
 
     public TableDTO get(Long id) {

@@ -26,54 +26,12 @@ public class TutorService {
     @Autowired
     private TournamentReservationRepository tournamentReservationRepository;
 
-    private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
-    }
-
-    private List<Tutor> getBusyTutorsAroundTime(Timestamp startTime, Integer duration) {
-
-        List<Tutor> beforeStartTime = privateReservationRepository
-                .findAllByReservationTimeBefore(startTime)
-                .stream()
-                .filter(privateReservation -> {
-                    return addToTimestamp(
-                            privateReservation.getReservationTime(),
-                            privateReservation.getDuration() * 60)
-                            .before(startTime);
-                }).map(PrivateReservation::getTutorId)
-                .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
-                .collect(Collectors.toList());
-
-        List<Tutor> afterStartTime = privateReservationRepository
-                .findAllByReservationTimeBetween(startTime, addToTimestamp(startTime, 60 * duration - 1))
-                .stream()
-                .map(PrivateReservation::getTutorId)
-                .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
-                .collect(Collectors.toList());
-
-        return Stream
-                .concat(beforeStartTime.stream(), afterStartTime.stream())
-                .collect(Collectors.toList());
-    }
-
     public TutorDTO get(Long id) {
         Tutor tutor = tutorRepository.findById(id).orElse(null);
         if (tutor == null) return null;
         else return tutor.toDTO();
     }
 
-    public List<TutorDTO> getAvailableTutorsAt(Timestamp startTime, Integer duration) {
-        List<Tutor> allTutors = tutorRepository.findAll();
-        allTutors.removeAll(getBusyTutorsAroundTime(startTime, duration));
-
-        return allTutors
-                .stream()
-                .map(Tutor::toDTO)
-                .collect(Collectors.toList());
-    }
 
     public List<TutorDTO> all() {
         return tutorRepository.findAll().stream()

@@ -6,6 +6,8 @@ public class PrivateRentalDTO {
 
     private Long id;
 
+    private Long clientId;
+
     private Long copyId;
 
     private LocalDateTime rentalTime;
@@ -20,6 +22,14 @@ public class PrivateRentalDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     public void setCopyId(Long copyId) {
@@ -53,4 +63,5 @@ public class PrivateRentalDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }

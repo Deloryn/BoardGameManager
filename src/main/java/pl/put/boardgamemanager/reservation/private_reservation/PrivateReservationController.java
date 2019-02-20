@@ -18,6 +18,11 @@ public class PrivateReservationController {
         return service.get(id);
     }
 
+    @GetMapping("/private_reservations/{id}")
+    public List<TutorDTO> getAvailableTutorsFor(@PathVariable Long id) {
+        return service.getAvailableTutorsFor(id);
+    }
+
     @GetMapping("/private_reservations")
     public List<PrivateReservationDTO> all() {
         return service.all();
