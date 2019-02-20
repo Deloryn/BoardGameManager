@@ -12,7 +12,7 @@ public class PrivateReservationDTO {
 
     private Timestamp reservationTime;
 
-    private Timestamp duration;
+    private Integer duration;
 
     public void setTableId(Long tableId) {
         this.tableId = tableId;
@@ -42,11 +42,11 @@ public class PrivateReservationDTO {
         this.reservationTime = reservationTime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

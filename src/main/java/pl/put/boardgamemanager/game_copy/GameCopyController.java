@@ -28,8 +28,8 @@ public class GameCopyController {
     }
 
     @PostMapping("/game_copies")
-    public void create(@RequestBody GameCopyDTO gameCopyDTO) {
-        service.create(gameCopyDTO);
+    public GameCopyDTO create(@RequestBody GameCopyDTO gameCopyDTO) {
+        return service.create(gameCopyDTO);
     }
 
     @PutMapping("/game_copies")

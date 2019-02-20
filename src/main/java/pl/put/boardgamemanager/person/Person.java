@@ -10,7 +10,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "role")
 public abstract class Person {
 
-    @SequenceGenerator(name = "persons_seq", sequenceName = "persons_seq")
+    @SequenceGenerator(name = "persons_seq", sequenceName = "persons_seq", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "persons_seq")
     @Column(name = "id", nullable = false)

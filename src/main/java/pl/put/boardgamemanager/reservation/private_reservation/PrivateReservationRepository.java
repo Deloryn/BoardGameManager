@@ -9,7 +9,10 @@ public interface PrivateReservationRepository extends JpaRepository<PrivateReser
 
     List<PrivateReservation> findAllByClientId(Long clientId);
 
-    List<PrivateReservation> findAllByReservationTimeAndDuration(Timestamp reservationTime, Timestamp duration);
+    List<PrivateReservation> findAllByReservationTimeAndDuration(Timestamp reservationTime, Integer duration);
+
+    List<PrivateReservation> findAllByClientIdAndReservationTimeAndDuration(Long clientId, Timestamp reservationTime, Integer duration);
+
+    List<PrivateReservation> findAllByReservationTimeBetween(Timestamp startTime, Timestamp finishTime);
 
 }
-

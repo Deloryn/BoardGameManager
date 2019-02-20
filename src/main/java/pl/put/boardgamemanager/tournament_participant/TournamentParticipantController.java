@@ -23,8 +23,8 @@ public class TournamentParticipantController {
     }
 
     @PostMapping("/tournament_participants")
-    public void create(@RequestBody TournamentParticipantDTO tournamentParticipantDTO) {
-        service.create(tournamentParticipantDTO);
+    public TournamentParticipantDTO create(@RequestBody TournamentParticipantDTO tournamentParticipantDTO) {
+        return service.create(tournamentParticipantDTO);
     }
 
     @DeleteMapping("/tournament_participants/{clientId}/{tournamentId}")

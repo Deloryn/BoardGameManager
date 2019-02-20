@@ -90,7 +90,7 @@ CREATE TABLE Tournaments
 (
   id         INT          NOT NULL,
   startTime  TIMESTAMP(0) NOT NULL,
-  finishTime TIMESTAMP(0) NOT NULL,
+  duration   INTEGER      NOT NULL,
   maxPlayers SMALLINT     NOT NULL,
   gameId     INT          NOT NULL
 );

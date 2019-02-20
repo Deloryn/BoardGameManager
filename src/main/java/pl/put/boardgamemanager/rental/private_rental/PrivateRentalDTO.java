@@ -8,7 +8,7 @@ public class PrivateRentalDTO {
 
     private Timestamp rentalTime;
 
-    private Timestamp duration;
+    private Integer duration;
 
     private String status;
 
@@ -28,11 +28,11 @@ public class PrivateRentalDTO {
         this.rentalTime = rentalTime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

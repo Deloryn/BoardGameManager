@@ -18,7 +18,7 @@ public class PrivateReservation extends Reservation {
     private Timestamp reservationTime;
 
     @Column(name = "duration", nullable = false)
-    private Timestamp duration;
+    private Integer duration;
 
     public Long getClientId() {
         return clientId;
@@ -36,11 +36,11 @@ public class PrivateReservation extends Reservation {
         this.reservationTime = reservationTime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 

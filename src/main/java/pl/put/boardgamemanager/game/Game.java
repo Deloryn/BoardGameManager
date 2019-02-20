@@ -9,7 +9,7 @@ import java.util.Objects;
 @Table(name = "games", schema = "public", catalog = "postgres")
 public class Game {
 
-    @SequenceGenerator(name = "games_seq", sequenceName = "games_seq")
+    @SequenceGenerator(name = "games_seq", sequenceName = "games_seq", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "games_seq")
     @Column(name = "id", nullable = false)

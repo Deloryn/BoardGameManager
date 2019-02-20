@@ -48,8 +48,8 @@ public class ClientController {
     }
 
     @PostMapping("/clients")
-    public void create(@RequestBody ClientDTO clientDTO) {
-        service.create(clientDTO);
+    public ClientDTO create(@RequestBody ClientDTO clientDTO) {
+        return service.create(clientDTO);
     }
 
     @PutMapping("/clients")

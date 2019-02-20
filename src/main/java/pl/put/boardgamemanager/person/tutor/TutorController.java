@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.person.tutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationDTO;
 
 import java.util.List;
 
@@ -23,8 +24,13 @@ public class TutorController {
     }
 
     @PostMapping("/tutors")
-    public void create(@RequestBody TutorDTO tutorDTO) {
-        service.create(tutorDTO);
+    public TutorDTO create(@RequestBody TutorDTO tutorDTO) {
+        return service.create(tutorDTO);
+    }
+
+    @PostMapping("/tutors/available")
+    public List<TutorDTO> getAvailableTutors(@RequestBody PrivateReservationDTO dto) {
+        return service.getAvailableTutorsAt(dto.getReservationTime(), dto.getDuration());
     }
 
     @PutMapping("/tutors")

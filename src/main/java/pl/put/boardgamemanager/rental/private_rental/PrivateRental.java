@@ -16,7 +16,7 @@ public class PrivateRental extends Rental {
     private Timestamp rentalTime;
 
     @Column(name = "duration", nullable = false)
-    private Timestamp duration;
+    private Integer duration;
 
     @NotBlank
     @Column(name = "status", nullable = false, length = 30)
@@ -30,11 +30,11 @@ public class PrivateRental extends Rental {
         this.rentalTime = rentaltime;
     }
 
-    public Timestamp getDuration() {
+    public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Timestamp duration) {
+    public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
