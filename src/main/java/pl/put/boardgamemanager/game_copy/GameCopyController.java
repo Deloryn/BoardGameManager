@@ -22,6 +22,11 @@ public class GameCopyController {
         return service.all();
     }
 
+    @GetMapping("/game_copies/count/{gameId}")
+    public Integer countGames(@PathVariable Long gameId) {
+        return service.countGames(gameId);
+    }
+
     @PostMapping("/game_copies")
     public void create(@RequestBody GameCopyDTO gameCopyDTO) {
         service.create(gameCopyDTO);

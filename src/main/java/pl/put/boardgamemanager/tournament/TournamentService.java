@@ -18,7 +18,7 @@ public class TournamentService {
         else return tournament.toDTO();
     }
 
-    public List<TournamentDTO> all() {
+    public List<TournamentDTO> getAllDTOs() {
         return repository.findAll().stream()
                 .map(Tournament::toDTO)
                 .collect(Collectors.toList());

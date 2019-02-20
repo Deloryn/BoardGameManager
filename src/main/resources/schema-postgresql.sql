@@ -30,7 +30,7 @@ CREATE TABLE Persons
   id          INT          NOT NULL,
   name        VARCHAR(100) NOT NULL,
   surname     VARCHAR(100) NOT NULL,
-  email       VARCHAR(100) NOT NULL,
+  email       VARCHAR(100) NOT NULL UNIQUE,
   phoneNumber VARCHAR(20)  NOT NULL,
   role        CHAR(1)
 );

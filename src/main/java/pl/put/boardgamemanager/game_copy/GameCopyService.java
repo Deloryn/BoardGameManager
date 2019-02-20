@@ -18,6 +18,10 @@ public class GameCopyService {
         else return gameCopy.toDTO();
     }
 
+    public Integer countGames(Long gameId) {
+        return repository.findAllByGameId(gameId).size();
+    }
+
     public List<GameCopyDTO> all() {
         return repository.findAll().stream()
                 .map(GameCopy::toDTO)
