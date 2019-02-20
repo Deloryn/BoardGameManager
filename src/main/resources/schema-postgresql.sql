@@ -5,7 +5,7 @@ CREATE TABLE Games
   publisher   VARCHAR(100) NOT NULL,
   minPlayers  SMALLINT     NOT NULL,
   maxPlayers  SMALLINT     NOT NULL,
-  avgTime     TIMESTAMP(0) NOT NULL,
+  avgTime     INTEGER      NOT NULL,
   description VARCHAR(300)
 );
 
