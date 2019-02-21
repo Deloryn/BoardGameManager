@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.person.tutor.Tutor;
 import pl.put.boardgamemanager.person.tutor.TutorDTO;
 import pl.put.boardgamemanager.person.tutor.TutorRepository;
+import pl.put.boardgamemanager.Utils;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,24 +19,6 @@ public class PrivateReservationService {
     @Autowired
     private TutorRepository tutorRepository;
 
-    private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
-    }
-
-    private Timestamp calculateFinishTime(PrivateReservation reservation) {
-        return addToTimestamp(reservation.getReservationTime(), reservation.getDuration() * 60);
-    }
-
-    private boolean isReservationDuringAnother(PrivateReservation reservation, PrivateReservation another) {
-        if (reservation.getReservationTime().before(another.getReservationTime()))
-            return calculateFinishTime(reservation).after(another.getReservationTime());
-        else
-            return reservation.getReservationTime().before(calculateFinishTime(another));
-    }
-
     private List<Tutor> getBusyTutorsForId(Long id) {
         PrivateReservation desiredReservation = privateReservationRepository.findById(id).orElse(null);
         if (desiredReservation == null) return null;
@@ -45,16 +26,12 @@ public class PrivateReservationService {
             return privateReservationRepository
                     .findAll()
                     .stream()
-                    .filter(reservation -> {
-                        return isReservationDuringAnother(reservation, desiredReservation);
-                    })
+                    .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
                     .map(PrivateReservation::getTutorId)
                     .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
                     .collect(Collectors.toList());
         }
-
     }
-
 
     public PrivateReservationDTO assignTutorFor(Long id, Long tutorId) {
         PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);

@@ -1,5 +1,6 @@
 package pl.put.boardgamemanager.tournament;
 
+import pl.put.boardgamemanager.TimeEvent;
 import pl.put.boardgamemanager.person.client.Client;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tournaments", schema = "public", catalog = "postgres")
-public class Tournament {
+public class Tournament implements TimeEvent {
 
     @SequenceGenerator(name = "tournaments_seq", sequenceName = "tournaments_seq", allocationSize = 1)
     @Id

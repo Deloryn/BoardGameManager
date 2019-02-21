@@ -1,5 +1,6 @@
 package pl.put.boardgamemanager.reservation.private_reservation;
 
+import pl.put.boardgamemanager.TimeEvent;
 import pl.put.boardgamemanager.reservation.Reservation;
 
 import javax.persistence.*;
@@ -9,13 +10,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "privatereservations", schema = "public", catalog = "postgres")
 @DiscriminatorValue("p")
-public class PrivateReservation extends Reservation {
+public class PrivateReservation extends Reservation implements TimeEvent {
 
     @Column(name = "clientid", nullable = false)
     private Long clientId;
 
     @Column(name = "reservationtime", nullable = false)
-    private Timestamp reservationTime;
+    private Timestamp startTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -28,12 +29,12 @@ public class PrivateReservation extends Reservation {
         this.clientId = clientId;
     }
 
-    public Timestamp getReservationTime() {
-        return reservationTime;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setReservationTime(Timestamp reservationTime) {
-        this.reservationTime = reservationTime;
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
     }
 
     public Integer getDuration() {
@@ -50,7 +51,7 @@ public class PrivateReservation extends Reservation {
         else if(getClass() != o.getClass()) return false;
         else {
             PrivateReservation that = (PrivateReservation) o;
-            return Objects.equals(reservationTime, that.reservationTime) &&
+            return Objects.equals(startTime, that.startTime) &&
                     Objects.equals(duration, that.duration) &&
                     Objects.equals(clientId, that.clientId);
         }
@@ -58,14 +59,14 @@ public class PrivateReservation extends Reservation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tableId, reservationTime, duration, clientId);
+        return Objects.hash(id, tableId, startTime, duration, clientId);
     }
 
     public void updateParamsFrom(PrivateReservationDTO dto) {
         this.setTableId(dto.getTableId());
         this.setTutorId(dto.getTutorId());
         this.setClientId(dto.getClientId());
-        this.setReservationTime(Timestamp.valueOf(dto.getReservationTime()));
+        this.setStartTime(Timestamp.valueOf(dto.getReservationTime()));
         this.setDuration(dto.getDuration());
     }
 
@@ -76,7 +77,7 @@ public class PrivateReservation extends Reservation {
         dto.setTableId(tableId);
         dto.setTutorId(tutorId);
         dto.setClientId(clientId);
-        dto.setReservationTime(reservationTime.toLocalDateTime());
+        dto.setReservationTime(startTime.toLocalDateTime());
         dto.setDuration(duration);
 
         return dto;
