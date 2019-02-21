@@ -1,7 +1,5 @@
 package pl.put.boardgamemanager.game;
 
-import java.sql.Timestamp;
-
 public class GameDTO {
 
     private Long id;

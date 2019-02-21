@@ -2,14 +2,12 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
-import pl.put.boardgamemanager.reservation.Reservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationRepository;
 import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
+import pl.put.boardgamemanager.Utils;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -26,33 +24,15 @@ public class TableService {
     @Autowired
     private TournamentReservationRepository tournamentReservationRepository;
 
-    private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
-    }
-
-    private Timestamp calculateFinishTime(PrivateReservation reservation) {
-        return addToTimestamp(reservation.getReservationTime(), reservation.getDuration() * 60);
-    }
-
-    private boolean isReservationDuringAnother(PrivateReservation reservation, PrivateReservation another) {
-        if (reservation.getReservationTime().before(another.getReservationTime()))
-            return calculateFinishTime(reservation).after(another.getReservationTime());
-        else
-            return reservation.getReservationTime().before(calculateFinishTime(another));
-    }
-
-    private List<Table> getReservedPrivateTablesAt(Timestamp reservationTime, Integer duration) {
+    private List<Table> getReservedPrivateTablesAt(LocalDateTime reservationTime, Integer duration) {
         PrivateReservation desiredReservation = new PrivateReservation();
-        desiredReservation.setReservationTime(reservationTime);
+        desiredReservation.setStartTime(reservationTime);
         desiredReservation.setDuration(duration);
 
         return privateReservationRepository
                 .findAll()
                 .stream()
-                .filter(reservation -> isReservationDuringAnother(reservation, desiredReservation))
+                .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
                 .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
                 .collect(Collectors.toList());
     }
@@ -65,7 +45,7 @@ public class TableService {
                 .collect(Collectors.toList());
     }
 
-    private List<Table> getReservedTablesAt(Timestamp reservationTime, Integer duration) {
+    private List<Table> getReservedTablesAt(LocalDateTime reservationTime, Integer duration) {
         return Stream
                 .concat(getReservedPrivateTablesAt(reservationTime, duration).stream(),
                         getReservedTournamentTablesAt().stream())
@@ -78,7 +58,7 @@ public class TableService {
         else return table.toDTO();
     }
 
-    public List<TableDTO> getAvailableTableDTOsAt(Timestamp reservationTime, Integer duration) {
+    public List<TableDTO> getAvailableTableDTOsAt(LocalDateTime reservationTime, Integer duration) {
         List<Table> allTables = tableRepository.findAll();
         allTables.removeAll(getReservedTablesAt(reservationTime, duration));
         return allTables.stream()

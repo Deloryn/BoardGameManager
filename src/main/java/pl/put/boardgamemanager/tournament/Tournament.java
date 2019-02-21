@@ -1,15 +1,16 @@
 package pl.put.boardgamemanager.tournament;
 
+import pl.put.boardgamemanager.TimeEvent;
 import pl.put.boardgamemanager.person.client.Client;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tournaments", schema = "public", catalog = "postgres")
-public class Tournament {
+public class Tournament implements TimeEvent {
 
     @SequenceGenerator(name = "tournaments_seq", sequenceName = "tournaments_seq", allocationSize = 1)
     @Id
@@ -21,7 +22,7 @@ public class Tournament {
     private Long gameId;
 
     @Column(name = "starttime", nullable = false)
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -51,11 +52,11 @@ public class Tournament {
         this.gameId = gameId;
     }
 
-    public Timestamp getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -103,7 +104,7 @@ public class Tournament {
     public void updateParamsFrom(TournamentDTO dto) {
         this.setGameId(dto.getGameId());
         this.setDuration(dto.getDuration());
-        this.setStartTime(Timestamp.valueOf(dto.getStartTime()));
+        this.setStartTime(dto.getStartTime());
         this.setMaxPlayers(dto.getMaxPlayers());
     }
 
@@ -113,7 +114,7 @@ public class Tournament {
         dto.setId(id);
         dto.setGameId(gameId);
         dto.setDuration(duration);
-        dto.setStartTime(startTime.toLocalDateTime());
+        dto.setStartTime(startTime);
         dto.setMaxPlayers(maxPlayers);
 
         return dto;

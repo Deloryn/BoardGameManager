@@ -9,19 +9,19 @@ import java.util.Objects;
 @Embeddable
 public class TournamentParticipantPK implements Serializable {
 
-    @Column(name = "clientId", nullable = false)
+    @Column(name = "clientid", nullable = false)
     private Long clientId;
 
     @Column(name = "tournamentid", nullable = false)
     private Long tournamentId;
 
-    TournamentParticipantPK() {
+    public TournamentParticipantPK() {
         
     }
 
-    TournamentParticipantPK(Long clientId, Long tournamentId) {
-        setClientId(clientId);
-        setTournamentId(tournamentId);
+    public TournamentParticipantPK(Long clientId, Long tournamentId) {
+        this.clientId = clientId;
+        this.tournamentId = tournamentId;
     }
 
     public Long getClientId() {

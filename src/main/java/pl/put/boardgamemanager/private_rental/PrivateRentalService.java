@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.rental.private_rental;
+package pl.put.boardgamemanager.private_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
