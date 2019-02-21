@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.tournament_reservation;
+package pl.put.boardgamemanager.tournament_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

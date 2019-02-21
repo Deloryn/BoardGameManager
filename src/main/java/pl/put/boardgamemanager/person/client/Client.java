@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "clients", schema = "public", catalog = "postgres")
 @DiscriminatorValue("c")
 public class Client extends Person {
 

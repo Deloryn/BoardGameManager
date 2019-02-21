@@ -57,11 +57,12 @@ ALTER TABLE TournamentParticipants
 
 CREATE TABLE PrivateRentals
 (
-  id        INT         NOT NULL,
-  clientId  INT         NOT NULL,
-  copyId    INT         NOT NULL,
-  duration  INT         NOT NULL,
-  status    VARCHAR(30) NOT NULL
+  id        INT          NOT NULL,
+  clientId  INT          NOT NULL,
+  copyId    INT          NOT NULL,
+  startTime TIMESTAMP(0) NOT NULL,
+  duration  INT          NOT NULL,
+  status    VARCHAR(30)  NOT NULL
 );
 
 ALTER TABLE PrivateRentals
@@ -102,8 +103,7 @@ CREATE TABLE TournamentReservations
   id           INT      NOT NULL,
   tableId      INT      NOT NULL,
   tutorId      INT,
-  tournamentId INT      NOT NULL    UNIQUE,
-  type         CHAR(1)
+  tournamentId INT      NOT NULL
 );
 
 ALTER TABLE TournamentReservations
@@ -195,20 +195,20 @@ ALTER TABLE Tournaments
 
 
 
-CREATE SEQUENCE Games_SEQ;
+CREATE SEQUENCE Games_SEQ START 101;
 
-CREATE SEQUENCE GameCopies_SEQ;
+CREATE SEQUENCE GameCopies_SEQ START 101;
 
-CREATE SEQUENCE Persons_SEQ;
+CREATE SEQUENCE Persons_SEQ START 101;
 
-CREATE SEQUENCE Tables_SEQ;
+CREATE SEQUENCE Tables_SEQ START 101;
 
-CREATE SEQUENCE Tournaments_SEQ;
+CREATE SEQUENCE Tournaments_SEQ START 101;
 
-CREATE SEQUENCE PrivateReservations_SEQ;
+CREATE SEQUENCE PrivateReservations_SEQ START 101;
 
-CREATE SEQUENCE TournamentReservations_SEQ;
+CREATE SEQUENCE TournamentReservations_SEQ START 101;
 
-CREATE SEQUENCE PrivateRentals_SEQ;
+CREATE SEQUENCE PrivateRentals_SEQ START 101;
 
-CREATE SEQUENCE TournamentRentals_SEQ;
+CREATE SEQUENCE TournamentRentals_SEQ START 101;

@@ -1,6 +1,6 @@
 package pl.put.boardgamemanager.person.client;
 
-import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
+import pl.put.boardgamemanager.private_reservation.PrivateReservation;
 
 public class ClientReservationDTO {
 

@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.private_reservation;
+package pl.put.boardgamemanager.private_reservation;
 
 import pl.put.boardgamemanager.TimeEvent;
 

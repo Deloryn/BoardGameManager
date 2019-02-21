@@ -2,7 +2,7 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationDTO;
+import pl.put.boardgamemanager.private_reservation.PrivateReservationDTO;
 
 import java.util.List;
 

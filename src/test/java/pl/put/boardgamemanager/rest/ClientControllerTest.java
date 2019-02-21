@@ -31,7 +31,7 @@ public class ClientControllerTest {
 
 
     @Test
-    public void should_fiend_all_clients() {
+    public void should_find_all_clients() {
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")

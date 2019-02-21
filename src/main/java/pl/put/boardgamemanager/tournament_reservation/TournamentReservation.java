@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.tournament_reservation;
+package pl.put.boardgamemanager.tournament_reservation;
 
 import javax.persistence.*;
 import java.util.Objects;

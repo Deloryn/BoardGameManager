@@ -30,7 +30,7 @@ public class TableControllerTest {
     }
 
     @Test
-    public void should_create_getById_update_findAll_delete(){
+    public void should_create_getById_update_findAll_delete() {
         Long id = should_create();
         should_getById(id);
         should_update(id);
@@ -130,7 +130,4 @@ public class TableControllerTest {
                 .body("$", hasSize(0))
         ;
     }
-
-
-
 }
