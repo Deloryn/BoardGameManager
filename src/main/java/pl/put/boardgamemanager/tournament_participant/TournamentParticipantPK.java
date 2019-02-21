@@ -15,6 +15,10 @@ public class TournamentParticipantPK implements Serializable {
     @Column(name = "tournamentid", nullable = false)
     private Long tournamentId;
 
+    TournamentParticipantPK() {
+        
+    }
+
     TournamentParticipantPK(Long clientId, Long tournamentId) {
         setClientId(clientId);
         setTournamentId(tournamentId);
