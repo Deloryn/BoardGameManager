@@ -28,14 +28,14 @@ public class PrivateReservationService {
     }
 
     private Timestamp calculateFinishTime(PrivateReservation reservation) {
-        return addToTimestamp(reservation.getReservationTime(), reservation.getDuration() * 60);
+        return addToTimestamp(reservation.getStartTime(), reservation.getDuration() * 60);
     }
 
     private boolean isReservationDuringAnother(PrivateReservation reservation, PrivateReservation another) {
-        if (reservation.getReservationTime().before(another.getReservationTime()))
-            return calculateFinishTime(reservation).after(another.getReservationTime());
+        if (reservation.getStartTime().before(another.getStartTime()))
+            return calculateFinishTime(reservation).after(another.getStartTime());
         else
-            return reservation.getReservationTime().before(calculateFinishTime(another));
+            return reservation.getStartTime().before(calculateFinishTime(another));
     }
 
     private List<Tutor> getBusyTutorsForId(Long id) {

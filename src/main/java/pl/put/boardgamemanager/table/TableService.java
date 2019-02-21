@@ -2,8 +2,6 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
-import pl.put.boardgamemanager.reservation.Reservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationRepository;
 import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
@@ -34,19 +32,19 @@ public class TableService {
     }
 
     private Timestamp calculateFinishTime(PrivateReservation reservation) {
-        return addToTimestamp(reservation.getReservationTime(), reservation.getDuration() * 60);
+        return addToTimestamp(reservation.getStartTime(), reservation.getDuration() * 60);
     }
 
     private boolean isReservationDuringAnother(PrivateReservation reservation, PrivateReservation another) {
-        if (reservation.getReservationTime().before(another.getReservationTime()))
-            return calculateFinishTime(reservation).after(another.getReservationTime());
+        if (reservation.getStartTime().before(another.getStartTime()))
+            return calculateFinishTime(reservation).after(another.getStartTime());
         else
-            return reservation.getReservationTime().before(calculateFinishTime(another));
+            return reservation.getStartTime().before(calculateFinishTime(another));
     }
 
     private List<Table> getReservedPrivateTablesAt(Timestamp reservationTime, Integer duration) {
         PrivateReservation desiredReservation = new PrivateReservation();
-        desiredReservation.setReservationTime(reservationTime);
+        desiredReservation.setStartTime(reservationTime);
         desiredReservation.setDuration(duration);
 
         return privateReservationRepository

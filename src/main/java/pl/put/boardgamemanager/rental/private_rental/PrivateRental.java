@@ -1,5 +1,6 @@
 package pl.put.boardgamemanager.rental.private_rental;
 
+import pl.put.boardgamemanager.TimeEvent;
 import pl.put.boardgamemanager.rental.Rental;
 
 import javax.persistence.*;
@@ -10,13 +11,13 @@ import java.util.Objects;
 @Entity
 @Table(name = "privaterentals", schema = "public", catalog = "postgres")
 @DiscriminatorValue("p")
-public class PrivateRental extends Rental {
+public class PrivateRental extends Rental implements TimeEvent {
 
     @Column(name = "clientid", nullable = false)
     private Long clientId;
 
     @Column(name = "rentaltime", nullable = false)
-    private Timestamp rentalTime;
+    private Timestamp startTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -33,12 +34,12 @@ public class PrivateRental extends Rental {
         this.clientId = clientId;
     }
 
-    public Timestamp getRentalTime() {
-        return rentalTime;
+    public Timestamp getStartTime() {
+        return startTime;
     }
 
-    public void setRentalTime(Timestamp rentaltime) {
-        this.rentalTime = rentaltime;
+    public void setStartTime(Timestamp rentaltime) {
+        this.startTime = rentaltime;
     }
 
     public Integer getDuration() {
@@ -64,7 +65,7 @@ public class PrivateRental extends Rental {
         else {
             PrivateRental that = (PrivateRental) o;
             return Objects.equals(clientId, that.clientId) &&
-                    Objects.equals(rentalTime, that.rentalTime) &&
+                    Objects.equals(startTime, that.startTime) &&
                     Objects.equals(duration, that.duration) &&
                     Objects.equals(status, that.status);
         }
@@ -72,14 +73,14 @@ public class PrivateRental extends Rental {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, copyId, clientId, rentalTime, duration, status);
+        return Objects.hash(id, copyId, clientId, startTime, duration, status);
     }
 
     public void updateParamsFrom(PrivateRentalDTO dto) {
         this.setClientId(dto.getClientId());
         this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
-        this.setRentalTime(Timestamp.valueOf(dto.getRentalTime()));
+        this.setStartTime(Timestamp.valueOf(dto.getRentalTime()));
         this.setStatus(dto.getStatus());
     }
 
@@ -90,7 +91,7 @@ public class PrivateRental extends Rental {
         dto.setClientId(clientId);
         dto.setCopyId(copyId);
         dto.setDuration(duration);
-        dto.setRentalTime(rentalTime.toLocalDateTime());
+        dto.setRentalTime(startTime.toLocalDateTime());
         dto.setStatus(status);
 
         return dto;

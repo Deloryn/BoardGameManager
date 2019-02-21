@@ -36,10 +36,10 @@ public class GameCopyService {
     private TournamentRentalRepository tournamentRentalRepository;
 
     private boolean isRentalDuringAnother(PrivateRental rental, PrivateRental another) {
-        if (rental.getRentalTime().before(another.getRentalTime()))
-            return calculateFinishTime(rental).after(another.getRentalTime());
+        if (rental.getStartTime().before(another.getStartTime()))
+            return calculateFinishTime(rental).after(another.getStartTime());
         else
-            return rental.getRentalTime().before(calculateFinishTime(another));
+            return rental.getStartTime().before(calculateFinishTime(another));
     }
 
     private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
@@ -50,7 +50,7 @@ public class GameCopyService {
     }
 
     private Timestamp calculateFinishTime(PrivateRental rental) {
-        return addToTimestamp(rental.getRentalTime(), rental.getDuration() * 60);
+        return addToTimestamp(rental.getStartTime(), rental.getDuration() * 60);
     }
 
     private List<GameCopy> getTournamentRentalGameCopies() {
@@ -64,7 +64,7 @@ public class GameCopyService {
 
     private List<GameCopy> getBusyRentalCopies(Timestamp rentalTime, Integer duration) {
         PrivateRental desiredRental = new PrivateRental();
-        desiredRental.setRentalTime(rentalTime);
+        desiredRental.setStartTime(rentalTime);
         desiredRental.setDuration(duration);
 
         return privateRentalRepository
