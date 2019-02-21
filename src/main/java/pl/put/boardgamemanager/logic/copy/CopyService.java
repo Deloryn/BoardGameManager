@@ -17,10 +17,6 @@ import pl.put.boardgamemanager.util.Utils;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,13 +111,6 @@ public class CopyService {
 
     }
 
-    public List<CopyDTO> getAvailableGameCopyDTOsFor(Timestamp startTime, Integer duration) {
-        return getAvailableGameCopiesFor(startTime, duration)
-                .stream()
-                .map(Copy::toDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(Timestamp startTime, Integer duration) {
         return getAvailableGameCopiesFor(startTime, duration)
                 .stream()
@@ -135,16 +124,9 @@ public class CopyService {
                         return dto;
                     }
                 })
-                .filter(distinctByKey(GameCopyNameDTO::getName))
+                .filter(Utils.distinctByKey(GameCopyNameDTO::getName))
                 .collect(Collectors.toList());
-
     }
-
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
 
     public CopyDTO update(CopyDTO dto) {
         return copyRepository.findById(dto.getId())

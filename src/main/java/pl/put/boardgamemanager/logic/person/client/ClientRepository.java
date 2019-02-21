@@ -5,6 +5,6 @@ import pl.put.boardgamemanager.model.person.client.Client;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    public Client findByEmail(String email);
+    Client findByEmail(String email);
 
 }

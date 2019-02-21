@@ -4,8 +4,17 @@ import pl.put.boardgamemanager.model.TimeEvent;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class Utils {
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
 
     public static boolean isEventDuringAnother(TimeEvent event, TimeEvent another) {
         if (event.getStartTime().before(another.getStartTime()))
