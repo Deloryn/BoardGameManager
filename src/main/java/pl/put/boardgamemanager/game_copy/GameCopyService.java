@@ -5,10 +5,10 @@ import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRentalRepository;
-import pl.put.boardgamemanager.rental.tournament_rental.TournamentRental;
-import pl.put.boardgamemanager.rental.tournament_rental.TournamentRentalRepository;
+import pl.put.boardgamemanager.private_rental.PrivateRental;
+import pl.put.boardgamemanager.private_rental.PrivateRentalRepository;
+import pl.put.boardgamemanager.tournament_rental.TournamentRental;
+import pl.put.boardgamemanager.tournament_rental.TournamentRentalRepository;
 import pl.put.boardgamemanager.Utils;
 
 import java.time.LocalDateTime;

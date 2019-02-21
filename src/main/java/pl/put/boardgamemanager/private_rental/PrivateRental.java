@@ -1,7 +1,6 @@
-package pl.put.boardgamemanager.rental.private_rental;
+package pl.put.boardgamemanager.private_rental;
 
 import pl.put.boardgamemanager.TimeEvent;
-import pl.put.boardgamemanager.rental.Rental;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +9,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "privaterentals", schema = "public", catalog = "postgres")
-@DiscriminatorValue("p")
-public class PrivateRental extends Rental implements TimeEvent {
+public class PrivateRental implements TimeEvent {
+
+    @SequenceGenerator(name = "privaterentals_seq", sequenceName = "privaterentals_seq", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "privaterentals_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "copyid", nullable = false)
+    private Long copyId;
 
     @Column(name = "clientid", nullable = false)
     private Long clientId;
@@ -25,6 +32,18 @@ public class PrivateRental extends Rental implements TimeEvent {
     @NotBlank
     @Column(name = "status", nullable = false, length = 30)
     private String status;
+
+    public void setId(Long id) { this.id = id; }
+
+    public Long getId() { return id; }
+
+    public void setCopyId(Long copyid) {
+        this.copyId = copyid;
+    }
+
+    public Long getCopyId() {
+        return copyId;
+    }
 
     public Long getClientId() {
         return clientId;
@@ -64,7 +83,9 @@ public class PrivateRental extends Rental implements TimeEvent {
         else if (getClass() != o.getClass()) return false;
         else {
             PrivateRental that = (PrivateRental) o;
-            return Objects.equals(clientId, that.clientId) &&
+            return Objects.equals(id, that.id) &&
+                    Objects.equals(copyId, that.copyId) &&
+                    Objects.equals(clientId, that.clientId) &&
                     Objects.equals(startTime, that.startTime) &&
                     Objects.equals(duration, that.duration) &&
                     Objects.equals(status, that.status);

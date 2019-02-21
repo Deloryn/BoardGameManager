@@ -128,8 +128,12 @@ ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Tournaments FOREIGN KEY (tournamentId)
     REFERENCES Tournaments (id);
 
-ALTER TABLE Rentals
-  ADD CONSTRAINT FK_Rentals_GameCopies FOREIGN KEY (copyId)
+ALTER TABLE PrivateRentals
+  ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
+    REFERENCES GameCopies (id);
+
+ALTER TABLE TournamentRentals
+  ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
     REFERENCES GameCopies (id);
 
 ALTER TABLE Reservations

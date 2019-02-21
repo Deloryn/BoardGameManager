@@ -3,7 +3,7 @@ package pl.put.boardgamemanager.game_copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRentalDTO;
+import pl.put.boardgamemanager.private_rental.PrivateRentalDTO;
 
 import java.util.List;
 
