@@ -1,15 +1,15 @@
 package pl.put.boardgamemanager.dto;
 
-import pl.put.boardgamemanager.model.GameCopy;
-import pl.put.boardgamemanager.model.Game;
+import pl.put.boardgamemanager.model.copy.Copy;
+import pl.put.boardgamemanager.model.game.Game;
 
 import java.util.List;
 
-public class GameWithCopiesSetDTO {
+public class GameWithCopiesSetDTO extends DTO {
 
     private Game game;
 
-    private List<GameCopy> gameCopies;
+    private List<Copy> gameCopies;
 
     public Game getGame() {
         return game;
@@ -19,11 +19,11 @@ public class GameWithCopiesSetDTO {
         this.game = game;
     }
 
-    public List<GameCopy> getGameCopies() {
+    public List<Copy> getGameCopies() {
         return gameCopies;
     }
 
-    public void setGameCopies(List<GameCopy> gameCopies) {
+    public void setGameCopies(List<Copy> gameCopies) {
         this.gameCopies = gameCopies;
     }
 

@@ -3,7 +3,7 @@ package pl.put.boardgamemanager.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TournamentDTO {
+public class TournamentDTO extends DTO {
 
     private Long id;
 

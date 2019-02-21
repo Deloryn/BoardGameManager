@@ -1,6 +1,6 @@
 package pl.put.boardgamemanager.dto;
 
-public class TournamentRentalDTO {
+public class TournamentRentalDTO extends DTO {
 
     private Long id;
 

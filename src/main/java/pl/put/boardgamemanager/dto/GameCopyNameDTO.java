@@ -1,6 +1,6 @@
 package pl.put.boardgamemanager.dto;
 
-public class GameCopyNameDTO {
+public class GameCopyNameDTO extends DTO {
 
     private String name;
 

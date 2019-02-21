@@ -2,7 +2,7 @@ package pl.put.boardgamemanager.dto;
 
 import java.time.LocalDateTime;
 
-public class PrivateReservationDTO {
+public class PrivateReservationDTO extends DTO {
 
     private Long id;
 

@@ -1,6 +1,6 @@
 package pl.put.boardgamemanager.dto;
 
-public class TutorDTO {
+public class TutorDTO extends DTO {
 
     private Long id;
 

@@ -1,8 +1,8 @@
 package pl.put.boardgamemanager.dto;
 
-import pl.put.boardgamemanager.model.PrivateReservation;
+import pl.put.boardgamemanager.model.reservation.private_reservation.PrivateReservation;
 
-public class ClientReservationDTO {
+public class ClientReservationDTO extends DTO {
 
     private PrivateReservation privateReservation;
 
