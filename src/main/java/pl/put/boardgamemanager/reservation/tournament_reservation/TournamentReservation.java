@@ -1,18 +1,42 @@
 package pl.put.boardgamemanager.reservation.tournament_reservation;
 
-import pl.put.boardgamemanager.reservation.Reservation;
-import pl.put.boardgamemanager.tournament.Tournament;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tournamentreservations", schema = "public", catalog = "postgres")
-@DiscriminatorValue("t")
-public class TournamentReservation extends Reservation {
+public class TournamentReservation {
+
+    @SequenceGenerator(name = "tournamentreservations_seq", sequenceName = "tournamentreservations_seq", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tournamentreservations_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "tableid", nullable = false)
+    private Long tableId;
+
+    @Column(name = "tutorid")
+    private Long tutorId;
 
     @Column(name = "tournamentid", nullable = false, unique = true)
     private Long tournamentId;
+
+    public void setId(Long id) { this.id = id; }
+
+    public Long getId() { return id; }
+
+    public Long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
+    }
+
+    public Long getTutorId() { return tutorId; }
+
+    public void setTutorId(Long tutorId) { this.tutorId = tutorId; }
 
     public Long getTournamentId() {
         return tournamentId;
@@ -24,12 +48,13 @@ public class TournamentReservation extends Reservation {
 
     @Override
     public boolean equals(Object o) {
-        if(!super.equals(o)) return false;
-        else if(getClass() != o.getClass()) return false;
-        else {
-            TournamentReservation that = (TournamentReservation) o;
-            return Objects.equals(tournamentId, that.tournamentId);
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TournamentReservation that = (TournamentReservation) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(tableId, that.tableId) &&
+                Objects.equals(tutorId, that.tutorId) &&
+                Objects.equals(tournamentId, that.tournamentId);
     }
 
     @Override

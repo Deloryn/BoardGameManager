@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationDTO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -26,7 +25,7 @@ public class TableController {
 
     @PostMapping("/tables/available-at")
     public List<TableDTO> getAvailableTablesAt(@RequestBody PrivateReservationDTO dto) {
-        return service.getAvailableTableDTOsAt(Timestamp.valueOf(dto.getReservationTime()), dto.getDuration());
+        return service.getAvailableTableDTOsAt(dto.getReservationTime(), dto.getDuration());
     }
 
     @PostMapping("/tables")

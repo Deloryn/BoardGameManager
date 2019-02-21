@@ -3,10 +3,8 @@ package pl.put.boardgamemanager.game_copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
-import pl.put.boardgamemanager.rental.private_rental.PrivateRentalDTO;
+import pl.put.boardgamemanager.private_rental.PrivateRentalDTO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -38,12 +36,12 @@ public class GameCopyController {
 
     @PostMapping("/game_copies/available-all")
     public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(@RequestBody PrivateRentalDTO dto) {
-        return service.getAvailableGameWithCopiesSetDTOs(Timestamp.valueOf(dto.getRentalTime()), dto.getDuration());
+        return service.getAvailableGameWithCopiesSetDTOs(dto.getRentalTime(), dto.getDuration());
     }
 
     @PostMapping("/game_copies/available-distinct")
     public List<GameCopyNameDTO> getAvailableGameCopies(@RequestBody PrivateRentalDTO dto) {
-        return service.getAvailableGameCopyNameDTOsFor(Timestamp.valueOf(dto.getRentalTime()), dto.getDuration());
+        return service.getAvailableGameCopyNameDTOsFor(dto.getRentalTime(), dto.getDuration());
     }
 
     @PutMapping("/game_copies")

@@ -2,9 +2,7 @@ package pl.put.boardgamemanager.person.tutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationDTO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RestController

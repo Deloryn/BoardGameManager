@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.rental.private_rental;
+package pl.put.boardgamemanager.private_rental;
 
 import java.time.LocalDateTime;
 

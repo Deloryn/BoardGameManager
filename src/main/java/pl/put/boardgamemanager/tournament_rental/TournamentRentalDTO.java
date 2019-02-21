@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.rental.tournament_rental;
+package pl.put.boardgamemanager.tournament_rental;
 
 public class TournamentRentalDTO {
 
