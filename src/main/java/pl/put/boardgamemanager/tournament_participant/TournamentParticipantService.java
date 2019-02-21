@@ -10,18 +10,18 @@ import java.util.stream.Collectors;
 public class TournamentParticipantService {
 
     @Autowired
-    private TournamentParticipantRepository repository;
+    private TournamentParticipantRepository tournamentParticipantRepository;
 
     public TournamentParticipantDTO get(Long clientId, Long tournamentId) {
         TournamentParticipant participant =
-                repository.findByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
+                tournamentParticipantRepository.findByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
 
         if(participant == null) return null;
         else return participant.toDTO();
     }
 
     public List<TournamentParticipantDTO> all() {
-        return repository.findAll().stream()
+        return tournamentParticipantRepository.findAll().stream()
                 .map(TournamentParticipant::toDTO)
                 .collect(Collectors.toList());
     }
@@ -29,12 +29,12 @@ public class TournamentParticipantService {
     public TournamentParticipantDTO create(TournamentParticipantDTO dto) {
         TournamentParticipant participant = new TournamentParticipant();
         participant.updateParamsFrom(dto);
-        repository.save(participant);
+        tournamentParticipantRepository.save(participant);
         return participant.toDTO();
     }
 
     public void delete(Long clientId, Long tournamentId) {
-        repository.deleteByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
+        tournamentParticipantRepository.deleteByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
     }
 
 }
