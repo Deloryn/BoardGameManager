@@ -79,8 +79,8 @@ public class PrivateRental implements TimeEvent {
 
     @Override
     public boolean equals(Object o) {
-        if(!super.equals(o)) return false;
-        else if (getClass() != o.getClass()) return false;
+        if(this == o) return true;
+        if (getClass() != o.getClass()) return false;
         else {
             PrivateRental that = (PrivateRental) o;
             return Objects.equals(id, that.id) &&

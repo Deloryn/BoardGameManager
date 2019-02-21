@@ -1,3 +1,7 @@
+-- noinspection SqlNoDataSourceInspectionForFile
+
+-- noinspection SqlDialectInspectionForFile
+
 CREATE TABLE Games
 (
   id          INT          NOT NULL,
@@ -85,7 +89,7 @@ CREATE TABLE PrivateReservations
   tableId   INT          NOT NULL,
   tutorId   INT,
   startTime TIMESTAMP(0) NOT NULL,
-  duration  INT          NOT NULL,
+  duration  INT          NOT NULL
 );
 
 ALTER TABLE PrivateReservations

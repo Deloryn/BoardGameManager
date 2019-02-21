@@ -1,7 +1,6 @@
 package pl.put.boardgamemanager.reservation.private_reservation;
 
 import pl.put.boardgamemanager.TimeEvent;
-import pl.put.boardgamemanager.reservation.Reservation;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +9,19 @@ import java.util.Objects;
 @Entity
 @Table(name = "privatereservations", schema = "public", catalog = "postgres")
 @DiscriminatorValue("p")
-public class PrivateReservation extends Reservation implements TimeEvent {
+public class PrivateReservation implements TimeEvent {
+
+    @SequenceGenerator(name = "privatereservations_seq", sequenceName = "privatereservations_seq", allocationSize = 1)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "privatereservations_seq")
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @Column(name = "tableid", nullable = false)
+    private Long tableId;
+
+    @Column(name = "tutorid")
+    private Long tutorId;
 
     @Column(name = "clientid", nullable = false)
     private Long clientId;
@@ -20,6 +31,30 @@ public class PrivateReservation extends Reservation implements TimeEvent {
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Long tableId) {
+        this.tableId = tableId;
+    }
+
+    public Long getTutorId() {
+        return tutorId;
+    }
+
+    public void setTutorId(Long tutorId) {
+        this.tutorId = tutorId;
+    }
 
     public Long getClientId() {
         return clientId;
@@ -47,19 +82,20 @@ public class PrivateReservation extends Reservation implements TimeEvent {
 
     @Override
     public boolean equals(Object o) {
-        if(!super.equals(o)) return false;
-        else if(getClass() != o.getClass()) return false;
-        else {
-            PrivateReservation that = (PrivateReservation) o;
-            return Objects.equals(startTime, that.startTime) &&
-                    Objects.equals(duration, that.duration) &&
-                    Objects.equals(clientId, that.clientId);
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PrivateReservation that = (PrivateReservation) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(tableId, that.tableId) &&
+                Objects.equals(tutorId, that.tutorId) &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(duration, that.duration) &&
+                Objects.equals(clientId, that.clientId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tableId, startTime, duration, clientId);
+        return Objects.hash(id, tableId, tutorId, startTime, duration, clientId);
     }
 
     public void updateParamsFrom(PrivateReservationDTO dto) {
