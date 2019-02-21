@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
+import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
 import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
 import pl.put.boardgamemanager.rental.private_rental.PrivateRentalRepository;
 import pl.put.boardgamemanager.rental.tournament_rental.TournamentRental;
 import pl.put.boardgamemanager.rental.tournament_rental.TournamentRentalRepository;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -97,12 +99,46 @@ public class GameCopyService {
         return gameCopy.toDTO();
     }
 
-    public List<GameCopyNameDTO> getAvailableGameCopiesFor(Timestamp startTime, Integer duration) {
+    private List<GameCopy> getAvailableGameCopiesFor(Timestamp startTime, Integer duration) {
         List<GameCopy> allCopies = gameCopyRepository.findAll();
         allCopies.removeAll(getTournamentRentalGameCopies());
         allCopies.removeAll(getBusyRentalCopies(startTime, duration));
 
-        return allCopies
+        return allCopies;
+    }
+
+    public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(Timestamp startTime, Integer duration) {
+        List<Game> allGames = gameRepository.findAll();
+
+        List<GameCopy> availableGameCopies = getAvailableGameCopiesFor(startTime, duration);
+
+        return allGames
+                .stream()
+                .map(game -> {
+                    List<GameCopy> copies = new ArrayList<>();
+                    availableGameCopies.forEach(copy -> {
+                        if(copy.getGameId().equals(game.getId())) copies.add(copy);
+                    });
+
+                    GameWithCopiesSetDTO dto = new GameWithCopiesSetDTO();
+                    dto.setGame(game);
+                    dto.setGameCopies(copies);
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+
+    }
+
+    public List<GameCopyDTO> getAvailableGameCopyDTOsFor(Timestamp startTime, Integer duration) {
+        return getAvailableGameCopiesFor(startTime, duration)
+                .stream()
+                .map(GameCopy::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(Timestamp startTime, Integer duration) {
+        return getAvailableGameCopiesFor(startTime, duration)
                 .stream()
                 .map(gameCopy -> {
                     Game game = gameRepository.findById(gameCopy.getGameId()).orElse(null);
