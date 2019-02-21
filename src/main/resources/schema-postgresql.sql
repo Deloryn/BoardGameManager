@@ -51,16 +51,30 @@ ALTER TABLE TournamentParticipants
 
 
 
-CREATE TABLE Rentals
+CREATE TABLE PrivateRentals
 (
-  id     INT NOT NULL,
-  copyId INT NOT NULL,
-  type   CHAR(1)
+  id        INT         NOT NULL,
+  clientId  INT         NOT NULL,
+  copyId    INT         NOT NULL,
+  duration  INT         NOT NULL,
+  status    VARCHAR(30) NOT NULL
 );
 
-ALTER TABLE Rentals
-  ADD CONSTRAINT PK_Rentals PRIMARY KEY (id);
+ALTER TABLE PrivateRentals
+  ADD CONSTRAINT PK_PrivateRentals PRIMARY KEY (id);
 
+
+
+
+CREATE TABLE TournamentRentals
+(
+  id           INT NOT NULL,
+  copyId       INT NOT NULL,
+  tournamentId INT NOT NULL
+);
+
+ALTER TABLE TournamentRentals
+  ADD CONSTRAINT PK_Rentals PRIMARY KEY (id);
 
 
 
