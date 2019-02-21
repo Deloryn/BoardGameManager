@@ -159,4 +159,6 @@ CREATE SEQUENCE Tournaments_SEQ;
 
 CREATE SEQUENCE Reservations_SEQ;
 
-CREATE SEQUENCE Rentals_SEQ;
+CREATE SEQUENCE PrivateRentals_SEQ;
+
+CREATE SEQUENCE TournamentRentals_SEQ;
