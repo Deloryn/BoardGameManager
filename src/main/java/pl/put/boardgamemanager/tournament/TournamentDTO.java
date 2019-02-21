@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.tournament;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class TournamentDTO {
 
@@ -13,6 +14,10 @@ public class TournamentDTO {
     private Integer duration;
 
     private Short maxPlayers;
+
+    private List<Long> tableIds;
+
+    private List<Long> copyIds;
 
     public void setId(Long id) {
         this.id = id;
@@ -54,4 +59,19 @@ public class TournamentDTO {
         this.maxPlayers = maxPlayers;
     }
 
+    public List<Long> getTableIds() {
+        return tableIds;
+    }
+
+    public void setTableIds(List<Long> tableIds) {
+        this.tableIds = tableIds;
+    }
+
+    public List<Long> getCopyIds() {
+        return copyIds;
+    }
+
+    public void setCopyIds(List<Long> copyIds) {
+        this.copyIds = copyIds;
+    }
 }
