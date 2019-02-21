@@ -4,7 +4,7 @@ import pl.put.boardgamemanager.TimeEvent;
 import pl.put.boardgamemanager.reservation.Reservation;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +16,7 @@ public class PrivateReservation extends Reservation implements TimeEvent {
     private Long clientId;
 
     @Column(name = "reservationtime", nullable = false)
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -29,11 +29,11 @@ public class PrivateReservation extends Reservation implements TimeEvent {
         this.clientId = clientId;
     }
 
-    public Timestamp getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(LocalDateTime startTime) {
         this.startTime = startTime;
     }
 
@@ -66,7 +66,7 @@ public class PrivateReservation extends Reservation implements TimeEvent {
         this.setTableId(dto.getTableId());
         this.setTutorId(dto.getTutorId());
         this.setClientId(dto.getClientId());
-        this.setStartTime(Timestamp.valueOf(dto.getReservationTime()));
+        this.setStartTime(dto.getReservationTime());
         this.setDuration(dto.getDuration());
     }
 
@@ -77,7 +77,7 @@ public class PrivateReservation extends Reservation implements TimeEvent {
         dto.setTableId(tableId);
         dto.setTutorId(tutorId);
         dto.setClientId(clientId);
-        dto.setReservationTime(startTime.toLocalDateTime());
+        dto.setReservationTime(startTime);
         dto.setDuration(duration);
 
         return dto;

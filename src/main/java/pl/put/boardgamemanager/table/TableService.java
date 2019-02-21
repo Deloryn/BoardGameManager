@@ -7,7 +7,7 @@ import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservatio
 import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
 import pl.put.boardgamemanager.Utils;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,7 +24,7 @@ public class TableService {
     @Autowired
     private TournamentReservationRepository tournamentReservationRepository;
 
-    private List<Table> getReservedPrivateTablesAt(Timestamp reservationTime, Integer duration) {
+    private List<Table> getReservedPrivateTablesAt(LocalDateTime reservationTime, Integer duration) {
         PrivateReservation desiredReservation = new PrivateReservation();
         desiredReservation.setStartTime(reservationTime);
         desiredReservation.setDuration(duration);
@@ -45,7 +45,7 @@ public class TableService {
                 .collect(Collectors.toList());
     }
 
-    private List<Table> getReservedTablesAt(Timestamp reservationTime, Integer duration) {
+    private List<Table> getReservedTablesAt(LocalDateTime reservationTime, Integer duration) {
         return Stream
                 .concat(getReservedPrivateTablesAt(reservationTime, duration).stream(),
                         getReservedTournamentTablesAt().stream())
@@ -58,7 +58,7 @@ public class TableService {
         else return table.toDTO();
     }
 
-    public List<TableDTO> getAvailableTableDTOsAt(Timestamp reservationTime, Integer duration) {
+    public List<TableDTO> getAvailableTableDTOsAt(LocalDateTime reservationTime, Integer duration) {
         List<Table> allTables = tableRepository.findAll();
         allTables.removeAll(getReservedTablesAt(reservationTime, duration));
         return allTables.stream()

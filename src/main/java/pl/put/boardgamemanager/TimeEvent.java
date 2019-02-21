@@ -1,10 +1,10 @@
 package pl.put.boardgamemanager;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 public interface TimeEvent {
 
-    Timestamp getStartTime();
+    LocalDateTime getStartTime();
     Integer getDuration();
 
 }

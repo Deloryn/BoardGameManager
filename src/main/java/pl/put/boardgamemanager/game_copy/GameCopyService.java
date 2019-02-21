@@ -11,7 +11,7 @@ import pl.put.boardgamemanager.rental.tournament_rental.TournamentRental;
 import pl.put.boardgamemanager.rental.tournament_rental.TournamentRentalRepository;
 import pl.put.boardgamemanager.Utils;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +40,7 @@ public class GameCopyService {
                 .collect(Collectors.toList());
     }
 
-    private List<GameCopy> getBusyRentalCopies(Timestamp rentalTime, Integer duration) {
+    private List<GameCopy> getBusyRentalCopies(LocalDateTime rentalTime, Integer duration) {
         PrivateRental desiredRental = new PrivateRental();
         desiredRental.setStartTime(rentalTime);
         desiredRental.setDuration(duration);
@@ -77,7 +77,7 @@ public class GameCopyService {
         return gameCopy.toDTO();
     }
 
-    private List<GameCopy> getAvailableGameCopiesFor(Timestamp startTime, Integer duration) {
+    private List<GameCopy> getAvailableGameCopiesFor(LocalDateTime startTime, Integer duration) {
         List<GameCopy> allCopies = gameCopyRepository.findAll();
         allCopies.removeAll(getTournamentRentalGameCopies());
         allCopies.removeAll(getBusyRentalCopies(startTime, duration));
@@ -85,7 +85,7 @@ public class GameCopyService {
         return allCopies;
     }
 
-    public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(Timestamp startTime, Integer duration) {
+    public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(LocalDateTime startTime, Integer duration) {
         List<Game> allGames = gameRepository.findAll();
 
         List<GameCopy> availableGameCopies = getAvailableGameCopiesFor(startTime, duration);
@@ -108,7 +108,7 @@ public class GameCopyService {
 
     }
 
-    public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(Timestamp startTime, Integer duration) {
+    public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(LocalDateTime startTime, Integer duration) {
         return getAvailableGameCopiesFor(startTime, duration)
                 .stream()
                 .map(gameCopy -> {

@@ -5,7 +5,7 @@ import pl.put.boardgamemanager.rental.Rental;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +17,7 @@ public class PrivateRental extends Rental implements TimeEvent {
     private Long clientId;
 
     @Column(name = "rentaltime", nullable = false)
-    private Timestamp startTime;
+    private LocalDateTime startTime;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -34,11 +34,11 @@ public class PrivateRental extends Rental implements TimeEvent {
         this.clientId = clientId;
     }
 
-    public Timestamp getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp rentaltime) {
+    public void setStartTime(LocalDateTime rentaltime) {
         this.startTime = rentaltime;
     }
 
@@ -80,7 +80,7 @@ public class PrivateRental extends Rental implements TimeEvent {
         this.setClientId(dto.getClientId());
         this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
-        this.setStartTime(Timestamp.valueOf(dto.getRentalTime()));
+        this.setStartTime(dto.getRentalTime());
         this.setStatus(dto.getStatus());
     }
 
@@ -91,7 +91,7 @@ public class PrivateRental extends Rental implements TimeEvent {
         dto.setClientId(clientId);
         dto.setCopyId(copyId);
         dto.setDuration(duration);
-        dto.setRentalTime(startTime.toLocalDateTime());
+        dto.setRentalTime(startTime);
         dto.setStatus(status);
 
         return dto;

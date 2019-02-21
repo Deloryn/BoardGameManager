@@ -1,7 +1,6 @@
 package pl.put.boardgamemanager;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -15,21 +14,14 @@ public class Utils {
     }
 
     public static boolean isEventDuringAnother(TimeEvent event, TimeEvent another) {
-        if (event.getStartTime().before(another.getStartTime()))
-            return calculateFinishTime(event).after(another.getStartTime());
+        if (event.getStartTime().isBefore(another.getStartTime()))
+            return calculateFinishTime(event).isAfter(another.getStartTime());
         else
-            return event.getStartTime().before(calculateFinishTime(another));
+            return event.getStartTime().isBefore(calculateFinishTime(another));
     }
 
-    private static Timestamp calculateFinishTime(TimeEvent event) {
-        return addToTimestamp(event.getStartTime(), event.getDuration() * 60);
-    }
-
-    private static Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
+    private static LocalDateTime calculateFinishTime(TimeEvent event) {
+        return event.getStartTime().plusMinutes(event.getDuration());
     }
 
 }
