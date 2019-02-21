@@ -108,13 +108,6 @@ public class GameCopyService {
 
     }
 
-    public List<GameCopyDTO> getAvailableGameCopyDTOsFor(Timestamp startTime, Integer duration) {
-        return getAvailableGameCopiesFor(startTime, duration)
-                .stream()
-                .map(GameCopy::toDTO)
-                .collect(Collectors.toList());
-    }
-
     public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(Timestamp startTime, Integer duration) {
         return getAvailableGameCopiesFor(startTime, duration)
                 .stream()

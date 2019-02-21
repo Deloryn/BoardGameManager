@@ -20,12 +20,6 @@ public class TutorService {
     @Autowired
     private TutorRepository tutorRepository;
 
-    @Autowired
-    private PrivateReservationRepository privateReservationRepository;
-
-    @Autowired
-    private TournamentReservationRepository tournamentReservationRepository;
-
     public TutorDTO get(Long id) {
         Tutor tutor = tutorRepository.findById(id).orElse(null);
         if (tutor == null) return null;
