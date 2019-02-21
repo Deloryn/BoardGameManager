@@ -15,7 +15,7 @@ public class Game {
     private Long id;
 
     @NotBlank
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100, unique = true)
     private String name;
 
     @NotBlank
