@@ -78,16 +78,32 @@ ALTER TABLE TournamentRentals
 
 
 
-CREATE TABLE Reservations
+CREATE TABLE PrivateReservations
 (
-  id      INT NOT NULL,
-  tableId INT NOT NULL,
-  tutorId INT,
-  type    CHAR(1)
+  id        INT          NOT NULL,
+  clientId  INT          NOT NULL,
+  tableId   INT          NOT NULL,
+  tutorId   INT,
+  startTime TIMESTAMP(0) NOT NULL,
+  duration  INT          NOT NULL,
 );
 
-ALTER TABLE Reservations
-  ADD CONSTRAINT PK_Reservations PRIMARY KEY (id);
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT PK_PrivateReservations PRIMARY KEY (id);
+
+
+
+CREATE TABLE TournamentReservations
+(
+  id           INT      NOT NULL,
+  tableId      INT      NOT NULL,
+  tutorId      INT,
+  tournamentId INT      NOT NULL    UNIQUE,
+  type         CHAR(1)
+);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT PK_TournamentReservations PRIMARY KEY (id);
 
 
 
@@ -132,17 +148,41 @@ ALTER TABLE PrivateRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
     REFERENCES GameCopies (id);
 
+ALTER TABLE PrivateRentals
+  ADD CONSTRAINT FK_PrivateRentals_Clients FOREIGN KEY (clientId)
+    REFERENCES Persons (id);
+
 ALTER TABLE TournamentRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
     REFERENCES GameCopies (id);
 
-ALTER TABLE Reservations
-  ADD CONSTRAINT FK_Reservations_Tables FOREIGN KEY (tableId)
+ALTER TABLE TournamentRentals
+  ADD CONSTRAINT FK_PrivateRentals_Tournaments FOREIGN KEY (tournamentId)
+    REFERENCES Tournaments (id);
+
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT FK_PrivateReservations_Tables FOREIGN KEY (tableId)
     REFERENCES Tables (id);
 
-ALTER TABLE Reservations
-  ADD CONSTRAINT FK_Reservations_Tutors FOREIGN KEY (tutorId)
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT FK_PrivateReservations_Tutors FOREIGN KEY (tutorId)
     REFERENCES Persons (id);
+
+ALTER TABLE PrivateReservations
+  ADD CONSTRAINT FK_PrivateReservations_Clients FOREIGN KEY (clientId)
+    REFERENCES Persons (id);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT FK_TournamentReservations_Tables FOREIGN KEY (tableId)
+    REFERENCES Tables (id);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT FK_TournamentReservations_Tutors FOREIGN KEY (tutorId)
+    REFERENCES Persons (id);
+
+ALTER TABLE TournamentReservations
+  ADD CONSTRAINT FK_TournamentReservations_Tournaments FOREIGN KEY (tournamentId)
+    REFERENCES Tournaments (id);
 
 ALTER TABLE Tournaments
   ADD CONSTRAINT FK_Tournaments_Games FOREIGN KEY (gameId)
@@ -161,7 +201,9 @@ CREATE SEQUENCE Tables_SEQ;
 
 CREATE SEQUENCE Tournaments_SEQ;
 
-CREATE SEQUENCE Reservations_SEQ;
+CREATE SEQUENCE PrivateReservations_SEQ;
+
+CREATE SEQUENCE TournamentReservations_SEQ;
 
 CREATE SEQUENCE PrivateRentals_SEQ;
 
