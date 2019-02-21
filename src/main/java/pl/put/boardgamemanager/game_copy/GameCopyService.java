@@ -9,15 +9,11 @@ import pl.put.boardgamemanager.rental.private_rental.PrivateRental;
 import pl.put.boardgamemanager.rental.private_rental.PrivateRentalRepository;
 import pl.put.boardgamemanager.rental.tournament_rental.TournamentRental;
 import pl.put.boardgamemanager.rental.tournament_rental.TournamentRentalRepository;
+import pl.put.boardgamemanager.Utils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,24 +30,6 @@ public class GameCopyService {
 
     @Autowired
     private TournamentRentalRepository tournamentRentalRepository;
-
-    private boolean isRentalDuringAnother(PrivateRental rental, PrivateRental another) {
-        if (rental.getStartTime().before(another.getStartTime()))
-            return calculateFinishTime(rental).after(another.getStartTime());
-        else
-            return rental.getStartTime().before(calculateFinishTime(another));
-    }
-
-    private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
-    }
-
-    private Timestamp calculateFinishTime(PrivateRental rental) {
-        return addToTimestamp(rental.getStartTime(), rental.getDuration() * 60);
-    }
 
     private List<GameCopy> getTournamentRentalGameCopies() {
         return tournamentRentalRepository
@@ -70,7 +48,7 @@ public class GameCopyService {
         return privateRentalRepository
                 .findAll()
                 .stream()
-                .filter(rental -> isRentalDuringAnother(rental, desiredRental))
+                .filter(rental -> Utils.isEventDuringAnother(rental, desiredRental))
                 .map(PrivateRental::getCopyId)
                 .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
                 .collect(Collectors.toList());
@@ -150,16 +128,10 @@ public class GameCopyService {
                         return dto;
                     }
                 })
-                .filter(distinctByKey(GameCopyNameDTO::getName))
+                .filter(Utils.distinctByKey(GameCopyNameDTO::getName))
                 .collect(Collectors.toList());
 
     }
-
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
-        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
-    }
-
 
     public GameCopyDTO update(GameCopyDTO dto) {
         return gameCopyRepository.findById(dto.getId())

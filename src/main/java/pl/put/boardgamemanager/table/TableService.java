@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationRepository;
 import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
+import pl.put.boardgamemanager.Utils;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,24 +24,6 @@ public class TableService {
     @Autowired
     private TournamentReservationRepository tournamentReservationRepository;
 
-    private Timestamp addToTimestamp(Timestamp ts, Integer seconds) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(ts.getTime());
-        cal.add(Calendar.SECOND, seconds);
-        return new Timestamp(cal.getTime().getTime());
-    }
-
-    private Timestamp calculateFinishTime(PrivateReservation reservation) {
-        return addToTimestamp(reservation.getStartTime(), reservation.getDuration() * 60);
-    }
-
-    private boolean isReservationDuringAnother(PrivateReservation reservation, PrivateReservation another) {
-        if (reservation.getStartTime().before(another.getStartTime()))
-            return calculateFinishTime(reservation).after(another.getStartTime());
-        else
-            return reservation.getStartTime().before(calculateFinishTime(another));
-    }
-
     private List<Table> getReservedPrivateTablesAt(Timestamp reservationTime, Integer duration) {
         PrivateReservation desiredReservation = new PrivateReservation();
         desiredReservation.setStartTime(reservationTime);
@@ -50,7 +32,7 @@ public class TableService {
         return privateReservationRepository
                 .findAll()
                 .stream()
-                .filter(reservation -> isReservationDuringAnother(reservation, desiredReservation))
+                .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
                 .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
                 .collect(Collectors.toList());
     }
