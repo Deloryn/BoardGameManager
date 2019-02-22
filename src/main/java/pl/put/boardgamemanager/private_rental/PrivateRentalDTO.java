@@ -16,6 +16,8 @@ public class PrivateRentalDTO {
 
     private String status;
 
+    private String readOnlyGameName;
+
     public Long getId() {
         return id;
     }
@@ -64,4 +66,11 @@ public class PrivateRentalDTO {
         this.status = status;
     }
 
+    public String getReadOnlyGameName() {
+        return readOnlyGameName;
+    }
+
+    public void setReadOnlyGameName(String readOnlyGameName) {
+        this.readOnlyGameName = readOnlyGameName;
+    }
 }
