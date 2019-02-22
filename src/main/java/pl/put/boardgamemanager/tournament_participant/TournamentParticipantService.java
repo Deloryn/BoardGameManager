@@ -3,6 +3,7 @@ package pl.put.boardgamemanager.tournament_participant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ public class TournamentParticipantService {
         return participant.toDTO();
     }
 
+    @Transactional
     public void delete(Long clientId, Long tournamentId) {
         tournamentParticipantRepository.deleteByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
     }
