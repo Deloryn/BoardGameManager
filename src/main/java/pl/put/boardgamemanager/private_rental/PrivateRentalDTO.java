@@ -10,7 +10,7 @@ public class PrivateRentalDTO {
 
     private Long copyId;
 
-    private LocalDateTime rentalTime;
+    private LocalDateTime startTime;
 
     private Integer duration;
 
@@ -40,12 +40,12 @@ public class PrivateRentalDTO {
         return copyId;
     }
 
-    public LocalDateTime getRentalTime() {
-        return rentalTime;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setRentalTime(LocalDateTime rentalTime) {
-        this.rentalTime = rentalTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public Integer getDuration() {
