@@ -33,19 +33,9 @@ public class PrivateReservationController {
         return service.create(privateReservationDTO);
     }
 
-    @PostMapping("/private_reservations/get-tutor")
-    public TutorDTO getTutorFor(@RequestBody PrivateReservationDTO dto) {
-        return service.getTutorDTOFor(dto.getId());
-    }
-
-    @PostMapping("/private_reservations/assign-tutor")
-    public PrivateReservationDTO assignTutorFor(@RequestBody PrivateReservationDTO dto) {
-        return service.assignTutorFor(dto.getId(), dto.getTutorId());
-    }
-
-    @PostMapping("/private_reservations/delete-tutor")
-    public PrivateReservationDTO deleteTutorFrom(@RequestBody PrivateReservationDTO dto) {
-        return service.deleteTutorFrom(dto.getId());
+    @GetMapping("/private_reservations/{id}/get-tutor")
+    public TutorDTO getTutorFor(@PathVariable Long id) {
+        return service.getTutorDTOFor(id);
     }
 
     @PutMapping("/private_reservations")
