@@ -43,6 +43,7 @@ public class TournamentService {
     private boolean validateTournamentDTO(TournamentDTO dto) {
 
         // TODO: again check if tables and copies are available
+        if(dto.getCopyIds() == null || dto.getTableIds() == null) return false;
 
         Integer numberOfCopies = dto.getCopyIds().size();
         if(numberOfCopies.equals(0) || dto.getTableIds().size() == 0) return false;
