@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.private_reservation.PrivateReservationRepository;
+import pl.put.boardgamemanager.tournament.Tournament;
+import pl.put.boardgamemanager.tournament.TournamentRepository;
+import pl.put.boardgamemanager.tournament_reservation.TournamentReservation;
 import pl.put.boardgamemanager.tournament_reservation.TournamentReservationRepository;
 import pl.put.boardgamemanager.Utils;
 
@@ -24,6 +27,9 @@ public class TableService {
     @Autowired
     private TournamentReservationRepository tournamentReservationRepository;
 
+    @Autowired
+    private TournamentRepository tournamentRepository;
+
     private List<Table> getReservedPrivateTablesAt(LocalDateTime reservationTime, Integer duration) {
         PrivateReservation desiredReservation = new PrivateReservation();
         desiredReservation.setStartTime(reservationTime);
@@ -37,10 +43,21 @@ public class TableService {
                 .collect(Collectors.toList());
     }
 
-    private List<Table> getReservedTournamentTablesAt() {
+    private List<Table> getReservedTournamentTablesAt(LocalDateTime reservationTime, Integer duration) {
+        PrivateReservation desiredReservation = new PrivateReservation();
+        desiredReservation.setStartTime(reservationTime);
+        desiredReservation.setDuration(duration);
         return tournamentReservationRepository
                 .findAll()
                 .stream()
+                .map(TournamentReservation::getTournamentId)
+                .map(tournamentId -> tournamentRepository.findById(tournamentId).orElse(null))
+                .collect(Collectors.toList())
+                .stream()
+                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredReservation))
+                .map(Tournament::getId)
+                .map(tournamentId -> tournamentReservationRepository.findAllByTournamentId(tournamentId))
+                .flatMap(List::stream)
                 .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
                 .collect(Collectors.toList());
     }
@@ -48,7 +65,7 @@ public class TableService {
     private List<Table> getReservedTablesAt(LocalDateTime reservationTime, Integer duration) {
         return Stream
                 .concat(getReservedPrivateTablesAt(reservationTime, duration).stream(),
-                        getReservedTournamentTablesAt().stream())
+                        getReservedTournamentTablesAt(reservationTime, duration).stream())
                 .collect(Collectors.toList());
     }
 

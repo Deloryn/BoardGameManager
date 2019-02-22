@@ -54,7 +54,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(6))
+                .body("$", hasSize(4))
         ;
     }
 
