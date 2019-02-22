@@ -62,6 +62,7 @@ public class PrivateRentalControllerTest {
                 .body("startTime", equalTo("2019-02-16T15:00:00"))
                 .body("duration", equalTo(45))
                 .body("status", equalTo("Everything is great"))
+                .body("readOnlyGameName", equalTo("Business Tour"))
                 .extract().jsonPath().getLong("id")
                 ;
 

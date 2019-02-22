@@ -19,6 +19,10 @@ public class TournamentDTO {
 
     private List<Long> copyIds;
 
+    private String readOnlyGameName;
+
+    private Integer readOnlyPlayersNumber;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -73,5 +77,21 @@ public class TournamentDTO {
 
     public void setCopyIds(List<Long> copyIds) {
         this.copyIds = copyIds;
+    }
+
+    public String getReadOnlyGameName() {
+        return readOnlyGameName;
+    }
+
+    public void setReadOnlyGameName(String readOnlyGameName) {
+        this.readOnlyGameName = readOnlyGameName;
+    }
+
+    public Integer getReadOnlyPlayersNumber() {
+        return readOnlyPlayersNumber;
+    }
+
+    public void setReadOnlyPlayersNumber(Integer readOnlyPlayersNumber) {
+        this.readOnlyPlayersNumber = readOnlyPlayersNumber;
     }
 }

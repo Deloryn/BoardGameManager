@@ -2,8 +2,11 @@ package pl.put.boardgamemanager.person.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
+import pl.put.boardgamemanager.game_copy.GameCopy;
+import pl.put.boardgamemanager.game_copy.GameCopyRepository;
 import pl.put.boardgamemanager.private_rental.PrivateRental;
 import pl.put.boardgamemanager.private_rental.PrivateRentalDTO;
 import pl.put.boardgamemanager.private_rental.PrivateRentalRepository;
@@ -28,6 +31,9 @@ public class ClientService {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private GameCopyRepository gameCopyRepository;
 
     @Autowired
     private PrivateReservationRepository privateReservationRepository;
@@ -123,6 +129,7 @@ public class ClientService {
                     .stream()
                     .filter(rental -> rental.getClientId().equals(client.getId()))
                     .map(PrivateRental::toDTO)
+                    .map(dto -> Utils.assignGameNameTo(dto, gameRepository, gameCopyRepository))
                     .collect(Collectors.toList());
         }
     }

@@ -2,6 +2,9 @@ package pl.put.boardgamemanager.private_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.Utils;
+import pl.put.boardgamemanager.game.GameRepository;
+import pl.put.boardgamemanager.game_copy.GameCopyRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,39 +13,46 @@ import java.util.stream.Collectors;
 public class PrivateRentalService {
 
     @Autowired
-    private PrivateRentalRepository repository;
+    private PrivateRentalRepository privateRentalRepository;
+
+    @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
+    private GameCopyRepository gameCopyRepository;
 
     public PrivateRentalDTO get(Long id) {
-        PrivateRental rental = repository.findById(id).orElse(null);
+        PrivateRental rental = privateRentalRepository.findById(id).orElse(null);
         if(rental == null) return null;
-        else return rental.toDTO();
+        else return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
     }
 
     public List<PrivateRentalDTO> all() {
-        return repository.findAll().stream()
+        return privateRentalRepository.findAll().stream()
                 .map(PrivateRental::toDTO)
+                .map(dto -> Utils.assignGameNameTo(dto, gameRepository, gameCopyRepository))
                 .collect(Collectors.toList());
     }
 
     public PrivateRentalDTO create(PrivateRentalDTO dto) {
         PrivateRental rental = new PrivateRental();
         rental.updateParamsFrom(dto);
-        repository.save(rental);
-        return rental.toDTO();
+        privateRentalRepository.save(rental);
+        return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
     }
 
     public PrivateRentalDTO update(PrivateRentalDTO dto) {
-        return repository.findById(dto.getId())
+        return privateRentalRepository.findById(dto.getId())
                 .map(existingRental -> {
                     existingRental.updateParamsFrom(dto);
-                    repository.save(existingRental);
-                    return existingRental.toDTO();
+                    privateRentalRepository.save(existingRental);
+                    return Utils.assignGameNameTo(existingRental.toDTO(), gameRepository, gameCopyRepository);
                 })
                 .orElseGet(() -> create(dto));
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        privateRentalRepository.deleteById(id);
     }
 
 }

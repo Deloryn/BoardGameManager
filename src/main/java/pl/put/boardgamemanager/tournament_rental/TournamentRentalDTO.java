@@ -8,6 +8,8 @@ public class TournamentRentalDTO {
 
     private Long tournamentId;
 
+    private String readOnlyGameName;
+
     public Long getId() {
         return id;
     }
@@ -32,4 +34,11 @@ public class TournamentRentalDTO {
         this.tournamentId = tournamentId;
     }
 
+    public String getReadOnlyGameName() {
+        return readOnlyGameName;
+    }
+
+    public void setReadOnlyGameName(String readOnlyGameName) {
+        this.readOnlyGameName = readOnlyGameName;
+    }
 }
