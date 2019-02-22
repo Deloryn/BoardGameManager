@@ -32,7 +32,7 @@ public class TournamentRentalService {
     }
 
     public TournamentRentalDTO update(TournamentRentalDTO dto) {
-        return repository.findById(dto.getCopyId())
+        return repository.findById(dto.getId())
                 .map(existingRental -> {
                     existingRental.updateParamsFrom(dto);
                     repository.save(existingRental);

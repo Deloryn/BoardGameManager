@@ -1,6 +1,5 @@
 package pl.put.boardgamemanager.rest;
 
-
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.json.simple.JSONObject;
@@ -19,7 +18,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class TableControllerTest {
+public class PrivateRentalControllerTest {
 
     @LocalServerPort
     int port;
@@ -34,46 +33,37 @@ public class TableControllerTest {
         Long id = should_create();
         should_getById(id);
         should_update(id);
-        should_find_all();
+        should_find_all(4);
         should_delete(id);
-        should_find_without_one();
-    }
-
-    @Test
-    public void should_find_available_at() {
-        JSONObject requestBody = new JSONObject();
-        requestBody.put("startTime", "2019-02-18T15:00:00");
-        requestBody.put("duration", "90");
-
-        given()
-                .header("Accept-Encoding", "application/json")
-                .header("Content-Type", "application/json; charset=UTF-8")
-                .body(requestBody.toJSONString())
-                .log().all()
-                .when().post("/tables/available-at")
-                .then().log().all()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("$", hasSize(4))
-        ;
+        should_find_all(3);
     }
 
     private Long should_create() {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("numberOfSits", 4);
+
+        requestBody.put("clientId", 1);
+        requestBody.put("copyId", 2);
+        requestBody.put("startTime", "2019-02-16T15:00:00");
+        requestBody.put("duration", 45);
+        requestBody.put("status", "Everything is great");
+
+
         return given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().post("/tables")
+                .when().post("/private_rentals")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("id", notNullValue())
-                .body("numberOfSits", equalTo(4))
+                .body("clientId", equalTo(1))
+                .body("startTime", equalTo("2019-02-16T15:00:00"))
+                .body("duration", equalTo(45))
+                .body("status", equalTo("Everything is great"))
                 .extract().jsonPath().getLong("id")
-        ;
+                ;
 
     }
 
@@ -82,12 +72,12 @@ public class TableControllerTest {
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .log().all()
-                .when().get("/tables/{id}", id)
+                .when().get("/private_rentals/{id}", id)
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("id", notNullValue())
-                .body("numberOfSits", equalTo(4))
+                .body("clientId", equalTo(1))
         ;
 
     }
@@ -95,32 +85,39 @@ public class TableControllerTest {
     private void should_update(Long id) {
         JSONObject requestBody = new JSONObject();
         requestBody.put("id", id);
-        requestBody.put("numberOfSits", 2);
+        requestBody.put("clientId", 7);
+        requestBody.put("copyId", 5);
+        requestBody.put("startTime", "2019-02-10T15:00:00");
+        requestBody.put("duration", 60);
+        requestBody.put("status", "Everything is not great");
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().put("/tables")
+                .when().put("/private_rentals")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("id", notNullValue())
-                .body("numberOfSits", equalTo(2))
-         ;
+                .body("clientId", equalTo(7))
+                .body("copyId", equalTo(5))
+                .body("startTime", equalTo("2019-02-10T15:00:00"))
+                .body("duration", equalTo(60))
+                .body("status", equalTo("Everything is not great"));
     }
 
 
-    private void should_find_all() {
+    private void should_find_all(Integer howMany) {
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .log().all()
-                .when().get("/tables")
+                .when().get("/private_rentals")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(10))
+                .body("$", hasSize(howMany))
         ;
     }
 
@@ -129,22 +126,9 @@ public class TableControllerTest {
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .log().all()
-                .when().delete("/tables/{id}", id)
+                .when().delete("/private_rentals/{id}", id)
                 .then().log().all()
                 .statusCode(200)
-        ;
-    }
-
-    private void should_find_without_one() {
-        given()
-                .header("Accept-Encoding", "application/json")
-                .header("Content-Type", "application/json; charset=UTF-8")
-                .log().all()
-                .when().get("/tables")
-                .then().log().all()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("$", hasSize(9))
         ;
     }
 }

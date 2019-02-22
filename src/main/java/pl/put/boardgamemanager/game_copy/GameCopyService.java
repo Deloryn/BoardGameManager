@@ -7,6 +7,8 @@ import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
 import pl.put.boardgamemanager.private_rental.PrivateRental;
 import pl.put.boardgamemanager.private_rental.PrivateRentalRepository;
+import pl.put.boardgamemanager.tournament.Tournament;
+import pl.put.boardgamemanager.tournament.TournamentRepository;
 import pl.put.boardgamemanager.tournament_rental.TournamentRental;
 import pl.put.boardgamemanager.tournament_rental.TournamentRentalRepository;
 import pl.put.boardgamemanager.Utils;
@@ -31,10 +33,21 @@ public class GameCopyService {
     @Autowired
     private TournamentRentalRepository tournamentRentalRepository;
 
-    private List<GameCopy> getTournamentRentalGameCopies() {
-        return tournamentRentalRepository
+    @Autowired
+    private TournamentRepository tournamentRepository;
+
+    private List<GameCopy> getTournamentRentalGameCopies(LocalDateTime rentalTime, Integer duration) {
+        PrivateRental desiredRental = new PrivateRental();
+        desiredRental.setStartTime(rentalTime);
+        desiredRental.setDuration(duration);
+
+        return tournamentRepository
                 .findAll()
                 .stream()
+                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredRental))
+                .map(Tournament::getId)
+                .map(tournamentId -> tournamentRentalRepository.findAllByTournamentId(tournamentId))
+                .flatMap(List::stream)
                 .map(TournamentRental::getCopyId)
                 .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
                 .collect(Collectors.toList());
@@ -79,7 +92,7 @@ public class GameCopyService {
 
     private List<GameCopy> getAvailableGameCopiesFor(LocalDateTime startTime, Integer duration) {
         List<GameCopy> allCopies = gameCopyRepository.findAll();
-        allCopies.removeAll(getTournamentRentalGameCopies());
+        allCopies.removeAll(getTournamentRentalGameCopies(startTime, duration));
         allCopies.removeAll(getBusyRentalCopies(startTime, duration));
 
         return allCopies;

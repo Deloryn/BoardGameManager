@@ -101,7 +101,7 @@ public class PrivateRental implements TimeEvent {
         this.setClientId(dto.getClientId());
         this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
-        this.setStartTime(dto.getRentalTime());
+        this.setStartTime(dto.getStartTime());
         this.setStatus(dto.getStatus());
     }
 
@@ -112,7 +112,7 @@ public class PrivateRental implements TimeEvent {
         dto.setClientId(clientId);
         dto.setCopyId(copyId);
         dto.setDuration(duration);
-        dto.setRentalTime(startTime);
+        dto.setStartTime(startTime);
         dto.setStatus(status);
 
         return dto;

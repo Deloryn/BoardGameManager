@@ -100,7 +100,7 @@ public class PrivateReservationService {
     }
 
     public PrivateReservationDTO update(PrivateReservationDTO dto) {
-        return privateReservationRepository.findById(dto.getTableId())
+        return privateReservationRepository.findById(dto.getId())
                 .map(existingReservation -> {
                     existingReservation.updateParamsFrom(dto);
                     privateReservationRepository.save(existingReservation);

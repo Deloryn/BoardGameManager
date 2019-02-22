@@ -36,12 +36,12 @@ public class GameCopyController {
 
     @PostMapping("/game_copies/available-all")
     public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(@RequestBody PrivateRentalDTO dto) {
-        return service.getAvailableGameWithCopiesSetDTOs(dto.getRentalTime(), dto.getDuration());
+        return service.getAvailableGameWithCopiesSetDTOs(dto.getStartTime(), dto.getDuration());
     }
 
     @PostMapping("/game_copies/available-distinct")
     public List<GameCopyNameDTO> getAvailableGameCopies(@RequestBody PrivateRentalDTO dto) {
-        return service.getAvailableGameCopyNameDTOsFor(dto.getRentalTime(), dto.getDuration());
+        return service.getAvailableGameCopyNameDTOsFor(dto.getStartTime(), dto.getDuration());
     }
 
     @PutMapping("/game_copies")
