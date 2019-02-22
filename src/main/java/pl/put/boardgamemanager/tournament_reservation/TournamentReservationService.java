@@ -32,6 +32,7 @@ public class TournamentReservationService {
     }
 
     public TournamentReservationDTO update(TournamentReservationDTO dto) {
+        if(dto.getId() == null) return null;
         return repository.findById(dto.getId())
                 .map(existingReservation -> {
                     existingReservation.updateParamsFrom(dto);
