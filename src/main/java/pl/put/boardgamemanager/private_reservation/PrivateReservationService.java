@@ -8,6 +8,7 @@ import pl.put.boardgamemanager.person.tutor.TutorRepository;
 import pl.put.boardgamemanager.Utils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,28 +29,9 @@ public class PrivateReservationService {
                     .stream()
                     .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
                     .map(PrivateReservation::getTutorId)
+                    .filter(Objects::nonNull)
                     .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
                     .collect(Collectors.toList());
-        }
-    }
-
-    public PrivateReservationDTO assignTutorFor(Long id, Long tutorId) {
-        PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
-        if (reservation == null) return null;
-        else {
-            reservation.setTutorId(tutorId);
-            privateReservationRepository.save(reservation);
-            return reservation.toDTO();
-        }
-    }
-
-    public PrivateReservationDTO deleteTutorFrom(Long id) {
-        PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
-        if (reservation == null) return null;
-        else {
-            reservation.setTutorId(null);
-            privateReservationRepository.save(reservation);
-            return reservation.toDTO();
         }
     }
 
@@ -62,6 +44,7 @@ public class PrivateReservationService {
     public TutorDTO getTutorDTOFor(Long id) {
         PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
         if (reservation == null) return null;
+        else if(reservation.getTutorId() == null) return null;
         else {
             Tutor tutor = tutorRepository.findById(reservation.getTutorId()).orElse(null);
             if (tutor == null) return null;
