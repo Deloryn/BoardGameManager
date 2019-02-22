@@ -30,13 +30,32 @@ public class TableControllerTest {
     }
 
     @Test
-    public void should_create_getById_update_findAll_delete(){
+    public void should_create_getById_update_findAll_delete() {
         Long id = should_create();
         should_getById(id);
         should_update(id);
         should_find_all();
         should_delete(id);
-        should_find_none();
+        should_find_without_one();
+    }
+
+    @Test
+    public void should_find_available_at() {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("startTime", "2019-02-18T15:00:00");
+        requestBody.put("duration", "90");
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .body(requestBody.toJSONString())
+                .log().all()
+                .when().post("/tables/available-at")
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(6))
+        ;
     }
 
     private Long should_create() {
@@ -103,7 +122,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(1))
+                .body("$", hasSize(10))
         ;
     }
 
@@ -118,7 +137,7 @@ public class TableControllerTest {
         ;
     }
 
-    private void should_find_none() {
+    private void should_find_without_one() {
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
@@ -127,10 +146,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(0))
+                .body("$", hasSize(9))
         ;
     }
-
-
-
 }

@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.tournament_reservation;
+package pl.put.boardgamemanager.tournament_reservation;
 
 public class TournamentReservationDTO {
 

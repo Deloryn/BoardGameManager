@@ -57,11 +57,12 @@ ALTER TABLE TournamentParticipants
 
 CREATE TABLE PrivateRentals
 (
-  id        INT         NOT NULL,
-  clientId  INT         NOT NULL,
-  copyId    INT         NOT NULL,
-  duration  INT         NOT NULL,
-  status    VARCHAR(30) NOT NULL
+  id        INT          NOT NULL,
+  clientId  INT          NOT NULL,
+  copyId    INT          NOT NULL,
+  startTime TIMESTAMP(0) NOT NULL,
+  duration  INT          NOT NULL,
+  status    VARCHAR(30)  NOT NULL
 );
 
 ALTER TABLE PrivateRentals
@@ -102,8 +103,7 @@ CREATE TABLE TournamentReservations
   id           INT      NOT NULL,
   tableId      INT      NOT NULL,
   tutorId      INT,
-  tournamentId INT      NOT NULL    UNIQUE,
-  type         CHAR(1)
+  tournamentId INT      NOT NULL
 );
 
 ALTER TABLE TournamentReservations
@@ -138,77 +138,77 @@ ALTER TABLE Tournaments
 
 ALTER TABLE GameCopies
   ADD CONSTRAINT FK_GameCopies_Games FOREIGN KEY (gameId)
-    REFERENCES Games (id);
+    REFERENCES Games (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
-    REFERENCES GameCopies (id);
+    REFERENCES GameCopies (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateRentals
   ADD CONSTRAINT FK_PrivateRentals_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
-    REFERENCES GameCopies (id);
+    REFERENCES GameCopies (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentRentals
   ADD CONSTRAINT FK_PrivateRentals_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Tables FOREIGN KEY (tableId)
-    REFERENCES Tables (id);
+    REFERENCES Tables (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Tutors FOREIGN KEY (tutorId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE SET NULL;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tables FOREIGN KEY (tableId)
-    REFERENCES Tables (id);
+    REFERENCES Tables (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tutors FOREIGN KEY (tutorId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE SET NULL;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE Tournaments
   ADD CONSTRAINT FK_Tournaments_Games FOREIGN KEY (gameId)
-    REFERENCES Games (id);
+    REFERENCES Games (id) ON DELETE CASCADE;
 
 
 
 
-CREATE SEQUENCE Games_SEQ;
+CREATE SEQUENCE Games_SEQ START 101;
 
-CREATE SEQUENCE GameCopies_SEQ;
+CREATE SEQUENCE GameCopies_SEQ START 101;
 
-CREATE SEQUENCE Persons_SEQ;
+CREATE SEQUENCE Persons_SEQ START 101;
 
-CREATE SEQUENCE Tables_SEQ;
+CREATE SEQUENCE Tables_SEQ START 101;
 
-CREATE SEQUENCE Tournaments_SEQ;
+CREATE SEQUENCE Tournaments_SEQ START 101;
 
-CREATE SEQUENCE PrivateReservations_SEQ;
+CREATE SEQUENCE PrivateReservations_SEQ START 101;
 
-CREATE SEQUENCE TournamentReservations_SEQ;
+CREATE SEQUENCE TournamentReservations_SEQ START 101;
 
-CREATE SEQUENCE PrivateRentals_SEQ;
+CREATE SEQUENCE PrivateRentals_SEQ START 101;
 
-CREATE SEQUENCE TournamentRentals_SEQ;
+CREATE SEQUENCE TournamentRentals_SEQ START 101;

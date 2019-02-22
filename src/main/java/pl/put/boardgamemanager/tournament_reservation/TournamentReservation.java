@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.tournament_reservation;
+package pl.put.boardgamemanager.tournament_reservation;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -19,7 +19,7 @@ public class TournamentReservation {
     @Column(name = "tutorid")
     private Long tutorId;
 
-    @Column(name = "tournamentid", nullable = false, unique = true)
+    @Column(name = "tournamentid", nullable = false)
     private Long tournamentId;
 
     public void setId(Long id) { this.id = id; }

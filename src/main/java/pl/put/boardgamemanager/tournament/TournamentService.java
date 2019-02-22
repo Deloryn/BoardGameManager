@@ -6,8 +6,8 @@ import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.tournament_rental.TournamentRental;
 import pl.put.boardgamemanager.tournament_rental.TournamentRentalRepository;
-import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservation;
-import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
+import pl.put.boardgamemanager.tournament_reservation.TournamentReservation;
+import pl.put.boardgamemanager.tournament_reservation.TournamentReservationRepository;
 import pl.put.boardgamemanager.table.Table;
 import pl.put.boardgamemanager.table.TableRepository;
 

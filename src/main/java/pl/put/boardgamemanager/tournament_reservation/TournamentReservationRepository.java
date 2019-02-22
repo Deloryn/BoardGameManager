@@ -1,8 +1,6 @@
-package pl.put.boardgamemanager.reservation.tournament_reservation;
+package pl.put.boardgamemanager.tournament_reservation;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface TournamentReservationRepository extends JpaRepository<TournamentReservation, Long> {
 

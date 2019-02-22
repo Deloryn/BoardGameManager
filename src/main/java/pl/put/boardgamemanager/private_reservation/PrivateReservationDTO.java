@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.private_reservation;
+package pl.put.boardgamemanager.private_reservation;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ public class PrivateReservationDTO {
 
     private Long clientId;
 
-    private LocalDateTime reservationTime;
+    private LocalDateTime startTime;
 
     private Integer duration;
 
@@ -44,12 +44,12 @@ public class PrivateReservationDTO {
         this.clientId = clientId;
     }
 
-    public LocalDateTime getReservationTime() {
-        return reservationTime;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setReservationTime(LocalDateTime reservationTime) {
-        this.reservationTime = reservationTime;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public Integer getDuration() {

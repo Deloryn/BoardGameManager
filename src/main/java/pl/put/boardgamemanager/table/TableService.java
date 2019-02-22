@@ -2,9 +2,9 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservation;
-import pl.put.boardgamemanager.reservation.private_reservation.PrivateReservationRepository;
-import pl.put.boardgamemanager.reservation.tournament_reservation.TournamentReservationRepository;
+import pl.put.boardgamemanager.private_reservation.PrivateReservation;
+import pl.put.boardgamemanager.private_reservation.PrivateReservationRepository;
+import pl.put.boardgamemanager.tournament_reservation.TournamentReservationRepository;
 import pl.put.boardgamemanager.Utils;
 
 import java.time.LocalDateTime;

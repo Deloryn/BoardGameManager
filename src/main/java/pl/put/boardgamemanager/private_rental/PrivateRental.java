@@ -23,7 +23,7 @@ public class PrivateRental implements TimeEvent {
     @Column(name = "clientid", nullable = false)
     private Long clientId;
 
-    @Column(name = "rentaltime", nullable = false)
+    @Column(name = "starttime", nullable = false)
     private LocalDateTime startTime;
 
     @Column(name = "duration", nullable = false)

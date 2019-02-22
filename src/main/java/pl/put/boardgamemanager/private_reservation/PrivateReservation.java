@@ -1,4 +1,4 @@
-package pl.put.boardgamemanager.reservation.private_reservation;
+package pl.put.boardgamemanager.private_reservation;
 
 import pl.put.boardgamemanager.TimeEvent;
 
@@ -26,7 +26,7 @@ public class PrivateReservation implements TimeEvent {
     @Column(name = "clientid", nullable = false)
     private Long clientId;
 
-    @Column(name = "reservationtime", nullable = false)
+    @Column(name = "starttime", nullable = false)
     private LocalDateTime startTime;
 
     @Column(name = "duration", nullable = false)
@@ -102,7 +102,7 @@ public class PrivateReservation implements TimeEvent {
         this.setTableId(dto.getTableId());
         this.setTutorId(dto.getTutorId());
         this.setClientId(dto.getClientId());
-        this.setStartTime(dto.getReservationTime());
+        this.setStartTime(dto.getStartTime());
         this.setDuration(dto.getDuration());
     }
 
@@ -113,7 +113,7 @@ public class PrivateReservation implements TimeEvent {
         dto.setTableId(tableId);
         dto.setTutorId(tutorId);
         dto.setClientId(clientId);
-        dto.setReservationTime(startTime);
+        dto.setStartTime(startTime);
         dto.setDuration(duration);
 
         return dto;
