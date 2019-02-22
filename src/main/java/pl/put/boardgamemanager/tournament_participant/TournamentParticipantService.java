@@ -15,7 +15,7 @@ public class TournamentParticipantService {
 
     public TournamentParticipantDTO get(Long clientId, Long tournamentId) {
         TournamentParticipant participant =
-                tournamentParticipantRepository.findByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
+                tournamentParticipantRepository.findById(new TournamentParticipantPK(clientId, tournamentId)).orElse(null);
 
         if(participant == null) return null;
         else return participant.toDTO();
@@ -36,7 +36,7 @@ public class TournamentParticipantService {
 
     @Transactional
     public void delete(Long clientId, Long tournamentId) {
-        tournamentParticipantRepository.deleteByPrimaryKey(new TournamentParticipantPK(clientId, tournamentId));
+        tournamentParticipantRepository.deleteById(new TournamentParticipantPK(clientId, tournamentId));
     }
 
 }
