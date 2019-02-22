@@ -25,7 +25,7 @@ public class TableController {
 
     @PostMapping("/tables/available-at")
     public List<TableDTO> getAvailableTablesAt(@RequestBody PrivateReservationDTO dto) {
-        return service.getAvailableTableDTOsAt(dto.getReservationTime(), dto.getDuration());
+        return service.getAvailableTableDTOsAt(dto.getStartTime(), dto.getDuration());
     }
 
     @PostMapping("/tables")

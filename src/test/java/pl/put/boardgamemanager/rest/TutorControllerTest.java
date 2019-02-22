@@ -36,7 +36,7 @@ public class TutorControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(0))
+                .body("$", hasSize(3))
         ;
     }
 

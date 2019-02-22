@@ -138,59 +138,59 @@ ALTER TABLE Tournaments
 
 ALTER TABLE GameCopies
   ADD CONSTRAINT FK_GameCopies_Games FOREIGN KEY (gameId)
-    REFERENCES Games (id);
+    REFERENCES Games (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentParticipants
   ADD CONSTRAINT FK_TournamentParticipants_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
-    REFERENCES GameCopies (id);
+    REFERENCES GameCopies (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateRentals
   ADD CONSTRAINT FK_PrivateRentals_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentRentals
   ADD CONSTRAINT FK_PrivateRentals_GameCopies FOREIGN KEY (copyId)
-    REFERENCES GameCopies (id);
+    REFERENCES GameCopies (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentRentals
   ADD CONSTRAINT FK_PrivateRentals_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Tables FOREIGN KEY (tableId)
-    REFERENCES Tables (id);
+    REFERENCES Tables (id) ON DELETE CASCADE;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Tutors FOREIGN KEY (tutorId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE SET NULL;
 
 ALTER TABLE PrivateReservations
   ADD CONSTRAINT FK_PrivateReservations_Clients FOREIGN KEY (clientId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tables FOREIGN KEY (tableId)
-    REFERENCES Tables (id);
+    REFERENCES Tables (id) ON DELETE CASCADE;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tutors FOREIGN KEY (tutorId)
-    REFERENCES Persons (id);
+    REFERENCES Persons (id) ON DELETE SET NULL;
 
 ALTER TABLE TournamentReservations
   ADD CONSTRAINT FK_TournamentReservations_Tournaments FOREIGN KEY (tournamentId)
-    REFERENCES Tournaments (id);
+    REFERENCES Tournaments (id) ON DELETE CASCADE;
 
 ALTER TABLE Tournaments
   ADD CONSTRAINT FK_Tournaments_Games FOREIGN KEY (gameId)
-    REFERENCES Games (id);
+    REFERENCES Games (id) ON DELETE CASCADE;
 
 
 

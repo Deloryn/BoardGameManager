@@ -1,3 +1,7 @@
+-- noinspection SqlDialectInspectionForFile
+
+-- noinspection SqlNoDataSourceInspectionForFile
+
 -- Here we can place initial date to insert into database
 INSERT INTO Persons(id, name, surname, email, phoneNumber, role) VALUES (1, 'Jan', 'Kowalski', 'jan.kowalski@poczta.pl', '123456789', 'c');
 INSERT INTO Persons(id, name, surname, email, phoneNumber, role) VALUES (2, 'Andrzej', 'Duda', 'duda@poczta.pl', '551456789', 'c');
@@ -41,7 +45,7 @@ INSERT INTO Tables(id, numberOfSits) VALUES (8, 5);
 INSERT INTO Tables(id, numberOfSits) VALUES (9, 8);
 
 INSERT INTO Tournaments(id, startTime, duration, maxPlayers, gameId) VALUES (1, '2019-02-18 16:00:00', 180, 4, 1);
-INSERT INTO Tournaments(id, startTime, duration, maxPlayers, gameId) VALUES (2, '2019-02-18 14:00:00', 180, 5, 2);
+INSERT INTO Tournaments(id, startTime, duration, maxPlayers, gameId) VALUES (2, '2019-02-18 14:00:00', 45, 5, 2);
 INSERT INTO Tournaments(id, startTime, duration, maxPlayers, gameId) VALUES (3, '2019-02-18 15:00:00', 240, 6, 3);
 INSERT INTO Tournaments(id, startTime, duration, maxPlayers, gameId) VALUES (4, '2019-02-18 16:00:00', 60, 8, 4);
 

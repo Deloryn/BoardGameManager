@@ -40,13 +40,13 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(1))
+                .body("$", hasSize(10))
                 .body("[0].id", notNullValue())
-                .body("[0].id", equalTo(1))
-                .body("[0].name", equalTo("Jan"))
-                .body("[0].surname", equalTo("Kowalski"))
-                .body("[0].email", equalTo("jan.kowalski@poczta.pl"))
-                .body("[0].phoneNumber", equalTo("123456789"))
+                .body("[0].id", equalTo(2))
+                .body("[0].name", equalTo("Andrzej"))
+                .body("[0].surname", equalTo("Duda"))
+                .body("[0].email", equalTo("duda@poczta.pl"))
+                .body("[0].phoneNumber", equalTo("551456789"))
         ;
     }
 
@@ -99,6 +99,78 @@ public class ClientControllerTest {
     public void should_create_and_delete_client() {
         Long id = should_create_client();
         should_delete_client(id);
+    }
+
+
+    @Test
+    public void should_get_client_reservations_by_id() {
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/reservations", 10)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(1));
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/reservations", 11)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(1));
+
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/reservations", 3)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(0));
+
+    }
+
+    @Test
+    public void should_get_available_tournaments() {
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/available-tournaments", 10)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(3));
+    }
+
+    @Test
+    public void should_get_rentals() {
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/rentals", 10)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(0));
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/rentals", 2)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("$", hasSize(1));
     }
 
     private Long should_create_client() {
