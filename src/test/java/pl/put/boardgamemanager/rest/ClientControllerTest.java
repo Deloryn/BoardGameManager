@@ -254,6 +254,39 @@ public class ClientControllerTest {
 
     }
 
+    @Test
+    public void should_check_if_client_exists() {
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/exists", 1)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body(equalTo("true"));
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/exists", 7)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body(equalTo("true"));
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .log().all()
+                .when().get("/clients/{id}/exists", 28)
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body(equalTo("false"));
+    }
+
 
 
 
