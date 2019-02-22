@@ -64,7 +64,7 @@ INSERT INTO TournamentReservations(id, tableId, tutorId, tournamentId) VALUES (3
 INSERT INTO TournamentReservations(id, tableId, tutorId, tournamentId) VALUES (4, 4, NULL, 4);
 INSERT INTO TournamentReservations(id, tableId, tutorId, tournamentId) VALUES (5, 5, 4, 4);
 
-INSERT INTO PrivateReservations(id, clientId, tableId, tutorId, startTime, duration) VALUES (1, 10, 6, NULL, '2019-02-18 09:00:00', 60);
+INSERT INTO PrivateReservations(id, clientId, tableId, tutorId, startTime, duration) VALUES (1, 10, 6, NULL, '2019-02-18 14:00:00', 90);
 INSERT INTO PrivateReservations(id, clientId, tableId, tutorId, startTime, duration) VALUES (2, 11, 7, 5, '2019-02-18 09:00:00', 60);
 
 
