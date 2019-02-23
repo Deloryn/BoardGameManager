@@ -212,3 +212,36 @@ CREATE SEQUENCE TournamentReservations_SEQ START 101;
 CREATE SEQUENCE PrivateRentals_SEQ START 101;
 
 CREATE SEQUENCE TournamentRentals_SEQ START 101;
+
+
+CREATE INDEX INDEX_Tournaments ON Tournaments(id);
+CREATE INDEX INDEX_TournamentReservations ON TournamentReservations(id);
+CREATE INDEX INDEX_TournamentRentals ON TournamentRentals(id);
+CREATE INDEX INDEX_PrivateReservations ON PrivateReservations(id);
+CREATE INDEX INDEX_PrivateRentals ON PrivateRentals(id);
+CREATE INDEX INDEX_Persons ON Persons(id);
+CREATE INDEX INDEX_Games ON Games(id);
+CREATE INDEX INDEX_GameCopies ON GameCopies(id);
+CREATE INDEX INDEX_Tables ON Tables(id);
+
+CREATE INDEX INDEX_Tournaments_Games ON Tournaments(gameId);
+CREATE INDEX INDEX_TournamentReservations_Tournaments ON TournamentReservations(tournamentId);
+CREATE INDEX INDEX_TournamentReservations_Tutors ON TournamentReservations(tutorId);
+CREATE INDEX INDEX_TournamentReservations_Tables ON TournamentReservations(tableId);
+CREATE INDEX INDEX_PrivateReservations_Clients ON PrivateReservations(clientId);
+CREATE INDEX INDEX_PrivateReservations_Tutors ON PrivateReservations(tutorId);
+CREATE INDEX INDEX_PrivateReservations_Tables ON PrivateReservations(tableId);
+CREATE INDEX INDEX_TournamentRentals_GameCopies ON TournamentRentals(copyId);
+CREATE INDEX INDEX_TournamentRentals_Tournaments ON TournamentRentals(tournamentId);
+CREATE INDEX INDEX_PrivateRentals_GameCopies ON PrivateRentals(copyId);
+CREATE INDEX INDEX_PrivateRentals_Clients ON PrivateRentals(clientId);
+CREATE INDEX INDEX_TournamentParticipants_Clients ON TournamentParticipants(clientId);
+CREATE INDEX INDEX_TournamentParticipants_Tournaments ON TournamentParticipants(tournamentId);
+CREATE INDEX INDEX_GameCopies_Games ON GameCopies(gameId);
+CREATE INDEX INDEX_Persons_Email ON Persons(email);
+CREATE INDEX INDEX_Tournaments_StartTime ON Tournaments(startTime);
+CREATE INDEX INDEX_Tournaments_Duration ON Tournaments(duration);
+CREATE INDEX INDEX_PrivateRentals_StartTime ON PrivateRentals(startTime);
+CREATE INDEX INDEX_PrivateRentals_Duration ON PrivateRentals(duration);
+CREATE INDEX INDEX_PrivateReservations_StartTime ON PrivateReservations(startTime);
+CREATE INDEX INDEX_PrivateReservations_Duration ON PrivateReservations(duration);
