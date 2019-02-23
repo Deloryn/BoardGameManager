@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.private_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.person.tutor.TutorDTO;
 
 import java.util.List;
@@ -19,18 +20,19 @@ public class PrivateReservationController {
     }
 
     @GetMapping("/private_reservations/{id}/available-tutors")
-    public List<TutorDTO> getAvailableTutorsFor(@PathVariable Long id) {
+    public ListDTO<TutorDTO> getAvailableTutorsFor(@PathVariable Long id) {
         return service.getAvailableTutorsFor(id);
     }
 
     @GetMapping("/private_reservations")
-    public List<PrivateReservationDTO> all() {
+    public ListDTO<PrivateReservationDTO> all() {
         return service.all();
     }
 
     @PostMapping("/private_reservations")
     public PrivateReservationDTO create(@RequestBody PrivateReservationDTO privateReservationDTO) {
-        return service.create(privateReservationDTO);
+        if(!privateReservationDTO.validate()) return privateReservationDTO;
+        else return service.create(privateReservationDTO);
     }
 
     @GetMapping("/private_reservations/{id}/get-tutor")
@@ -40,7 +42,12 @@ public class PrivateReservationController {
 
     @PutMapping("/private_reservations")
     public PrivateReservationDTO update(@RequestBody PrivateReservationDTO privateReservationDTO) {
-        return service.update(privateReservationDTO);
+        if(privateReservationDTO.getId() == null) {
+            privateReservationDTO.setErrorMessage("Id in updating cannot be null");
+            return privateReservationDTO;
+        }
+        if(!privateReservationDTO.validate()) return privateReservationDTO;
+        else return service.update(privateReservationDTO);
     }
 
     @DeleteMapping("/private_reservations/{id}")

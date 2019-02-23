@@ -1,6 +1,8 @@
 package pl.put.boardgamemanager.person.tutor;
 
-public class TutorDTO {
+import pl.put.boardgamemanager.DTO;
+
+public class TutorDTO extends DTO {
 
     private Long id;
 
@@ -11,6 +13,43 @@ public class TutorDTO {
     private String email;
 
     private String phoneNumber;
+
+    public boolean validate() {
+        if(name == null) {
+            this.setErrorMessage("Name cannot be null");
+            return false;
+        }
+        if(name.trim().isEmpty()) {
+            this.setErrorMessage("Name cannot be blank");
+            return false;
+        }
+        if(surname == null) {
+            this.setErrorMessage("Surname cannot be null");
+            return false;
+        }
+        if(surname.trim().isEmpty()) {
+            this.setErrorMessage("Surname cannot be blank");
+            return false;
+        }
+        if(email == null) {
+            this.setErrorMessage("Email cannot be null");
+            return false;
+        }
+        if(email.trim().isEmpty()) {
+            this.setErrorMessage("Email cannot be blank");
+            return false;
+        }
+        if(phoneNumber == null) {
+            this.setErrorMessage("Phone number cannot be null");
+            return false;
+        }
+        if(phoneNumber.trim().isEmpty()) {
+            this.setErrorMessage("Phone number cannot be blank");
+            return false;
+        }
+
+        return true;
+    }
 
     public void setId(Long id) {
         this.id = id;

@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 
@@ -18,18 +19,24 @@ public class TournamentReservationController {
     }
 
     @GetMapping("/tournament_reservations")
-    public List<TournamentReservationDTO> all() {
+    public ListDTO<TournamentReservationDTO> all() {
         return service.all();
     }
 
     @PostMapping("/tournament_reservations")
     public TournamentReservationDTO create(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
-        return service.create(tournamentReservationDTO);
+        if(!tournamentReservationDTO.validate()) return tournamentReservationDTO;
+        else return service.create(tournamentReservationDTO);
     }
 
     @PutMapping("/tournament_reservations")
     public TournamentReservationDTO update(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
-        return service.update(tournamentReservationDTO);
+        if(tournamentReservationDTO.getId() == null) {
+            tournamentReservationDTO.setErrorMessage("Id in updating cannot be null");
+            return tournamentReservationDTO;
+        }
+        if(!tournamentReservationDTO.validate()) return tournamentReservationDTO;
+        else return service.update(tournamentReservationDTO);
     }
 
     @DeleteMapping("/tournament_reservations/{id}")

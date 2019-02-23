@@ -38,7 +38,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("3"));
+                .body("value", equalTo(3));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -48,7 +48,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("2"));
+                .body("value", equalTo(2));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -58,7 +58,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("0"));
+                .body("value", equalTo(0));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -68,7 +68,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("0"));
+                .body("errorMessage", equalTo("There is no game with the given id"));
     }
 
     @Test
@@ -86,9 +86,9 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(5))
-                .body("[0].game.id", equalTo(1))
-                .body("[0].gameCopies", hasSize(2));
+                .body("values", hasSize(5))
+                .body("values[0].game.id", equalTo(1))
+                .body("values[0].gameCopies", hasSize(2));
     }
 
     @Test
@@ -106,7 +106,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(4))
+                .body("values", hasSize(4))
         ;
     }
 
@@ -182,7 +182,7 @@ public class GameCopyControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(howMany))
+                .body("values", hasSize(howMany))
         ;
     }
 

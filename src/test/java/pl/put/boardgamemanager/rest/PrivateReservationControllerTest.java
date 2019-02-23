@@ -49,7 +49,7 @@ public class PrivateReservationControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(3));
+                .body("values", hasSize(3));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class PrivateReservationControllerTest {
                 .when().get("/private_reservations/{id}/get-tutor", 1)
                 .then().log().all()
                 .statusCode(200)
-                .body(equalTo(""));
+                .body("name", equalTo(null));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -150,7 +150,7 @@ public class PrivateReservationControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(howMany))
+                .body("values", hasSize(howMany))
         ;
     }
 

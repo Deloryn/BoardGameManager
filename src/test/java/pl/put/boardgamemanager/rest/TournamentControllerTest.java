@@ -126,7 +126,7 @@ public class TournamentControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(howMany))
+                .body("values", hasSize(howMany))
         ;
     }
 

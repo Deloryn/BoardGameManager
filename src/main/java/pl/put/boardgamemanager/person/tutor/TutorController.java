@@ -2,8 +2,7 @@ package pl.put.boardgamemanager.person.tutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import pl.put.boardgamemanager.ListDTO;
 
 @RestController
 @CrossOrigin
@@ -18,18 +17,24 @@ public class TutorController {
     }
 
     @GetMapping("/tutors")
-    public List<TutorDTO> all() {
+    public ListDTO<TutorDTO> all() {
         return service.all();
     }
 
     @PostMapping("/tutors")
     public TutorDTO create(@RequestBody TutorDTO tutorDTO) {
-        return service.create(tutorDTO);
+        if(!tutorDTO.validate()) return tutorDTO;
+        else return service.create(tutorDTO);
     }
 
     @PutMapping("/tutors")
     public TutorDTO update(@RequestBody TutorDTO tutorDTO) {
-        return service.update(tutorDTO);
+        if(tutorDTO.getId() == null) {
+            tutorDTO.setErrorMessage("Id in updating cannot be null");
+            return tutorDTO;
+        }
+        if(!tutorDTO.validate()) return tutorDTO;
+        else return service.update(tutorDTO);
     }
 
     @DeleteMapping("/tutors/{id}")

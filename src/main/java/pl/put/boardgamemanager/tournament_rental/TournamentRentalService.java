@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.game_copy.GameCopyRepository;
@@ -23,15 +24,21 @@ public class TournamentRentalService {
 
     public TournamentRentalDTO get(Long id) {
         TournamentRental rental = tournamentRentalRepository.findById(id).orElse(null);
-        if(rental == null) return null;
+        if(rental == null) {
+            TournamentRentalDTO dto = new TournamentRentalDTO();
+            dto.setErrorMessage("There is no tournament rental for the given id");
+            return dto;
+        }
         else return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
     }
 
-    public List<TournamentRentalDTO> all() {
-        return tournamentRentalRepository.findAll().stream()
+    public ListDTO<TournamentRentalDTO> all() {
+        ListDTO<TournamentRentalDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(tournamentRentalRepository.findAll().stream()
                 .map(TournamentRental::toDTO)
                 .map(dto -> Utils.assignGameNameTo(dto, gameRepository, gameCopyRepository))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public TournamentRentalDTO create(TournamentRentalDTO dto) {

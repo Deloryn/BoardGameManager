@@ -40,13 +40,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(10))
-                .body("[0].id", notNullValue())
-                .body("[0].id", equalTo(2))
-                .body("[0].name", equalTo("Andrzej"))
-                .body("[0].surname", equalTo("Duda"))
-                .body("[0].email", equalTo("duda@poczta.pl"))
-                .body("[0].phoneNumber", equalTo("551456789"))
+                .body("values", hasSize(10))
         ;
     }
 
@@ -75,7 +69,7 @@ public class ClientControllerTest {
     public void should_get_client_by_email() {
 
         JSONObject requestBody = new JSONObject();
-        requestBody.put("email", "jan.kowalski@poczta.pl");
+        requestBody.put("value", "jan.kowalski@poczta.pl");
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -112,7 +106,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(1));
+                .body("values", hasSize(1));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -122,7 +116,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(1));
+                .body("values", hasSize(1));
 
 
         given()
@@ -133,7 +127,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(0));
+                .body("values", hasSize(0));
 
     }
 
@@ -147,7 +141,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(3));
+                .body("values", hasSize(3));
     }
 
     @Test
@@ -160,7 +154,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(0));
+                .body("values", hasSize(0));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -170,7 +164,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(1));
+                .body("values", hasSize(1));
     }
 
     private Long should_create_client() {
@@ -264,7 +258,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("true"));
+                .body("value", equalTo(true));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -274,7 +268,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("true"));
+                .body("value", equalTo(true));
 
         given()
                 .header("Accept-Encoding", "application/json")
@@ -284,7 +278,7 @@ public class ClientControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body(equalTo("false"));
+                .body("value", equalTo(false));
     }
 
 

@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.private_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.game_copy.GameCopyRepository;
@@ -23,15 +24,21 @@ public class PrivateRentalService {
 
     public PrivateRentalDTO get(Long id) {
         PrivateRental rental = privateRentalRepository.findById(id).orElse(null);
-        if(rental == null) return null;
+        if(rental == null) {
+            PrivateRentalDTO dto = new PrivateRentalDTO();
+            dto.setErrorMessage("There is no private rental with the given id");
+            return dto;
+        }
         else return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
     }
 
-    public List<PrivateRentalDTO> all() {
-        return privateRentalRepository.findAll().stream()
+    public ListDTO<PrivateRentalDTO> all() {
+        ListDTO<PrivateRentalDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(privateRentalRepository.findAll().stream()
                 .map(PrivateRental::toDTO)
                 .map(dto -> Utils.assignGameNameTo(dto, gameRepository, gameCopyRepository))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public PrivateRentalDTO create(PrivateRentalDTO dto) {

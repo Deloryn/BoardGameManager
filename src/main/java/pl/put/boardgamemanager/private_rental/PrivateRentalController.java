@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.private_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 
@@ -18,18 +19,24 @@ public class PrivateRentalController {
     }
 
     @GetMapping("/private_rentals")
-    public List<PrivateRentalDTO> all() {
+    public ListDTO<PrivateRentalDTO> all() {
         return service.all();
     }
 
     @PostMapping("/private_rentals")
     public PrivateRentalDTO create(@RequestBody PrivateRentalDTO privateRentalDTO) {
-        return service.create(privateRentalDTO);
+        if(!privateRentalDTO.validate()) return privateRentalDTO;
+        else return service.create(privateRentalDTO);
     }
 
     @PutMapping("/private_rentals")
     public PrivateRentalDTO update(@RequestBody PrivateRentalDTO privateRentalDTO) {
-        return service.update(privateRentalDTO);
+        if(privateRentalDTO.getId() == null) {
+            privateRentalDTO.setErrorMessage("Id in updating cannot be null");
+            return privateRentalDTO;
+        }
+        if(!privateRentalDTO.validate()) return privateRentalDTO;
+        else return service.update(privateRentalDTO);
     }
 
     @DeleteMapping("/private_rentals/{id}")

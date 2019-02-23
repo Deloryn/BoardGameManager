@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,14 +15,19 @@ public class GameService {
 
     public GameDTO get(Long id) {
         Game game = repository.findById(id).orElse(null);
-        if(game == null) return null;
-        else return game.toDTO();
+        if (game == null) {
+            GameDTO dto = new GameDTO();
+            dto.setErrorMessage("There is no game with the given id");
+            return dto;
+        } else return game.toDTO();
     }
 
-    public List<GameDTO> all() {
-        return repository.findAll().stream()
+    public ListDTO<GameDTO> all() {
+        ListDTO<GameDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(repository.findAll().stream()
                 .map(Game::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public GameDTO create(GameDTO dto) {

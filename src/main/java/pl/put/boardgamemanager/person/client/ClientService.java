@@ -2,10 +2,11 @@ package pl.put.boardgamemanager.person.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ValueDTO;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
-import pl.put.boardgamemanager.game_copy.GameCopy;
 import pl.put.boardgamemanager.game_copy.GameCopyRepository;
 import pl.put.boardgamemanager.private_rental.PrivateRental;
 import pl.put.boardgamemanager.private_rental.PrivateRentalDTO;
@@ -17,6 +18,7 @@ import pl.put.boardgamemanager.table.TableRepository;
 import pl.put.boardgamemanager.tournament.Tournament;
 import pl.put.boardgamemanager.tournament.TournamentRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,63 +83,90 @@ public class ClientService {
 
     public ClientDTO getClientDTOById(Long id) {
         Client client = clientRepository.findById(id).orElse(null);
-        if (client == null) return null;
-        else return client.toDTO();
+        if (client == null) {
+            ClientDTO dto = new ClientDTO();
+            dto.setErrorMessage("There is no client with the given id");
+            return dto;
+        } else return client.toDTO();
     }
 
     public ClientDTO getClientDTOByEmail(String email) {
         Client client = clientRepository.findByEmail(email);
-        if (client == null) return null;
-        else return client.toDTO();
+        if (client == null) {
+            ClientDTO dto = new ClientDTO();
+            dto.setErrorMessage("There is no client with the given id");
+            return dto;
+        } else return client.toDTO();
     }
 
-    public Boolean exists(Long id) {
-        return clientRepository.existsById(id);
+    public ValueDTO<Boolean> exists(Long id) {
+        ValueDTO<Boolean> resultDTO = new ValueDTO<>();
+        resultDTO.setValue(clientRepository.existsById(id));
+        return resultDTO;
     }
 
-    public List<ClientTournamentDTO> getParticipatedTournamentDTOs(Long id) {
+    public ListDTO<ClientTournamentDTO> getParticipatedTournamentDTOs(Long id) {
+        ListDTO<ClientTournamentDTO> resultDTO = new ListDTO<>();
+
         Client client = clientRepository.findById(id).orElse(null);
-        if (client == null) return null;
-        else return client.getTournaments().stream()
+        if (client == null) {
+            resultDTO.setValues(Collections.emptyList());
+            resultDTO.setErrorMessage("There is no client with the given id");
+        } else resultDTO.setValues(client.getTournaments().stream()
                 .map(this::tournamentToClientTournamentDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+        return resultDTO;
     }
 
-    public List<ClientTournamentDTO> getAvailableTournamentDTOs(Long id) {
-        return getNotParticipatedTournaments(id).stream()
-                .filter(x -> x.getParticipants().size() < x.getMaxPlayers())
-                .map(this::tournamentToClientTournamentDTO)
-                .collect(Collectors.toList());
-    }
-
-    public List<ClientReservationDTO> getClientReservationDTOs(Long id) {
+    public ListDTO<ClientTournamentDTO> getAvailableTournamentDTOs(Long id) {
+        ListDTO<ClientTournamentDTO> resultDTO = new ListDTO<>();
         Client client = clientRepository.findById(id).orElse(null);
-        if (client == null) return null;
-        else {
-            return privateReservationRepository.findAllByClientId(id).stream()
-                    .map(this::reservationToClientReservationDTO)
-                    .collect(Collectors.toList());
+        if (client == null) {
+            resultDTO.setErrorMessage("There is no client with the given id");
+        } else {
+            resultDTO.setValues(getNotParticipatedTournaments(id).stream()
+                    .filter(x -> x.getParticipants().size() < x.getMaxPlayers())
+                    .map(this::tournamentToClientTournamentDTO)
+                    .collect(Collectors.toList()));
         }
+        return resultDTO;
     }
 
-    public List<PrivateRentalDTO> getRentalDTOs(Long id) {
+    public ListDTO<ClientReservationDTO> getClientReservationDTOs(Long id) {
+        ListDTO<ClientReservationDTO> resultDTO = new ListDTO<>();
         Client client = clientRepository.findById(id).orElse(null);
-        if(client == null) return null;
+        if (client == null) resultDTO.setErrorMessage("There is no client with the given id");
         else {
-            return privateRentalRepository
+            resultDTO.setValues(privateReservationRepository.findAllByClientId(id).stream()
+                    .map(this::reservationToClientReservationDTO)
+                    .collect(Collectors.toList()));
+        }
+        return resultDTO;
+    }
+
+    public ListDTO<PrivateRentalDTO> getRentalDTOs(Long id) {
+        ListDTO<PrivateRentalDTO> resultDTO = new ListDTO<>();
+        Client client = clientRepository.findById(id).orElse(null);
+        if (client == null) resultDTO.setErrorMessage("There is no client with the given id");
+        else {
+            resultDTO.setValues(privateRentalRepository
                     .findAll()
                     .stream()
                     .filter(rental -> rental.getClientId().equals(client.getId()))
                     .map(PrivateRental::toDTO)
                     .map(dto -> Utils.assignGameNameTo(dto, gameRepository, gameCopyRepository))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList()));
         }
+        return resultDTO;
     }
 
-    public List<ClientDTO> all() {
-        return clientRepository.findAll().stream()
+    public ListDTO<ClientDTO> all() {
+        ListDTO<ClientDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(clientRepository.findAll().stream()
                 .map(Client::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public ClientDTO create(ClientDTO dto) {

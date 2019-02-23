@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.game;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 
@@ -18,18 +19,24 @@ public class GameController {
     }
 
     @GetMapping("/games")
-    public List<GameDTO> all() {
+    public ListDTO<GameDTO> all() {
         return service.all();
     }
 
     @PostMapping("/games")
     public GameDTO create(@RequestBody GameDTO gameDTO) {
-        return service.create(gameDTO);
+        if(!gameDTO.validate()) return gameDTO;
+        else return service.create(gameDTO);
     }
 
     @PutMapping("/games")
     public GameDTO update(@RequestBody GameDTO gameDTO) {
-        return service.update(gameDTO);
+        if(gameDTO.getId() == null) {
+            gameDTO.setErrorMessage("Id in updating cannot be null");
+            return gameDTO;
+        }
+        if(!gameDTO.validate()) return gameDTO;
+        else return service.update(gameDTO);
     }
 
     @DeleteMapping("/games/{id}")
