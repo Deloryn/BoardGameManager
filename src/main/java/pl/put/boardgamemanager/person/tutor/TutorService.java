@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.person.tutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,15 +15,21 @@ public class TutorService {
 
     public TutorDTO get(Long id) {
         Tutor tutor = tutorRepository.findById(id).orElse(null);
-        if (tutor == null) return null;
+        if (tutor == null) {
+            TutorDTO dto = new TutorDTO();
+            dto.setErrorMessage("There is no tutor with the given id");
+            return dto;
+        }
         else return tutor.toDTO();
     }
 
 
-    public List<TutorDTO> all() {
-        return tutorRepository.findAll().stream()
+    public ListDTO<TutorDTO> all() {
+        ListDTO<TutorDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(tutorRepository.findAll().stream()
                 .map(Tutor::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public TutorDTO create(TutorDTO dto) {

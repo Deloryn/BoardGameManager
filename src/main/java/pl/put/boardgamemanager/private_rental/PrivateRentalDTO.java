@@ -1,8 +1,10 @@
 package pl.put.boardgamemanager.private_rental;
 
+import pl.put.boardgamemanager.DTO;
+
 import java.time.LocalDateTime;
 
-public class PrivateRentalDTO {
+public class PrivateRentalDTO extends DTO {
 
     private Long id;
 
@@ -17,6 +19,39 @@ public class PrivateRentalDTO {
     private String status;
 
     private String readOnlyGameName;
+
+    @Override
+    public boolean validate() {
+        if(clientId == null) {
+            this.setErrorMessage("clientId cannot be null");
+            return false;
+        }
+        if(copyId == null) {
+            this.setErrorMessage("copyId cannot be null");
+            return false;
+        }
+        if(startTime == null) {
+            this.setErrorMessage("Start time cannot be null");
+            return false;
+        }
+        if(duration == null) {
+            this.setErrorMessage("Duration cannot be null");
+            return false;
+        }
+        if(duration <= 0) {
+            this.setErrorMessage("Duration must be greater than 0");
+            return false;
+        }
+        if(status == null) {
+            this.setErrorMessage("Status cannot be null");
+            return false;
+        }
+        if(status.trim().isEmpty()) {
+            this.setErrorMessage("Status cannot be blank");
+            return false;
+        }
+        return true;
+    }
 
     public Long getId() {
         return id;

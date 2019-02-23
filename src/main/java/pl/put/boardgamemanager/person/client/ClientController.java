@@ -2,9 +2,9 @@ package pl.put.boardgamemanager.person.client;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ValueDTO;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.private_rental.PrivateRentalDTO;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -19,48 +19,59 @@ public class ClientController {
     }
 
     @GetMapping("/clients/{id}/exists")
-    public Boolean exists(@PathVariable Long id) {
+    public ValueDTO<Boolean> exists(@PathVariable Long id) {
         return service.exists(id);
     }
 
     @GetMapping("/clients/{id}/participated-tournaments")
-    public List<ClientTournamentDTO> getParticipatedTournamentDTOs(@PathVariable Long id) {
+    public ListDTO<ClientTournamentDTO> getParticipatedTournamentDTOs(@PathVariable Long id) {
         return service.getParticipatedTournamentDTOs(id);
     }
 
     @GetMapping("/clients/{id}/available-tournaments")
-    public List<ClientTournamentDTO> getAvailableTournamentDTOs(@PathVariable Long id) {
+    public ListDTO<ClientTournamentDTO> getAvailableTournamentDTOs(@PathVariable Long id) {
         return service.getAvailableTournamentDTOs(id);
     }
 
     @GetMapping("/clients/{id}/reservations")
-    public List<ClientReservationDTO> getClientReservationDTOs(@PathVariable Long id) {
+    public ListDTO<ClientReservationDTO> getClientReservationDTOs(@PathVariable Long id) {
         return service.getClientReservationDTOs(id);
     }
 
     @GetMapping("/clients/{id}/rentals")
-    public List<PrivateRentalDTO> getRentalDTOs(@PathVariable Long id) {
+    public ListDTO<PrivateRentalDTO> getRentalDTOs(@PathVariable Long id) {
         return service.getRentalDTOs(id);
     }
 
     @GetMapping("/clients")
-    public List<ClientDTO> all() {
+    public ListDTO<ClientDTO> all() {
         return service.all();
     }
 
     @PostMapping("/clients/get-by-email")
-    public ClientDTO getByEmail(@RequestBody ClientDTO clientDTO) {
-        return service.getClientDTOByEmail(clientDTO.getEmail());
+    public ClientDTO getByEmail(@RequestBody ValueDTO<String> valueDTO) {
+        if(!valueDTO.validate()) {
+            ClientDTO resultDTO = new ClientDTO();
+            resultDTO.setErrorMessage(valueDTO.getErrorMessage());
+            return resultDTO;
+        }
+        else return service.getClientDTOByEmail(valueDTO.getValue());
     }
 
     @PostMapping("/clients")
     public ClientDTO create(@RequestBody ClientDTO clientDTO) {
-        return service.create(clientDTO);
+        if(!clientDTO.validate()) return clientDTO;
+        else return service.create(clientDTO);
     }
 
     @PutMapping("/clients")
     public ClientDTO update(@RequestBody ClientDTO clientDTO) {
-        return service.update(clientDTO);
+        if(clientDTO.getId() == null) {
+            clientDTO.setErrorMessage("Id in updating cannot be null");
+            return clientDTO;
+        }
+        if(!clientDTO.validate()) return clientDTO;
+        else return service.update(clientDTO);
     }
 
     @DeleteMapping("/clients/{id}")

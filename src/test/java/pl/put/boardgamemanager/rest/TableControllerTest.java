@@ -54,7 +54,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(4))
+                .body("values", hasSize(4))
         ;
     }
 
@@ -120,7 +120,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(10))
+                .body("values", hasSize(10))
         ;
     }
 
@@ -144,7 +144,7 @@ public class TableControllerTest {
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("$", hasSize(9))
+                .body("values", hasSize(9))
         ;
     }
 }

@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament_participant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 
@@ -18,12 +19,13 @@ public class TournamentParticipantController {
     }
 
     @GetMapping("/tournament_participants")
-    public List<TournamentParticipantDTO> all() {
+    public ListDTO<TournamentParticipantDTO> all() {
         return service.all();
     }
 
     @PostMapping("/tournament_participants")
     public TournamentParticipantDTO create(@RequestBody TournamentParticipantDTO tournamentParticipantDTO) {
+        if(!tournamentParticipantDTO.validate()) return tournamentParticipantDTO;
         return service.create(tournamentParticipantDTO);
     }
 

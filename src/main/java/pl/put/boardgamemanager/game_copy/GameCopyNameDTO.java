@@ -1,10 +1,28 @@
 package pl.put.boardgamemanager.game_copy;
 
-public class GameCopyNameDTO {
+import pl.put.boardgamemanager.DTO;
+
+public class GameCopyNameDTO  extends DTO {
 
     private String name;
 
     private Long copyId;
+
+    public boolean validate() {
+        if(name == null) {
+            this.setErrorMessage("Name cannot be null");
+            return false;
+        }
+        if(name.trim().isEmpty()) {
+            this.setErrorMessage("Name cannot be blank");
+            return false;
+        }
+        if(copyId == null) {
+            this.setErrorMessage("copyId cannot be null");
+            return false;
+        }
+        return true;
+    }
 
     public String getName() {
         return name;

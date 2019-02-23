@@ -2,6 +2,8 @@ package pl.put.boardgamemanager.game_copy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
+import pl.put.boardgamemanager.ValueDTO;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
@@ -69,18 +71,27 @@ public class GameCopyService {
 
     public GameCopyDTO get(Long id) {
         GameCopy gameCopy = gameCopyRepository.findById(id).orElse(null);
-        if(gameCopy == null) return null;
-        else return gameCopy.toDTO();
+        if (gameCopy == null) {
+            GameCopyDTO dto = new GameCopyDTO();
+            dto.setErrorMessage("There is no game copy with the given id");
+            return dto;
+        } else return gameCopy.toDTO();
     }
 
-    public Integer countGames(Long gameId) {
-        return gameCopyRepository.findAllByGameId(gameId).size();
+    public ValueDTO<Integer> countGames(Long gameId) {
+        ValueDTO<Integer> resultDTO = new ValueDTO<>();
+        Game game = gameRepository.findById(gameId).orElse(null);
+        if(game == null) resultDTO.setErrorMessage("There is no game with the given id");
+        else resultDTO.setValue(gameCopyRepository.findAllByGameId(gameId).size());
+        return resultDTO;
     }
 
-    public List<GameCopyDTO> all() {
-        return gameCopyRepository.findAll().stream()
+    public ListDTO<GameCopyDTO> all() {
+        ListDTO<GameCopyDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(gameCopyRepository.findAll().stream()
                 .map(GameCopy::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public GameCopyDTO create(GameCopyDTO dto) {
@@ -98,17 +109,18 @@ public class GameCopyService {
         return allCopies;
     }
 
-    public List<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(LocalDateTime startTime, Integer duration) {
+    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(LocalDateTime startTime, Integer duration) {
         List<Game> allGames = gameRepository.findAll();
 
         List<GameCopy> availableGameCopies = getAvailableGameCopiesFor(startTime, duration);
 
-        return allGames
+        ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(allGames
                 .stream()
                 .map(game -> {
                     List<GameCopy> copies = new ArrayList<>();
                     availableGameCopies.forEach(copy -> {
-                        if(copy.getGameId().equals(game.getId())) copies.add(copy);
+                        if (copy.getGameId().equals(game.getId())) copies.add(copy);
                     });
 
                     GameWithCopiesSetDTO dto = new GameWithCopiesSetDTO();
@@ -117,16 +129,18 @@ public class GameCopyService {
 
                     return dto;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
 
     }
 
-    public List<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(LocalDateTime startTime, Integer duration) {
-        return getAvailableGameCopiesFor(startTime, duration)
+    public ListDTO<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(LocalDateTime startTime, Integer duration) {
+        ListDTO<GameCopyNameDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(getAvailableGameCopiesFor(startTime, duration)
                 .stream()
                 .map(gameCopy -> {
                     Game game = gameRepository.findById(gameCopy.getGameId()).orElse(null);
-                    if(game == null) return null;
+                    if (game == null) return null;
                     else {
                         GameCopyNameDTO dto = new GameCopyNameDTO();
                         dto.setName(game.getName());
@@ -135,8 +149,9 @@ public class GameCopyService {
                     }
                 })
                 .filter(Utils.distinctByKey(GameCopyNameDTO::getName))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
 
+        return resultDTO;
     }
 
     public GameCopyDTO update(GameCopyDTO dto) {

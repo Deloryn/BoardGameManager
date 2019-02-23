@@ -2,9 +2,8 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pl.put.boardgamemanager.private_reservation.PrivateReservationDTO;
-
-import java.util.List;
+import pl.put.boardgamemanager.ListDTO;
+import pl.put.boardgamemanager.TimeDTO;
 
 @RestController
 @CrossOrigin
@@ -19,23 +18,34 @@ public class TableController {
     }
 
     @GetMapping("/tables")
-    public List<TableDTO> all() {
+    public ListDTO<TableDTO> all() {
         return service.all();
     }
 
     @PostMapping("/tables/available-at")
-    public List<TableDTO> getAvailableTablesAt(@RequestBody PrivateReservationDTO dto) {
-        return service.getAvailableTableDTOsAt(dto.getStartTime(), dto.getDuration());
+    public ListDTO<TableDTO> getAvailableTablesAt(@RequestBody TimeDTO dto) {
+        if(!dto.validate()) {
+            ListDTO<TableDTO> resultDTO = new ListDTO<>();
+            resultDTO.setErrorMessage(dto.getErrorMessage());
+            return resultDTO;
+        }
+        else return service.getAvailableTableDTOsAt(dto.getStartTime(), dto.getDuration());
     }
 
     @PostMapping("/tables")
     public TableDTO create(@RequestBody TableDTO tableDTO) {
-        return service.create(tableDTO);
+        if(!tableDTO.validate()) return tableDTO;
+        else return service.create(tableDTO);
     }
 
     @PutMapping("/tables")
     public TableDTO update(@RequestBody TableDTO tableDTO) {
-        return service.update(tableDTO);
+        if(tableDTO.getId() == null) {
+            tableDTO.setErrorMessage("Id in updating cannot be null");
+            return tableDTO;
+        }
+        if(!tableDTO.validate()) return tableDTO;
+        else return service.update(tableDTO);
     }
 
     @DeleteMapping("/tables/{id}")

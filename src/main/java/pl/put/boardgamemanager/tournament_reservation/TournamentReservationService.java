@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,14 +15,20 @@ public class TournamentReservationService {
 
     public TournamentReservationDTO get(Long id) {
         TournamentReservation reservation = repository.findById(id).orElse(null);
-        if(reservation == null) return null;
+        if(reservation == null) {
+            TournamentReservationDTO dto = new TournamentReservationDTO();
+            dto.setErrorMessage("There is no tournament reservation with the given id");
+            return dto;
+        }
         else return reservation.toDTO();
     }
 
-    public List<TournamentReservationDTO> all() {
-        return repository.findAll().stream()
+    public ListDTO<TournamentReservationDTO> all() {
+        ListDTO<TournamentReservationDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(repository.findAll().stream()
                 .map(TournamentReservation::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public TournamentReservationDTO create(TournamentReservationDTO dto) {

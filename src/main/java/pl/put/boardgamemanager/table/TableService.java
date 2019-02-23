@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.private_reservation.PrivateReservation;
 import pl.put.boardgamemanager.private_reservation.PrivateReservationRepository;
 import pl.put.boardgamemanager.tournament.Tournament;
@@ -71,22 +72,33 @@ public class TableService {
 
     public TableDTO get(Long id) {
         Table table = tableRepository.findById(id).orElse(null);
-        if (table == null) return null;
+        if (table == null) {
+            TableDTO dto = new TableDTO();
+            dto.setErrorMessage("There is no table with the given id");
+            return dto;
+        }
         else return table.toDTO();
     }
 
-    public List<TableDTO> getAvailableTableDTOsAt(LocalDateTime reservationTime, Integer duration) {
+    public ListDTO<TableDTO> getAvailableTableDTOsAt(LocalDateTime reservationTime, Integer duration) {
+        ListDTO<TableDTO> resultDTO = new ListDTO<>();
+
         List<Table> allTables = tableRepository.findAll();
         allTables.removeAll(getReservedTablesAt(reservationTime, duration));
-        return allTables.stream()
+
+        resultDTO.setValues(allTables.stream()
                 .map(Table::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+        return resultDTO;
     }
 
-    public List<TableDTO> all() {
-        return tableRepository.findAll().stream()
+    public ListDTO<TableDTO> all() {
+        ListDTO<TableDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(tableRepository.findAll().stream()
                 .map(Table::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public TableDTO create(TableDTO dto) {

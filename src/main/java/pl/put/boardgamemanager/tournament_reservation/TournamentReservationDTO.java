@@ -1,6 +1,8 @@
 package pl.put.boardgamemanager.tournament_reservation;
 
-public class TournamentReservationDTO {
+import pl.put.boardgamemanager.DTO;
+
+public class TournamentReservationDTO extends DTO {
 
     private Long id;
 
@@ -9,6 +11,14 @@ public class TournamentReservationDTO {
     private Long tutorId;
 
     private Long tournamentId;
+
+    public boolean validate() {
+        if(tableId == null || tournamentId == null) {
+            this.setErrorMessage("Neither tableId nor tournamentId can be null");
+            return false;
+        }
+        return true;
+    }
 
     public Long getId() {
         return id;

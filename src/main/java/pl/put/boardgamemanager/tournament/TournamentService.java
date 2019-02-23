@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.tournament_participant.TournamentParticipant;
@@ -41,17 +42,27 @@ public class TournamentService {
 
     public TournamentDTO get(Long id) {
         Tournament tournament = tournamentRepository.findById(id).orElse(null);
-        if (tournament == null) return null;
+        if (tournament == null) {
+            TournamentDTO dto = new TournamentDTO();
+            dto.setErrorMessage("There is no tournament with the given id");
+            return dto;
+        }
         else return tournament.toDTO();
     }
 
     private boolean validateTournamentDTO(TournamentDTO dto) {
 
         // TODO: again check if tables and copies are available
-        if (dto.getCopyIds() == null || dto.getTableIds() == null) return false;
+        if (dto.getCopyIds() == null || dto.getTableIds() == null) {
+            dto.setErrorMessage("Neither CopyIds nor TableIds cannot be null in creating a new tournament");
+            return false;
+        }
 
         Integer numberOfCopies = dto.getCopyIds().size();
-        if (numberOfCopies.equals(0) || dto.getTableIds().size() == 0) return false;
+        if (numberOfCopies.equals(0) || dto.getTableIds().size() == 0) {
+            dto.setErrorMessage("Neither CopyIds nor TableIds cannot be empty in creating a new tournament");
+            return false;
+        }
         Integer totalOfSits = dto
                 .getTableIds()
                 .stream()
@@ -63,7 +74,10 @@ public class TournamentService {
                 .reduce(0, Integer::sum);
 
         Game game = gameRepository.findById(dto.getGameId()).orElse(null);
-        if (game == null) return false;
+        if (game == null) {
+            dto.setErrorMessage("There is no game with given gameId");
+            return false;
+        }
         else {
             Short gameMaxPlayers = game.getMaxPlayers();
             Integer tournamentMaxPlayers = min(numberOfCopies * gameMaxPlayers, totalOfSits);
@@ -71,13 +85,18 @@ public class TournamentService {
         }
     }
 
-    public List<TournamentDTO> all() {
-        return tournamentRepository.findAll().stream()
+    public ListDTO<TournamentDTO> all() {
+        ListDTO<TournamentDTO> resultDTO = new ListDTO<>();
+
+        resultDTO.setValues(tournamentRepository.findAll().stream()
                 .map(Tournament::toDTO)
                 .map(dto -> {
                     Game game = gameRepository.findById(dto.getGameId()).orElse(null);
                     if (game != null) {
                         dto.setReadOnlyGameName(game.getName());
+                    }
+                    else {
+                        dto.setErrorMessage("There is no game with the given id");
                     }
                     List<TournamentParticipant> allParticipants = tournamentParticipantRepository.findAll();
                     Integer numberOfTournamentPlayers =
@@ -89,11 +108,13 @@ public class TournamentService {
                     dto.setReadOnlyPlayersNumber(numberOfTournamentPlayers);
                     return dto;
                 })
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+
+        return resultDTO;
     }
 
     public TournamentDTO create(TournamentDTO dto) {
-        if (!validateTournamentDTO(dto)) return null;
+        if (!validateTournamentDTO(dto)) return dto;
         else {
             Tournament tournament = new Tournament();
             tournament.updateParamsFrom(dto);

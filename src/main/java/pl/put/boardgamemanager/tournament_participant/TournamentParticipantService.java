@@ -2,6 +2,7 @@ package pl.put.boardgamemanager.tournament_participant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.put.boardgamemanager.ListDTO;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,14 +18,20 @@ public class TournamentParticipantService {
         TournamentParticipant participant =
                 tournamentParticipantRepository.findById(new TournamentParticipantPK(clientId, tournamentId)).orElse(null);
 
-        if(participant == null) return null;
+        if(participant == null) {
+            TournamentParticipantDTO dto = new TournamentParticipantDTO();
+            dto.setErrorMessage("There is no tournament participant for the given clientId and tournamentId");
+            return dto;
+        }
         else return participant.toDTO();
     }
 
-    public List<TournamentParticipantDTO> all() {
-        return tournamentParticipantRepository.findAll().stream()
+    public ListDTO<TournamentParticipantDTO> all() {
+        ListDTO<TournamentParticipantDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(tournamentParticipantRepository.findAll().stream()
                 .map(TournamentParticipant::toDTO)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
+        return resultDTO;
     }
 
     public TournamentParticipantDTO create(TournamentParticipantDTO dto) {

@@ -1,6 +1,8 @@
 package pl.put.boardgamemanager.tournament_rental;
 
-public class TournamentRentalDTO {
+import pl.put.boardgamemanager.DTO;
+
+public class TournamentRentalDTO extends DTO {
 
     private Long id;
 
@@ -9,6 +11,14 @@ public class TournamentRentalDTO {
     private Long tournamentId;
 
     private String readOnlyGameName;
+
+    public boolean validate() {
+        if(copyId == null || tournamentId == null) {
+            this.setErrorMessage("Neither copyId nor tournamentId can be null");
+            return false;
+        }
+        return true;
+    }
 
     public Long getId() {
         return id;

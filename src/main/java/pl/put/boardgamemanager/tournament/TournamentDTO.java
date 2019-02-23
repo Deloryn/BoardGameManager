@@ -1,9 +1,11 @@
 package pl.put.boardgamemanager.tournament;
 
+import pl.put.boardgamemanager.DTO;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class TournamentDTO {
+public class TournamentDTO extends DTO {
 
     private Long id;
 
@@ -22,6 +24,35 @@ public class TournamentDTO {
     private String readOnlyGameName;
 
     private Integer readOnlyPlayersNumber;
+
+    public boolean validate() {
+        if(gameId == null) {
+            this.setErrorMessage("GameId cannot be null");
+            return false;
+        }
+        if(startTime == null) {
+            this.setErrorMessage("Start time cannot be null");
+            return false;
+        }
+        if(duration == null) {
+            this.setErrorMessage("Duration cannot be null");
+            return false;
+        }
+        if(duration <= 0) {
+            this.setErrorMessage("Duration must be greater than 0");
+            return false;
+        }
+        if(maxPlayers == null) {
+            this.setErrorMessage("Max players cannot be null");
+            return false;
+        }
+        if(maxPlayers <= 0) {
+            this.setErrorMessage("Max players must be greater than 0");
+            return false;
+        }
+
+        return true;
+    }
 
     public void setId(Long id) {
         this.id = id;
