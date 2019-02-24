@@ -21,6 +21,7 @@ import pl.put.boardgamemanager.table.TableRepository;
 import pl.put.boardgamemanager.tournament.Tournament;
 import pl.put.boardgamemanager.tournament.TournamentRepository;
 
+import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -162,6 +163,16 @@ public class ClientService {
                     .collect(Collectors.toList()));
         }
         return resultDTO;
+    }
+
+    public ListDTO<String> getRegularClientsEmails() {
+        ListDTO<String> resultDTO = new ListDTO<>();
+        resultDTO.setValues(clientRepository.getRegularClientsEmails());
+        return resultDTO;
+    }
+
+    public void copyPersonsTable() {
+        clientRepository.copyPersons();
     }
 
     public ListDTO<ClientDTO> all() {

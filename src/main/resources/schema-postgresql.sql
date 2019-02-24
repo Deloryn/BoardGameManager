@@ -1,6 +1,3 @@
--- noinspection SqlNoDataSourceInspectionForFile
-
--- noinspection SqlDialectInspectionForFile
 
 CREATE TABLE Games
 (
@@ -244,3 +241,23 @@ CREATE INDEX INDEX_PrivateRentals_StartTime ON PrivateRentals(startTime);
 CREATE INDEX INDEX_PrivateRentals_Duration ON PrivateRentals(duration);
 CREATE INDEX INDEX_PrivateReservations_StartTime ON PrivateReservations(startTime);
 CREATE INDEX INDEX_PrivateReservations_Duration ON PrivateReservations(duration);
+
+
+CREATE OR REPLACE FUNCTION copyPersons() RETURNS VOID AS
+'
+   BEGIN
+      DROP TABLE IF EXISTS PersonsCopy;
+      CREATE TABLE PersonsCopy AS SELECT * FROM Persons;
+   END
+'
+  LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION getRegularClientsEmails() RETURNS SETOF persons.email%TYPE AS $$
+
+SELECT email FROM persons
+WHERE (SELECT COUNT(*) FROM tournamentparticipants
+       WHERE tournamentparticipants.clientid = persons.id) >= 2
+
+$$ LANGUAGE sql;

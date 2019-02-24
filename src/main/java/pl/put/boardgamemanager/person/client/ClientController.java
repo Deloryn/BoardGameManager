@@ -18,6 +18,16 @@ public class ClientController {
         return service.getClientDTOById(id);
     }
 
+    @GetMapping("/clients/regular-emails")
+    public ListDTO<String> getRegularClientsEmails() {
+        return service.getRegularClientsEmails();
+    }
+
+    @GetMapping("/clients/copy-persons-table")
+    public void copyPersonsTable() {
+        service.copyPersonsTable();
+    }
+
     @GetMapping("/clients/{id}/exists")
     public ValueDTO<Boolean> exists(@PathVariable Long id) {
         return service.exists(id);
