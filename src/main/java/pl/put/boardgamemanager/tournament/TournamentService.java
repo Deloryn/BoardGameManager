@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
+import pl.put.boardgamemanager.ValueDTO;
 import pl.put.boardgamemanager.game.Game;
 import pl.put.boardgamemanager.game.GameRepository;
 import pl.put.boardgamemanager.tournament_participant.TournamentParticipant;
@@ -16,6 +17,7 @@ import pl.put.boardgamemanager.table.Table;
 import pl.put.boardgamemanager.table.TableRepository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +87,13 @@ public class TournamentService {
             Integer tournamentMaxPlayers = min(numberOfCopies * gameMaxPlayers, totalOfSits);
             return dto.getMaxPlayers() > tournamentMaxPlayers;
         }
+    }
+
+    public ValueDTO<LocalDateTime> calculateFinishTime(LocalDateTime startTime, Integer duration) {
+        LocalDateTime finishTime = tournamentRepository.calculateFinishTime(startTime, duration);
+        ValueDTO<LocalDateTime> resultDTO = new ValueDTO<>();
+        resultDTO.setValue(finishTime);
+        return resultDTO;
     }
 
     public ListDTO<TournamentDTO> all() {

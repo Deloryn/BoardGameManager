@@ -253,11 +253,16 @@ CREATE OR REPLACE FUNCTION copyPersons() RETURNS VOID AS
   LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE FUNCTION calculateFinishTime(startTime TIMESTAMP(0), duration INT) RETURNS TIMESTAMP(0) AS
+  '
+begin
+  return startTime + (duration * interval ''1 minute '');
+end;
+' LANGUAGE  plpgsql;
+
 
 CREATE OR REPLACE FUNCTION getRegularClientsEmails() RETURNS SETOF persons.email%TYPE AS $$
 
 SELECT email FROM persons
-WHERE (SELECT COUNT(*) FROM tournamentparticipants
-       WHERE tournamentparticipants.clientid = persons.id) >= 2
 
 $$ LANGUAGE sql;

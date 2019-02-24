@@ -18,11 +18,6 @@ public class ClientController {
         return service.getClientDTOById(id);
     }
 
-    @GetMapping("/clients/regular-emails")
-    public ListDTO<String> getRegularClientsEmails() {
-        return service.getRegularClientsEmails();
-    }
-
     @GetMapping("/clients/copy-persons-table")
     public void copyPersonsTable() {
         service.copyPersonsTable();

@@ -165,14 +165,13 @@ public class ClientService {
         return resultDTO;
     }
 
-    public ListDTO<String> getRegularClientsEmails() {
-        ListDTO<String> resultDTO = new ListDTO<>();
-        resultDTO.setValues(clientRepository.getRegularClientsEmails());
-        return resultDTO;
-    }
-
     public void copyPersonsTable() {
-        clientRepository.copyPersons();
+        try {
+            clientRepository.copyPersons();
+        }
+        catch(Exception ex) {
+            return;
+        }
     }
 
     public ListDTO<ClientDTO> all() {
