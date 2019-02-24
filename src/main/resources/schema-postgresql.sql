@@ -61,8 +61,7 @@ CREATE TABLE PrivateRentals
   clientId  INT          NOT NULL,
   copyId    INT          NOT NULL,
   startTime TIMESTAMP(0) NOT NULL,
-  duration  INT          NOT NULL,
-  status    VARCHAR(30)  NOT NULL
+  duration  INT          NOT NULL
 );
 
 ALTER TABLE PrivateRentals
