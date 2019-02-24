@@ -54,9 +54,9 @@ INSERT INTO TournamentRentals(id, copyId, tournamentId) VALUES (2, 4, 2);
 INSERT INTO TournamentRentals(id, copyId, tournamentId) VALUES (3, 6, 3);
 INSERT INTO TournamentRentals(id, copyId, tournamentId) VALUES (4, 9, 4);
 
-INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration, status) VALUES (1, 1, 2, '2019-02-18 10:00:00', 120, 'Everything okay');
-INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration, status) VALUES (2, 2, 3, '2019-02-18 10:00:00', 120, 'Everything okay');
-INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration, status) VALUES (3, 3, 5, '2019-02-18 10:00:00', 120, 'Everything okay');
+INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration) VALUES (1, 1, 2, '2019-02-18 10:00:00', 120);
+INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration) VALUES (2, 2, 3, '2019-02-18 10:00:00', 120);
+INSERT INTO PrivateRentals(id, clientId, copyId, startTime, duration) VALUES (3, 3, 5, '2019-02-18 10:00:00', 120);
 
 INSERT INTO TournamentReservations(id, tableId, tutorId, tournamentId) VALUES (1, 1, NULL, 1);
 INSERT INTO TournamentReservations(id, tableId, tutorId, tournamentId) VALUES (2, 2, NULL, 2);

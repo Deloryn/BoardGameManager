@@ -45,7 +45,6 @@ public class PrivateRentalControllerTest {
         requestBody.put("copyId", 2);
         requestBody.put("startTime", "2019-02-16T15:00:00");
         requestBody.put("duration", 45);
-        requestBody.put("status", "Everything is great");
 
 
         return given()
@@ -61,7 +60,6 @@ public class PrivateRentalControllerTest {
                 .body("clientId", equalTo(1))
                 .body("startTime", equalTo("2019-02-16T15:00:00"))
                 .body("duration", equalTo(45))
-                .body("status", equalTo("Everything is great"))
                 .body("readOnlyGameName", equalTo("Business Tour"))
                 .extract().jsonPath().getLong("id")
                 ;
@@ -90,7 +88,6 @@ public class PrivateRentalControllerTest {
         requestBody.put("copyId", 5);
         requestBody.put("startTime", "2019-02-10T15:00:00");
         requestBody.put("duration", 60);
-        requestBody.put("status", "Everything is not great");
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
@@ -104,8 +101,7 @@ public class PrivateRentalControllerTest {
                 .body("clientId", equalTo(7))
                 .body("copyId", equalTo(5))
                 .body("startTime", equalTo("2019-02-10T15:00:00"))
-                .body("duration", equalTo(60))
-                .body("status", equalTo("Everything is not great"));
+                .body("duration", equalTo(60));
     }
 
 

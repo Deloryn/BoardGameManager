@@ -16,8 +16,6 @@ public class PrivateRentalDTO extends DTO {
 
     private Integer duration;
 
-    private String status;
-
     private String readOnlyGameName;
 
     @Override
@@ -40,14 +38,6 @@ public class PrivateRentalDTO extends DTO {
         }
         if(duration <= 0) {
             this.setErrorMessage("Duration must be greater than 0");
-            return false;
-        }
-        if(status == null) {
-            this.setErrorMessage("Status cannot be null");
-            return false;
-        }
-        if(status.trim().isEmpty()) {
-            this.setErrorMessage("Status cannot be blank");
             return false;
         }
         return true;
@@ -91,14 +81,6 @@ public class PrivateRentalDTO extends DTO {
 
     public void setDuration(Integer duration) {
         this.duration = duration;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getReadOnlyGameName() {

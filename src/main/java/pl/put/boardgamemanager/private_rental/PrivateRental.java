@@ -29,10 +29,6 @@ public class PrivateRental implements TimeEvent {
     @Column(name = "duration", nullable = false)
     private Integer duration;
 
-    @NotBlank
-    @Column(name = "status", nullable = false, length = 30)
-    private String status;
-
     public void setId(Long id) { this.id = id; }
 
     public Long getId() { return id; }
@@ -69,14 +65,6 @@ public class PrivateRental implements TimeEvent {
         this.duration = duration;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     @Override
     public boolean equals(Object o) {
         if(this == o) return true;
@@ -87,14 +75,13 @@ public class PrivateRental implements TimeEvent {
                     Objects.equals(copyId, that.copyId) &&
                     Objects.equals(clientId, that.clientId) &&
                     Objects.equals(startTime, that.startTime) &&
-                    Objects.equals(duration, that.duration) &&
-                    Objects.equals(status, that.status);
+                    Objects.equals(duration, that.duration);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, copyId, clientId, startTime, duration, status);
+        return Objects.hash(id, copyId, clientId, startTime, duration);
     }
 
     public void updateParamsFrom(PrivateRentalDTO dto) {
@@ -102,7 +89,6 @@ public class PrivateRental implements TimeEvent {
         this.setCopyId(dto.getCopyId());
         this.setDuration(dto.getDuration());
         this.setStartTime(dto.getStartTime());
-        this.setStatus(dto.getStatus());
     }
 
     public PrivateRentalDTO toDTO() {
@@ -113,7 +99,6 @@ public class PrivateRental implements TimeEvent {
         dto.setCopyId(copyId);
         dto.setDuration(duration);
         dto.setStartTime(startTime);
-        dto.setStatus(status);
 
         return dto;
     }
