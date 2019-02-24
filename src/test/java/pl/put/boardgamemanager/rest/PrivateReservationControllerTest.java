@@ -14,7 +14,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.IsNull.nullValue;
 
 
 @RunWith(SpringRunner.class)
@@ -40,12 +39,17 @@ public class PrivateReservationControllerTest {
     }
 
     @Test
-    public void should_get_available_tutors() {
+    public void should_find_available_tutors_at() {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("startTime", "2019-02-18T15:00:00");
+        requestBody.put("duration", "90");
+
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
+                .body(requestBody.toJSONString())
                 .log().all()
-                .when().get("/private_reservations/{id}/available-tutors", 1)
+                .when().post("/private_reservations/available-tutors-at")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)

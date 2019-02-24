@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
+import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.person.tutor.Tutor;
 import pl.put.boardgamemanager.person.tutor.TutorDTO;
 import pl.put.boardgamemanager.person.tutor.TutorRepository;
-import pl.put.boardgamemanager.Utils;
 
-import java.util.Collections;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,21 +22,6 @@ public class PrivateReservationService {
 
     @Autowired
     private TutorRepository tutorRepository;
-
-    private List<Tutor> getBusyTutorsForId(Long id) {
-        PrivateReservation desiredReservation = privateReservationRepository.findById(id).orElse(null);
-        if (desiredReservation == null) return Collections.emptyList();
-        else {
-            return privateReservationRepository
-                    .findAll()
-                    .stream()
-                    .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
-                    .map(PrivateReservation::getTutorId)
-                    .filter(Objects::nonNull)
-                    .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
-                    .collect(Collectors.toList());
-        }
-    }
 
     public PrivateReservationDTO get(Long id) {
         PrivateReservation reservation = privateReservationRepository.findById(id).orElse(null);
@@ -61,16 +46,10 @@ public class PrivateReservationService {
         }
     }
 
-    public ListDTO<TutorDTO> getAvailableTutorsFor(Long id) {
+    public ListDTO<TutorDTO> getAvailableTutorsAt(LocalDateTime startTime, Integer duration) {
         ListDTO<TutorDTO> resultDTO = new ListDTO<>();
 
-        PrivateReservation desiredReservation = privateReservationRepository.findById(id).orElse(null);
-        if (desiredReservation == null) {
-            resultDTO.setErrorMessage("There is no private reservation for the given id");
-            return resultDTO;
-        }
-
-        List<Tutor> busyTutors = getBusyTutorsForId(id);
+        List<Tutor> busyTutors = getBusyTutorsAt(startTime, duration);
         if (busyTutors.isEmpty())
             resultDTO.setValues(tutorRepository.findAll().stream().map(Tutor::toDTO).collect(Collectors.toList()));
         else {
@@ -126,6 +105,21 @@ public class PrivateReservationService {
 
     public void delete(Long id) {
         privateReservationRepository.deleteById(id);
+    }
+
+    private List<Tutor> getBusyTutorsAt(LocalDateTime startTime, Integer duration) {
+        PrivateReservation desiredReservation = new PrivateReservation();
+        desiredReservation.setStartTime(startTime);
+        desiredReservation.setDuration(duration);
+
+        return privateReservationRepository
+                    .findAll()
+                    .stream()
+                    .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
+                    .map(PrivateReservation::getTutorId)
+                    .filter(Objects::nonNull)
+                    .map(tutorId -> tutorRepository.findById(tutorId).orElse(null))
+                    .collect(Collectors.toList());
     }
 
 }
