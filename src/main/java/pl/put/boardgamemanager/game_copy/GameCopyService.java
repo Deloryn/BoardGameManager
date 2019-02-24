@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.game_copy;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.ValueDTO;
@@ -97,8 +98,16 @@ public class GameCopyService {
     public GameCopyDTO create(GameCopyDTO dto) {
         GameCopy gameCopy = new GameCopy();
         gameCopy.updateParamsFrom(dto);
-        gameCopyRepository.save(gameCopy);
-        return gameCopy.toDTO();
+
+        try {
+            gameCopyRepository.save(gameCopy);
+            return gameCopy.toDTO();
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
+
     }
 
     private List<GameCopy> getAvailableGameCopiesFor(LocalDateTime startTime, Integer duration) {
@@ -158,8 +167,15 @@ public class GameCopyService {
         return gameCopyRepository.findById(dto.getId())
                 .map(existingCopy -> {
                     existingCopy.updateParamsFrom(dto);
-                    gameCopyRepository.save(existingCopy);
-                    return existingCopy.toDTO();
+
+                    try {
+                        gameCopyRepository.save(existingCopy);
+                        return existingCopy.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
                 })
                 .orElseGet(() -> create(dto));
     }
