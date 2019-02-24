@@ -1,6 +1,9 @@
 package pl.put.boardgamemanager.person.client;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ValueDTO;
 import pl.put.boardgamemanager.ListDTO;
@@ -172,16 +175,29 @@ public class ClientService {
     public ClientDTO create(ClientDTO dto) {
         Client client = new Client();
         client.updateParamsFrom(dto);
-        clientRepository.save(client);
-        return client.toDTO();
+        try {
+            clientRepository.save(client);
+            return client.toDTO();
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
     }
 
     public ClientDTO update(ClientDTO dto) {
         return clientRepository.findById(dto.getId())
                 .map(existingClient -> {
                     existingClient.updateParamsFrom(dto);
-                    clientRepository.save(existingClient);
-                    return existingClient.toDTO();
+
+                    try {
+                        clientRepository.save(existingClient);
+                        return existingClient.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
                 })
                 .orElseGet(() -> create(dto));
     }

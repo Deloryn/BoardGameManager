@@ -1,5 +1,6 @@
 package pl.put.boardgamemanager.game;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.ListDTO;
@@ -25,17 +26,17 @@ public class GameController {
 
     @PostMapping("/games")
     public GameDTO create(@RequestBody GameDTO gameDTO) {
-        if(!gameDTO.validate()) return gameDTO;
+        if (!gameDTO.validate()) return gameDTO;
         else return service.create(gameDTO);
     }
 
     @PutMapping("/games")
     public GameDTO update(@RequestBody GameDTO gameDTO) {
-        if(gameDTO.getId() == null) {
+        if (gameDTO.getId() == null) {
             gameDTO.setErrorMessage("Id in updating cannot be null");
             return gameDTO;
         }
-        if(!gameDTO.validate()) return gameDTO;
+        if (!gameDTO.validate()) return gameDTO;
         else return service.update(gameDTO);
     }
 

@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.table;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.private_reservation.PrivateReservation;
@@ -104,16 +105,28 @@ public class TableService {
     public TableDTO create(TableDTO dto) {
         Table table = new Table();
         table.updateParamsFrom(dto);
-        tableRepository.save(table);
-        return table.toDTO();
+        try {
+            tableRepository.save(table);
+            return table.toDTO();
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
     }
 
     public TableDTO update(TableDTO dto) {
         return tableRepository.findById(dto.getId())
                 .map(existingTable -> {
                     existingTable.updateParamsFrom(dto);
-                    tableRepository.save(existingTable);
-                    return existingTable.toDTO();
+                    try {
+                        tableRepository.save(existingTable);
+                        return existingTable.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
                 })
                 .orElseGet(() -> create(dto));
     }

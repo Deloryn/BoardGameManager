@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.tournament;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.game.Game;
@@ -14,6 +15,7 @@ import pl.put.boardgamemanager.tournament_reservation.TournamentReservationRepos
 import pl.put.boardgamemanager.table.Table;
 import pl.put.boardgamemanager.table.TableRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,6 +115,7 @@ public class TournamentService {
         return resultDTO;
     }
 
+    @Transactional
     public TournamentDTO create(TournamentDTO dto) {
         if (!validateTournamentDTO(dto)) return dto;
         else {
@@ -125,6 +128,13 @@ public class TournamentService {
                 reservation.setTableId(tableId);
                 reservation.setTournamentId(tournament.getId());
                 tournamentReservationRepository.save(reservation);
+
+                try {
+                    tournamentReservationRepository.save(reservation);
+                }
+                catch(DataIntegrityViolationException ex) {
+                    dto.setErrorMessage("Given data violates data constraints");
+                }
             });
 
             dto.getCopyIds().forEach(copyId -> {
@@ -132,9 +142,17 @@ public class TournamentService {
                 rental.setCopyId(copyId);
                 rental.setTournamentId(tournament.getId());
                 tournamentRentalRepository.save(rental);
+
+                try {
+                    tournamentRentalRepository.save(rental);
+                }
+                catch(DataIntegrityViolationException ex) {
+                    dto.setErrorMessage("Given data violates data constraints");
+                }
             });
 
-            return tournament.toDTO();
+            if(dto.getErrorMessage() == null) return tournament.toDTO();
+            else return dto;
         }
     }
 
@@ -142,8 +160,14 @@ public class TournamentService {
         return tournamentRepository.findById(dto.getId())
                 .map(existingTournament -> {
                     existingTournament.updateParamsFrom(dto);
-                    tournamentRepository.save(existingTournament);
-                    return existingTournament.toDTO();
+                    try {
+                        tournamentRepository.save(existingTournament);
+                        return existingTournament.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
                 })
                 .orElseGet(() -> create(dto));
     }

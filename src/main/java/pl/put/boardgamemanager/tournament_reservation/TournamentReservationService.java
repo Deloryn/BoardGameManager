@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.tournament_reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 
@@ -34,8 +35,16 @@ public class TournamentReservationService {
     public TournamentReservationDTO create(TournamentReservationDTO dto) {
         TournamentReservation reservation = new TournamentReservation();
         reservation.updateParamsFrom(dto);
-        repository.save(reservation);
-        return reservation.toDTO();
+
+        try {
+            repository.save(reservation);
+            return reservation.toDTO();
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
+
     }
 
     public TournamentReservationDTO update(TournamentReservationDTO dto) {
@@ -43,8 +52,14 @@ public class TournamentReservationService {
         return repository.findById(dto.getId())
                 .map(existingReservation -> {
                     existingReservation.updateParamsFrom(dto);
-                    repository.save(existingReservation);
-                    return existingReservation.toDTO();
+                    try {
+                        repository.save(existingReservation);
+                        return existingReservation.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
                 })
                 .orElseGet(() -> create(dto));
     }

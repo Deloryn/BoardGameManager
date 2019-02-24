@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.person.tutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 
@@ -35,16 +36,32 @@ public class TutorService {
     public TutorDTO create(TutorDTO dto) {
         Tutor tutor = new Tutor();
         tutor.updateParamsFrom(dto);
-        tutorRepository.save(tutor);
-        return tutor.toDTO();
+
+        try {
+            tutorRepository.save(tutor);
+            return tutor.toDTO();
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
+
     }
 
     public TutorDTO update(TutorDTO dto) {
         return tutorRepository.findById(dto.getId())
                 .map(existingTutor -> {
                     existingTutor.updateParamsFrom(dto);
-                    tutorRepository.save(existingTutor);
-                    return existingTutor.toDTO();
+
+                    try {
+                        tutorRepository.save(existingTutor);
+                        return existingTutor.toDTO();
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
+
                 })
                 .orElseGet(() -> create(dto));
     }

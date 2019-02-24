@@ -1,6 +1,7 @@
 package pl.put.boardgamemanager.private_rental;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.Utils;
@@ -44,16 +45,31 @@ public class PrivateRentalService {
     public PrivateRentalDTO create(PrivateRentalDTO dto) {
         PrivateRental rental = new PrivateRental();
         rental.updateParamsFrom(dto);
-        privateRentalRepository.save(rental);
-        return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
+
+        try {
+            privateRentalRepository.save(rental);
+            return Utils.assignGameNameTo(rental.toDTO(), gameRepository, gameCopyRepository);
+        }
+        catch(DataIntegrityViolationException ex) {
+            dto.setErrorMessage("Given data violates data constraints");
+            return dto;
+        }
     }
 
     public PrivateRentalDTO update(PrivateRentalDTO dto) {
         return privateRentalRepository.findById(dto.getId())
                 .map(existingRental -> {
                     existingRental.updateParamsFrom(dto);
-                    privateRentalRepository.save(existingRental);
-                    return Utils.assignGameNameTo(existingRental.toDTO(), gameRepository, gameCopyRepository);
+
+                    try {
+                        privateRentalRepository.save(existingRental);
+                        return Utils.assignGameNameTo(existingRental.toDTO(), gameRepository, gameCopyRepository);
+                    }
+                    catch(DataIntegrityViolationException ex) {
+                        dto.setErrorMessage("Given data violates data constraints");
+                        return dto;
+                    }
+
                 })
                 .orElseGet(() -> create(dto));
     }
