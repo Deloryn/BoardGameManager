@@ -29,6 +29,11 @@ public class GameCopyController {
         return service.countGames(gameId);
     }
 
+    @GetMapping("/game_copies/all-by-game-id/{gameId}")
+    public ListDTO<GameCopyDTO> allByGameId(@PathVariable Long gameId) {
+        return service.allByGameId(gameId);
+    }
+
     @PostMapping("/game_copies")
     public GameCopyDTO create(@RequestBody GameCopyDTO gameCopyDTO) {
         if(!gameCopyDTO.validate()) return gameCopyDTO;

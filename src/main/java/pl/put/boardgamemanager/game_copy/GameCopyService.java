@@ -64,6 +64,24 @@ public class GameCopyService {
         return resultDTO;
     }
 
+    public ListDTO<GameCopyDTO> allByGameId(Long gameId) {
+        ListDTO<GameCopyDTO> resultDTO = new ListDTO<>();
+
+        Game game = gameRepository.findById(gameId).orElse(null);
+        if(game == null) {
+            resultDTO.setErrorMessage("There is no game with the given id");
+        }
+        else {
+            resultDTO.setValues(
+                    gameCopyRepository
+                            .findAllByGameId(gameId)
+                            .stream()
+                            .map(GameCopy::toDTO)
+                            .collect(Collectors.toList()));
+        }
+        return resultDTO;
+    }
+
     public GameCopyDTO create(GameCopyDTO dto) {
         GameCopy gameCopy = new GameCopy();
         gameCopy.updateParamsFrom(dto);
