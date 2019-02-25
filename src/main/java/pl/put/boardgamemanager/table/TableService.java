@@ -32,45 +32,6 @@ public class TableService {
     @Autowired
     private TournamentRepository tournamentRepository;
 
-    private List<Table> getReservedPrivateTablesAt(LocalDateTime reservationTime, Integer duration) {
-        PrivateReservation desiredReservation = new PrivateReservation();
-        desiredReservation.setStartTime(reservationTime);
-        desiredReservation.setDuration(duration);
-
-        return privateReservationRepository
-                .findAll()
-                .stream()
-                .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
-                .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
-                .collect(Collectors.toList());
-    }
-
-    private List<Table> getReservedTournamentTablesAt(LocalDateTime reservationTime, Integer duration) {
-        PrivateReservation desiredReservation = new PrivateReservation();
-        desiredReservation.setStartTime(reservationTime);
-        desiredReservation.setDuration(duration);
-        return tournamentReservationRepository
-                .findAll()
-                .stream()
-                .map(TournamentReservation::getTournamentId)
-                .map(tournamentId -> tournamentRepository.findById(tournamentId).orElse(null))
-                .collect(Collectors.toList())
-                .stream()
-                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredReservation))
-                .map(Tournament::getId)
-                .map(tournamentId -> tournamentReservationRepository.findAllByTournamentId(tournamentId))
-                .flatMap(List::stream)
-                .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
-                .collect(Collectors.toList());
-    }
-
-    private List<Table> getReservedTablesAt(LocalDateTime reservationTime, Integer duration) {
-        return Stream
-                .concat(getReservedPrivateTablesAt(reservationTime, duration).stream(),
-                        getReservedTournamentTablesAt(reservationTime, duration).stream())
-                .collect(Collectors.toList());
-    }
-
     public TableDTO get(Long id) {
         Table table = tableRepository.findById(id).orElse(null);
         if (table == null) {
@@ -79,19 +40,6 @@ public class TableService {
             return dto;
         }
         else return table.toDTO();
-    }
-
-    public ListDTO<TableDTO> getAvailableTableDTOsAt(LocalDateTime reservationTime, Integer duration) {
-        ListDTO<TableDTO> resultDTO = new ListDTO<>();
-
-        List<Table> allTables = tableRepository.findAll();
-        allTables.removeAll(getReservedTablesAt(reservationTime, duration));
-
-        resultDTO.setValues(allTables.stream()
-                .map(Table::toDTO)
-                .collect(Collectors.toList()));
-
-        return resultDTO;
     }
 
     public ListDTO<TableDTO> all() {
@@ -135,4 +83,69 @@ public class TableService {
         tableRepository.deleteById(id);
     }
 
+    public ListDTO<TableDTO> getAvailableTableDTOsAtPrivate(LocalDateTime reservationTime, Integer duration, Long targetId) {
+        ListDTO<TableDTO> resultDTO = new ListDTO<>();
+
+        List<Table> allTables = tableRepository.findAll();
+        allTables.removeAll(Stream
+                .concat(getReservedPrivateTablesAt(reservationTime, duration, targetId).stream(),
+                        getReservedTournamentTablesAt(reservationTime, duration, null).stream())
+                .collect(Collectors.toList()));
+
+        resultDTO.setValues(allTables.stream()
+                .map(Table::toDTO)
+                .collect(Collectors.toList()));
+
+        return resultDTO;
+    }
+
+    public ListDTO<TableDTO> getAvailableTableDTOsAtTournament(LocalDateTime reservationTime, Integer duration, Long targetId) {
+        ListDTO<TableDTO> resultDTO = new ListDTO<>();
+
+        List<Table> allTables = tableRepository.findAll();
+        allTables.removeAll(Stream
+                .concat(getReservedPrivateTablesAt(reservationTime, duration, null).stream(),
+                        getReservedTournamentTablesAt(reservationTime, duration, targetId).stream())
+                .collect(Collectors.toList()));
+
+        resultDTO.setValues(allTables.stream()
+                .map(Table::toDTO)
+                .collect(Collectors.toList()));
+
+        return resultDTO;
+    }
+
+    private List<Table> getReservedPrivateTablesAt(LocalDateTime reservationTime, Integer duration, Long targetId) {
+        PrivateReservation desiredReservation = new PrivateReservation();
+        desiredReservation.setStartTime(reservationTime);
+        desiredReservation.setDuration(duration);
+
+        return privateReservationRepository
+                .findAll()
+                .stream()
+                .filter(reservation -> !reservation.getId().equals(targetId))
+                .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
+                .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
+                .collect(Collectors.toList());
+    }
+
+    private List<Table> getReservedTournamentTablesAt(LocalDateTime reservationTime, Integer duration, Long targetId) {
+        PrivateReservation desiredReservation = new PrivateReservation();
+        desiredReservation.setStartTime(reservationTime);
+        desiredReservation.setDuration(duration);
+        return tournamentReservationRepository
+                .findAll()
+                .stream()
+                .filter(reservation -> !reservation.getId().equals(targetId))
+                .map(TournamentReservation::getTournamentId)
+                .map(tournamentId -> tournamentRepository.findById(tournamentId).orElse(null))
+                .collect(Collectors.toList())
+                .stream()
+                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredReservation))
+                .map(Tournament::getId)
+                .map(tournamentId -> tournamentReservationRepository.findAllByTournamentId(tournamentId))
+                .flatMap(List::stream)
+                .map(reservation -> tableRepository.findById(reservation.getTableId()).orElse(null))
+                .collect(Collectors.toList());
+    }
 }

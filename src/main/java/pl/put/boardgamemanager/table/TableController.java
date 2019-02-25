@@ -3,7 +3,7 @@ package pl.put.boardgamemanager.table;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.ListDTO;
-import pl.put.boardgamemanager.TimeDTO;
+import pl.put.boardgamemanager.TimeAndTargetDTO;
 
 @RestController
 @CrossOrigin
@@ -22,14 +22,24 @@ public class TableController {
         return service.all();
     }
 
-    @PostMapping("/tables/available-at")
-    public ListDTO<TableDTO> getAvailableTablesAt(@RequestBody TimeDTO dto) {
+    @PostMapping("/tables/available-at-private")
+    public ListDTO<TableDTO> getAvailableTablesAtPrivate(@RequestBody TimeAndTargetDTO dto) {
         if(!dto.validate()) {
             ListDTO<TableDTO> resultDTO = new ListDTO<>();
             resultDTO.setErrorMessage(dto.getErrorMessage());
             return resultDTO;
         }
-        else return service.getAvailableTableDTOsAt(dto.getStartTime(), dto.getDuration());
+        else return service.getAvailableTableDTOsAtPrivate(dto.getStartTime(), dto.getDuration(), dto.getTargetId());
+    }
+
+    @PostMapping("/tables/available-at-tournament")
+    public ListDTO<TableDTO> getAvailableTablesAtTournament(@RequestBody TimeAndTargetDTO dto) {
+        if(!dto.validate()) {
+            ListDTO<TableDTO> resultDTO = new ListDTO<>();
+            resultDTO.setErrorMessage(dto.getErrorMessage());
+            return resultDTO;
+        }
+        else return service.getAvailableTableDTOsAtTournament(dto.getStartTime(), dto.getDuration(), dto.getTargetId());
     }
 
     @PostMapping("/tables")

@@ -40,21 +40,42 @@ public class TableControllerTest {
     }
 
     @Test
-    public void should_find_available_at() {
+    public void should_find_available_at_private() {
         JSONObject requestBody = new JSONObject();
         requestBody.put("startTime", "2019-02-18T15:00:00");
         requestBody.put("duration", "90");
+        requestBody.put("targetId", "1");
 
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().post("/tables/available-at")
+                .when().post("/tables/available-at-private")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("values", hasSize(4))
+                .body("values", hasSize(5))
+        ;
+    }
+
+    @Test
+    public void should_find_available_at_tournament() {
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("startTime", "2019-02-18T15:00:00");
+        requestBody.put("duration", "90");
+        requestBody.put("targetId", "1");
+
+        given()
+                .header("Accept-Encoding", "application/json")
+                .header("Content-Type", "application/json; charset=UTF-8")
+                .body(requestBody.toJSONString())
+                .log().all()
+                .when().post("/tables/available-at-tournament")
+                .then().log().all()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("values", hasSize(5))
         ;
     }
 

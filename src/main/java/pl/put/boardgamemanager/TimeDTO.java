@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class TimeDTO extends DTO {
 
-    private LocalDateTime startTime;
+    protected LocalDateTime startTime;
 
-    private Integer duration;
+    protected Integer duration;
 
     public boolean validate() {
         if(startTime == null) {
