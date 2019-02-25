@@ -12,6 +12,8 @@ public class PrivateRentalDTO extends DTO {
 
     private Long copyId;
 
+    private Long gameId;
+
     private LocalDateTime startTime;
 
     private Integer duration;
@@ -89,5 +91,9 @@ public class PrivateRentalDTO extends DTO {
 
     public void setReadOnlyGameName(String readOnlyGameName) {
         this.readOnlyGameName = readOnlyGameName;
+    }
+
+    public Long getGameId() {
+        return gameId;
     }
 }

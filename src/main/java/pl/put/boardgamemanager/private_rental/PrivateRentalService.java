@@ -44,6 +44,14 @@ public class PrivateRentalService {
 
     public PrivateRentalDTO create(PrivateRentalDTO dto) {
         PrivateRental rental = new PrivateRental();
+        if(dto.getGameId() != null){
+            Long copyId = getAnyCopyId(dto.getGameId());
+            if(copyId == null){
+                dto.setErrorMessage("Brak dostępnych egzemplarzy gry");
+                return dto;
+            }
+            dto.setCopyId(copyId);
+        }
         rental.updateParamsFrom(dto);
 
         try {
@@ -78,4 +86,10 @@ public class PrivateRentalService {
         privateRentalRepository.deleteById(id);
     }
 
+    private Long getAnyCopyId(Long gameId) {
+        if (gameCopyRepository.findAllByGameId(gameId).isEmpty()){
+            return null;
+        }
+        return gameCopyRepository.findAllByGameId(gameId).get(0).getId();
+    }
 }
