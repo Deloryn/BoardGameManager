@@ -136,8 +136,8 @@ public class TableService {
         return tournamentReservationRepository
                 .findAll()
                 .stream()
-                .filter(reservation -> !reservation.getId().equals(targetId))
                 .map(TournamentReservation::getTournamentId)
+                .filter(tournamentId -> !tournamentId.equals(targetId))
                 .map(tournamentId -> tournamentRepository.findById(tournamentId).orElse(null))
                 .collect(Collectors.toList())
                 .stream()

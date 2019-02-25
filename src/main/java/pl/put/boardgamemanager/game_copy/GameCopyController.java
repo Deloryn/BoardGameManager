@@ -3,7 +3,7 @@ package pl.put.boardgamemanager.game_copy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.ListDTO;
-import pl.put.boardgamemanager.TimeDTO;
+import pl.put.boardgamemanager.TimeAndTargetDTO;
 import pl.put.boardgamemanager.ValueDTO;
 import pl.put.boardgamemanager.game.GameWithCopiesSetDTO;
 
@@ -35,24 +35,24 @@ public class GameCopyController {
         else return service.create(gameCopyDTO);
     }
 
-    @PostMapping("/game_copies/available-all")
-    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(@RequestBody TimeDTO dto) {
+    @PostMapping("/game_copies/available-at-private")
+    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOsForPrivate(@RequestBody TimeAndTargetDTO dto) {
         if(!dto.validate()) {
             ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
             resultDTO.setErrorMessage(dto.getErrorMessage());
             return resultDTO;
         }
-        return service.getAvailableGameWithCopiesSetDTOs(dto.getStartTime(), dto.getDuration());
+        return service.getAvailableGameWithCopiesSetDTOsForPrivate(dto.getStartTime(), dto.getDuration(), dto.getTargetId());
     }
 
-    @PostMapping("/game_copies/available-distinct")
-    public ListDTO<GameCopyNameDTO> getAvailableGameCopies(@RequestBody TimeDTO dto) {
+    @PostMapping("/game_copies/available-at-tournament")
+    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOsForTournament(@RequestBody TimeAndTargetDTO dto) {
         if(!dto.validate()) {
-            ListDTO<GameCopyNameDTO> resultDTO = new ListDTO<>();
+            ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
             resultDTO.setErrorMessage(dto.getErrorMessage());
             return resultDTO;
         }
-        return service.getAvailableGameCopyNameDTOsFor(dto.getStartTime(), dto.getDuration());
+        return service.getAvailableGameWithCopiesSetDTOsForTournament(dto.getStartTime(), dto.getDuration(), dto.getTargetId());
     }
 
     @PutMapping("/game_copies")

@@ -39,37 +39,6 @@ public class GameCopyService {
     @Autowired
     private TournamentRepository tournamentRepository;
 
-    private List<GameCopy> getTournamentRentalGameCopies(LocalDateTime rentalTime, Integer duration) {
-        PrivateRental desiredRental = new PrivateRental();
-        desiredRental.setStartTime(rentalTime);
-        desiredRental.setDuration(duration);
-
-        return tournamentRepository
-                .findAll()
-                .stream()
-                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredRental))
-                .map(Tournament::getId)
-                .map(tournamentId -> tournamentRentalRepository.findAllByTournamentId(tournamentId))
-                .flatMap(List::stream)
-                .map(TournamentRental::getCopyId)
-                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
-                .collect(Collectors.toList());
-    }
-
-    private List<GameCopy> getBusyRentalCopies(LocalDateTime rentalTime, Integer duration) {
-        PrivateRental desiredRental = new PrivateRental();
-        desiredRental.setStartTime(rentalTime);
-        desiredRental.setDuration(duration);
-
-        return privateRentalRepository
-                .findAll()
-                .stream()
-                .filter(rental -> Utils.isEventDuringAnother(rental, desiredRental))
-                .map(PrivateRental::getCopyId)
-                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
-                .collect(Collectors.toList());
-    }
-
     public GameCopyDTO get(Long id) {
         GameCopy gameCopy = gameCopyRepository.findById(id).orElse(null);
         if (gameCopy == null) {
@@ -110,59 +79,6 @@ public class GameCopyService {
 
     }
 
-    private List<GameCopy> getAvailableGameCopiesFor(LocalDateTime startTime, Integer duration) {
-        List<GameCopy> allCopies = gameCopyRepository.findAll();
-        allCopies.removeAll(getTournamentRentalGameCopies(startTime, duration));
-        allCopies.removeAll(getBusyRentalCopies(startTime, duration));
-
-        return allCopies;
-    }
-
-    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOs(LocalDateTime startTime, Integer duration) {
-        List<Game> allGames = gameRepository.findAll();
-
-        List<GameCopy> availableGameCopies = getAvailableGameCopiesFor(startTime, duration);
-
-        ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
-        resultDTO.setValues(allGames
-                .stream()
-                .map(game -> {
-                    List<GameCopy> copies = new ArrayList<>();
-                    availableGameCopies.forEach(copy -> {
-                        if (copy.getGameId().equals(game.getId())) copies.add(copy);
-                    });
-
-                    GameWithCopiesSetDTO dto = new GameWithCopiesSetDTO();
-                    dto.setGame(game);
-                    dto.setGameCopies(copies);
-
-                    return dto;
-                })
-                .collect(Collectors.toList()));
-        return resultDTO;
-
-    }
-
-    public ListDTO<GameCopyNameDTO> getAvailableGameCopyNameDTOsFor(LocalDateTime startTime, Integer duration) {
-        ListDTO<GameCopyNameDTO> resultDTO = new ListDTO<>();
-        resultDTO.setValues(getAvailableGameCopiesFor(startTime, duration)
-                .stream()
-                .map(gameCopy -> {
-                    Game game = gameRepository.findById(gameCopy.getGameId()).orElse(null);
-                    if (game == null) return null;
-                    else {
-                        GameCopyNameDTO dto = new GameCopyNameDTO();
-                        dto.setName(game.getName());
-                        dto.setCopyId(gameCopy.getId());
-                        return dto;
-                    }
-                })
-                .filter(Utils.distinctByKey(GameCopyNameDTO::getName))
-                .collect(Collectors.toList()));
-
-        return resultDTO;
-    }
-
     public GameCopyDTO update(GameCopyDTO dto) {
         return gameCopyRepository.findById(dto.getId())
                 .map(existingCopy -> {
@@ -182,5 +98,102 @@ public class GameCopyService {
 
     public void delete(Long id) {
         gameCopyRepository.deleteById(id);
+    }
+
+    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOsForPrivate(LocalDateTime startTime, Integer duration, Long targetId) {
+        List<Game> allGames = gameRepository.findAll();
+
+        List<GameCopy> availableGameCopies = getAvailableGameCopiesForPrivate(startTime, duration, targetId);
+
+        ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(allGames
+                .stream()
+                .map(game -> {
+                    List<GameCopy> copies = new ArrayList<>();
+                    availableGameCopies.forEach(copy -> {
+                        if (copy.getGameId().equals(game.getId())) copies.add(copy);
+                    });
+
+                    GameWithCopiesSetDTO dto = new GameWithCopiesSetDTO();
+                    dto.setGame(game);
+                    dto.setGameCopies(copies);
+
+                    return dto;
+                })
+                .collect(Collectors.toList()));
+        return resultDTO;
+    }
+
+    public ListDTO<GameWithCopiesSetDTO> getAvailableGameWithCopiesSetDTOsForTournament(LocalDateTime startTime, Integer duration, Long targetId) {
+        List<Game> allGames = gameRepository.findAll();
+
+        List<GameCopy> availableGameCopies = getAvailableGameCopiesForTournament(startTime, duration, targetId);
+
+        ListDTO<GameWithCopiesSetDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(allGames
+                .stream()
+                .map(game -> {
+                    List<GameCopy> copies = new ArrayList<>();
+                    availableGameCopies.forEach(copy -> {
+                        if (copy.getGameId().equals(game.getId())) copies.add(copy);
+                    });
+
+                    GameWithCopiesSetDTO dto = new GameWithCopiesSetDTO();
+                    dto.setGame(game);
+                    dto.setGameCopies(copies);
+
+                    return dto;
+                })
+                .collect(Collectors.toList()));
+        return resultDTO;
+    }
+
+    private List<GameCopy> getAvailableGameCopiesForPrivate(LocalDateTime startTime, Integer duration, Long targetId) {
+        List<GameCopy> allCopies = gameCopyRepository.findAll();
+        allCopies.removeAll(getBusyRentalCopies(startTime, duration, targetId));
+        allCopies.removeAll(getTournamentRentalGameCopies(startTime, duration, null));
+
+        return allCopies;
+    }
+
+    private List<GameCopy> getAvailableGameCopiesForTournament(LocalDateTime startTime, Integer duration, Long targetId) {
+        List<GameCopy> allCopies = gameCopyRepository.findAll();
+        allCopies.removeAll(getBusyRentalCopies(startTime, duration, null));
+        allCopies.removeAll(getTournamentRentalGameCopies(startTime, duration, targetId));
+
+        return allCopies;
+    }
+
+    private List<GameCopy> getTournamentRentalGameCopies(LocalDateTime rentalTime, Integer duration, Long targetId) {
+        PrivateRental desiredRental = new PrivateRental();
+        desiredRental.setStartTime(rentalTime);
+        desiredRental.setDuration(duration);
+
+        return tournamentRepository
+                .findAll()
+                .stream()
+                .filter(tournament -> !tournament.getId().equals(targetId))
+                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredRental))
+                .map(Tournament::getId)
+                .map(tournamentId -> tournamentRentalRepository.findAllByTournamentId(tournamentId))
+                .flatMap(List::stream)
+                .map(TournamentRental::getCopyId)
+                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
+                .collect(Collectors.toList());
+    }
+
+    private List<GameCopy> getBusyRentalCopies(LocalDateTime rentalTime, Integer duration, Long targetId) {
+        PrivateRental desiredRental = new PrivateRental();
+        desiredRental.setStartTime(rentalTime);
+        desiredRental.setDuration(duration);
+
+        return privateRentalRepository
+                .findAll()
+                .stream()
+                .filter(rental -> !rental.getId().equals(targetId))
+                .filter(rental -> Utils.isEventDuringAnother(rental, desiredRental))
+                .map(PrivateRental::getCopyId)
+                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
+                .collect(Collectors.toList());
     }
 }

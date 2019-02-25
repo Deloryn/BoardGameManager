@@ -72,17 +72,18 @@ public class GameCopyControllerTest {
     }
 
     @Test
-    public void should_get_all_available_copies() {
+    public void should_find_copies_available_at_private() {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("startTime", "2019-02-18T15:00:00");
+        requestBody.put("startTime", "2019-02-18T10:00:00");
         requestBody.put("duration", 90);
+        requestBody.put("targetId", 1);
 
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().post("/game_copies/available-all")
+                .when().post("/game_copies/available-at-private")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -92,22 +93,24 @@ public class GameCopyControllerTest {
     }
 
     @Test
-    public void should_get_distinct_available_copies() {
+    public void should_find_copies_available_at_tournament() {
         JSONObject requestBody = new JSONObject();
         requestBody.put("startTime", "2019-02-18T15:00:00");
         requestBody.put("duration", 90);
+        requestBody.put("targetId", 1);
 
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().post("/game_copies/available-distinct")
+                .when().post("/game_copies/available-at-tournament")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("values", hasSize(4))
-        ;
+                .body("values", hasSize(5))
+                .body("values[0].game.id", equalTo(1))
+                .body("values[0].gameCopies", hasSize(3));
     }
 
     @Test
