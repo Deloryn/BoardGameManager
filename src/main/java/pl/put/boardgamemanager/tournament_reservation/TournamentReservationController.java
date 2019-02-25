@@ -23,6 +23,11 @@ public class TournamentReservationController {
         return service.all();
     }
 
+    @GetMapping("/tournament_reservations/all-by-tournament-id/{tournamentId}")
+    public ListDTO<TournamentReservationDTO> allByTournamentId(@PathVariable Long tournamentId) {
+        return service.allByTournamentId(tournamentId);
+    }
+
     @PostMapping("/tournament_reservations")
     public TournamentReservationDTO create(@RequestBody TournamentReservationDTO tournamentReservationDTO) {
         if(!tournamentReservationDTO.validate()) return tournamentReservationDTO;

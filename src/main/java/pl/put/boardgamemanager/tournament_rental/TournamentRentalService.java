@@ -42,6 +42,14 @@ public class TournamentRentalService {
         return resultDTO;
     }
 
+    public ListDTO<TournamentRentalDTO> allByTournamentId(Long tournamentId) {
+        ListDTO<TournamentRentalDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(tournamentRentalRepository.findAllByTournamentId(tournamentId).stream()
+                .map(TournamentRental::toDTO)
+                .collect(Collectors.toList()));
+        return resultDTO;
+    }
+
     public TournamentRentalDTO create(TournamentRentalDTO dto) {
         TournamentRental rental = new TournamentRental();
         rental.updateParamsFrom(dto);

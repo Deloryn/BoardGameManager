@@ -32,6 +32,14 @@ public class TournamentReservationService {
         return resultDTO;
     }
 
+    public ListDTO<TournamentReservationDTO> allByTournamentId(Long tournamentId) {
+        ListDTO<TournamentReservationDTO> resultDTO = new ListDTO<>();
+        resultDTO.setValues(repository.findAllByTournamentId(tournamentId).stream()
+                .map(TournamentReservation::toDTO)
+                .collect(Collectors.toList()));
+        return resultDTO;
+    }
+
     public TournamentReservationDTO create(TournamentReservationDTO dto) {
         TournamentReservation reservation = new TournamentReservation();
         reservation.updateParamsFrom(dto);
@@ -67,5 +75,4 @@ public class TournamentReservationService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
-
 }
