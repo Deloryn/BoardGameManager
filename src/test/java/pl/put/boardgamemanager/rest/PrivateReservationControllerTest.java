@@ -39,17 +39,18 @@ public class PrivateReservationControllerTest {
     }
 
     @Test
-    public void should_find_available_tutors_at() {
+    public void should_find_available_tutors_at_reservation() {
         JSONObject requestBody = new JSONObject();
         requestBody.put("startTime", "2019-02-18T15:00:00");
         requestBody.put("duration", "90");
+        requestBody.put("targetId", "1");
 
         given()
                 .header("Accept-Encoding", "application/json")
                 .header("Content-Type", "application/json; charset=UTF-8")
                 .body(requestBody.toJSONString())
                 .log().all()
-                .when().post("/private_reservations/available-tutors-at")
+                .when().post("/private_reservations/available-tutors-at-reservation")
                 .then().log().all()
                 .statusCode(200)
                 .contentType(ContentType.JSON)

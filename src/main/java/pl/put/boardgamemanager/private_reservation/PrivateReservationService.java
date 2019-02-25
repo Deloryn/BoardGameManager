@@ -46,10 +46,10 @@ public class PrivateReservationService {
         }
     }
 
-    public ListDTO<TutorDTO> getAvailableTutorsAt(LocalDateTime startTime, Integer duration) {
+    public ListDTO<TutorDTO> getAvailableTutorsAt(LocalDateTime startTime, Integer duration, Long targetId) {
         ListDTO<TutorDTO> resultDTO = new ListDTO<>();
 
-        List<Tutor> busyTutors = getBusyTutorsAt(startTime, duration);
+        List<Tutor> busyTutors = getBusyTutorsAt(startTime, duration, targetId);
         if (busyTutors.isEmpty())
             resultDTO.setValues(tutorRepository.findAll().stream().map(Tutor::toDTO).collect(Collectors.toList()));
         else {
@@ -107,7 +107,7 @@ public class PrivateReservationService {
         privateReservationRepository.deleteById(id);
     }
 
-    private List<Tutor> getBusyTutorsAt(LocalDateTime startTime, Integer duration) {
+    private List<Tutor> getBusyTutorsAt(LocalDateTime startTime, Integer duration, Long targetId) {
         PrivateReservation desiredReservation = new PrivateReservation();
         desiredReservation.setStartTime(startTime);
         desiredReservation.setDuration(duration);
@@ -115,6 +115,7 @@ public class PrivateReservationService {
         return privateReservationRepository
                     .findAll()
                     .stream()
+                    .filter(reservation -> !reservation.getId().equals(targetId))
                     .filter(reservation -> Utils.isEventDuringAnother(reservation, desiredReservation))
                     .map(PrivateReservation::getTutorId)
                     .filter(Objects::nonNull)

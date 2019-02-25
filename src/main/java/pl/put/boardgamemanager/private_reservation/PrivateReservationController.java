@@ -3,7 +3,7 @@ package pl.put.boardgamemanager.private_reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.put.boardgamemanager.ListDTO;
-import pl.put.boardgamemanager.TimeDTO;
+import pl.put.boardgamemanager.TimeAndTargetDTO;
 import pl.put.boardgamemanager.person.tutor.TutorDTO;
 
 @RestController
@@ -18,14 +18,14 @@ public class PrivateReservationController {
         return service.get(id);
     }
 
-    @PostMapping("/private_reservations/available-tutors-at")
-    public ListDTO<TutorDTO> getAvailableTutorsAt(@RequestBody TimeDTO dto) {
+    @PostMapping("/private_reservations/available-tutors-at-reservation")
+    public ListDTO<TutorDTO> getAvailableTutorsAtReservation(@RequestBody TimeAndTargetDTO dto) {
         if(!dto.validate()) {
             ListDTO<TutorDTO> resultDTO = new ListDTO<>();
             resultDTO.setErrorMessage(dto.getErrorMessage());
             return resultDTO;
         }
-        return service.getAvailableTutorsAt(dto.getStartTime(), dto.getDuration());
+        return service.getAvailableTutorsAt(dto.getStartTime(), dto.getDuration(), dto.getTargetId());
     }
 
     @GetMapping("/private_reservations")
