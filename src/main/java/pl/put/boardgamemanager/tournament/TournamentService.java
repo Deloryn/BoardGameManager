@@ -51,7 +51,21 @@ public class TournamentService {
             dto.setErrorMessage("There is no tournament with the given id");
             return dto;
         }
-        else return tournament.toDTO();
+        TournamentDTO tournamentDTO = tournament.toDTO();
+
+        List<Long> tableIds = tournamentReservationRepository.findAllByTournamentId(id).stream()
+                .map(TournamentReservation::getTableId)
+                .collect(Collectors.toList());
+
+        tournamentDTO.setTableIds(tableIds);
+
+        List<Long> copyIds = tournamentRentalRepository.findAllByTournamentId(id).stream()
+                .map(TournamentRental::getCopyId)
+                .collect(Collectors.toList());
+
+        tournamentDTO.setCopyIds(copyIds);
+
+        return tournamentDTO;
     }
 
     private boolean validateTournamentDTO(TournamentDTO dto) {
