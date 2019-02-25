@@ -65,6 +65,14 @@ public class PrivateRentalService {
     }
 
     public PrivateRentalDTO update(PrivateRentalDTO dto) {
+        if(dto.getGameId() != null){
+            Long copyId = getAnyCopyId(dto.getGameId());
+            if(copyId == null){
+                dto.setErrorMessage("Brak dostępnych egzemplarzy gry");
+                return dto;
+            }
+            dto.setCopyId(copyId);
+        }
         return privateRentalRepository.findById(dto.getId())
                 .map(existingRental -> {
                     existingRental.updateParamsFrom(dto);
