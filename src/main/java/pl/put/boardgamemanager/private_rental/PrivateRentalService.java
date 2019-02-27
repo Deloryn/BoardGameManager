@@ -6,8 +6,14 @@ import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 import pl.put.boardgamemanager.Utils;
 import pl.put.boardgamemanager.game.GameRepository;
+import pl.put.boardgamemanager.game_copy.GameCopy;
 import pl.put.boardgamemanager.game_copy.GameCopyRepository;
+import pl.put.boardgamemanager.tournament.Tournament;
+import pl.put.boardgamemanager.tournament.TournamentRepository;
+import pl.put.boardgamemanager.tournament_rental.TournamentRental;
+import pl.put.boardgamemanager.tournament_rental.TournamentRentalRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +28,12 @@ public class PrivateRentalService {
 
     @Autowired
     private GameCopyRepository gameCopyRepository;
+
+    @Autowired
+    private TournamentRepository tournamentRepository;
+
+    @Autowired
+    private TournamentRentalRepository tournamentRentalRepository;
 
     public PrivateRentalDTO get(Long id) {
         PrivateRental rental = privateRentalRepository.findById(id).orElse(null);
@@ -45,7 +57,7 @@ public class PrivateRentalService {
     public PrivateRentalDTO create(PrivateRentalDTO dto) {
         PrivateRental rental = new PrivateRental();
         if(dto.getGameId() != null){
-            Long copyId = getAnyCopyId(dto.getGameId());
+            Long copyId = getAnyCopyId(dto.getStartTime(), dto.getDuration(), dto.getGameId());
             if(copyId == null){
                 dto.setErrorMessage("Brak dostępnych egzemplarzy gry");
                 return dto;
@@ -66,7 +78,7 @@ public class PrivateRentalService {
 
     public PrivateRentalDTO update(PrivateRentalDTO dto) {
         if(dto.getGameId() != null){
-            Long copyId = getAnyCopyId(dto.getGameId());
+            Long copyId = getAnyCopyId(dto.getStartTime(), dto.getDuration(), dto.getGameId());
             if(copyId == null){
                 dto.setErrorMessage("Brak dostępnych egzemplarzy gry");
                 return dto;
@@ -94,10 +106,50 @@ public class PrivateRentalService {
         privateRentalRepository.deleteById(id);
     }
 
-    private Long getAnyCopyId(Long gameId) {
-        if (gameCopyRepository.findAllByGameId(gameId).isEmpty()){
+    private Long getAnyCopyId(LocalDateTime startTime, Integer duration, Long gameId) {
+        List<GameCopy> availableGameCopies = getAvailableGameCopies(startTime, duration, gameId);
+        if (availableGameCopies.isEmpty()){
             return null;
         }
-        return gameCopyRepository.findAllByGameId(gameId).get(0).getId();
+        return availableGameCopies.get(0).getId();
+    }
+
+    private List<GameCopy> getAvailableGameCopies(LocalDateTime startTime, Integer duration, Long gameId) {
+        List<GameCopy> allCopies = gameCopyRepository.findAllByGameId(gameId);
+        allCopies.removeAll(getBusyRentalCopies(startTime, duration));
+        allCopies.removeAll(getTournamentRentalGameCopies(startTime, duration));
+
+        return allCopies;
+    }
+
+    private List<GameCopy> getBusyRentalCopies(LocalDateTime rentalTime, Integer duration) {
+        PrivateRental desiredRental = new PrivateRental();
+        desiredRental.setStartTime(rentalTime);
+        desiredRental.setDuration(duration);
+
+        return privateRentalRepository
+                .findAll()
+                .stream()
+                .filter(rental -> Utils.isEventDuringAnother(rental, desiredRental))
+                .map(PrivateRental::getCopyId)
+                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
+                .collect(Collectors.toList());
+    }
+
+    private List<GameCopy> getTournamentRentalGameCopies(LocalDateTime rentalTime, Integer duration) {
+        PrivateRental desiredRental = new PrivateRental();
+        desiredRental.setStartTime(rentalTime);
+        desiredRental.setDuration(duration);
+
+        return tournamentRepository
+                .findAll()
+                .stream()
+                .filter(tournament -> Utils.isEventDuringAnother(tournament, desiredRental))
+                .map(Tournament::getId)
+                .map(tournamentId -> tournamentRentalRepository.findAllByTournamentId(tournamentId))
+                .flatMap(List::stream)
+                .map(TournamentRental::getCopyId)
+                .map(copyId -> gameCopyRepository.findById(copyId).orElse(null))
+                .collect(Collectors.toList());
     }
 }

@@ -1,14 +1,10 @@
 package pl.put.boardgamemanager.game;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import pl.put.boardgamemanager.ListDTO;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
